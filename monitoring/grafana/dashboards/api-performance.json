@@ -1,0 +1,53 @@
+{
+  "dashboard": {
+    "title": "Nexora API Performance",
+    "uid": "nexora-api-performance",
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "panels": [
+      {
+        "title": "Request Rate",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "targets": [
+          {
+            "expr": "sum(rate(nexora_api_calls_total[5m])) by (endpoint)",
+            "legendFormat": "{{endpoint}}"
+          }
+        ]
+      },
+      {
+        "title": "Response Time (p95)",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, sum(rate(nexora_api_calls_duration_bucket[5m])) by (endpoint, le))",
+            "legendFormat": "{{endpoint}}"
+          }
+        ]
+      },
+      {
+        "title": "Error Rate",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "targets": [
+          {
+            "expr": "sum(rate(nexora_api_calls_total{status_class!=\"2xx\"}[5m])) by (endpoint) / sum(rate(nexora_api_calls_total[5m])) by (endpoint)",
+            "legendFormat": "{{endpoint}}"
+          }
+        ]
+      },
+      {
+        "title": "Active Users",
+        "type": "stat",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+        "targets": [
+          {
+            "expr": "count(count by (user_id) (nexora_user_activities_total))"
+          }
+        ]
+      }
+    ]
+  }
+}

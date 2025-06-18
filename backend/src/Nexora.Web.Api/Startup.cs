@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using Nexora.Core.Configuration;
 using Nexora.Core.Data;
 using Nexora.Core.Interfaces;
+using Nexora.Core.Resilience;
+using Nexora.Core.Telemetry;
 using Nexora.Infrastructure.Data.Migrations;
 using Nexora.Infrastructure.Repositories;
 using Nexora.Infrastructure.Services;
@@ -31,6 +33,16 @@ namespace Nexora.Web.Api
             services.Configure<SeedingSettings>(Configuration.GetSection("Seeding"));
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             services.Configure<TenancySettings>(Configuration.GetSection("Tenancy"));
+
+            services.AddNexoraTelemetry(Configuration);
+            services.AddNexoraSerilog(Configuration);
+
+            // Add resilience patterns
+            services.AddNexoraResilience(Configuration);
+
+            services.AddNexoraApiVersioning();
+
+            services.AddNexoraHealthChecks(Configuration);
 
             // Add database
             services.AddDbContext<NexoraDbContext>((provider, options) =>
@@ -93,48 +105,25 @@ namespace Nexora.Web.Api
             // Add CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", builder =>
+                options.AddPolicy("NexoraPolicy", builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder.WithOrigins("https://app.nexora.com", "https://admin.nexora.com", "http://localhost:3000", "https://localhost:3000")
                            .AllowAnyMethod()
-                           .AllowAnyHeader();
+                           .AllowAnyHeader()
+                           .AllowCredentials();
                 });
             });
 
-            // Add Swagger
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Nexora API", Version = "v1" });
-                
-                // Add JWT authentication to Swagger
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
-                });
-                
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
-            });
+            services.AddNexoraSwagger();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<RequestLoggingMiddleware>();
+
+            // Add security headers middleware
+            app.UseMiddleware<SecurityHeadersMiddleware>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -145,11 +134,30 @@ namespace Nexora.Web.Api
                 app.UseHsts();
             }
 
-            // Use Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nexora API V1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "Nexora API V2");
+                c.RoutePrefix = "swagger";
+                c.DocumentTitle = "Nexora Platform API Documentation";
+                c.DefaultModelExpandDepth(2);
+                c.DefaultModelRendering(Swashbuckle.AspNetCore.SwaggerUI.ModelRendering.Example);
+                c.DisplayRequestDuration();
+                c.EnableDeepLinking();
+                c.EnableFilter();
+                c.ShowExtensions();
+            });
+
+            // Add health checks endpoints
+            app.UseHealthChecks("/health");
+            app.UseHealthChecks("/health/ready", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+            {
+                Predicate = check => check.Tags.Contains("critical")
+            });
+            app.UseHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+            {
+                Predicate = _ => false
             });
 
             // Use HTTPS redirection
@@ -159,7 +167,9 @@ namespace Nexora.Web.Api
             app.UseRouting();
 
             // Use CORS
-            app.UseCors("AllowAll");
+            app.UseCors("NexoraPolicy");
+
+            app.UseMiddleware<RateLimitingMiddleware>();
 
             // Use tenant middleware
             app.UseMiddleware<TenantMiddleware>();
@@ -167,6 +177,9 @@ namespace Nexora.Web.Api
             // Use authentication and authorization
             app.UseAuthentication();
             app.UseAuthorization();
+
+            // Use authorization middleware (after authentication)
+            app.UseMiddleware<AuthorizationMiddleware>();
 
             // Use exception handling middleware
             app.UseMiddleware<ExceptionHandlingMiddleware>();
