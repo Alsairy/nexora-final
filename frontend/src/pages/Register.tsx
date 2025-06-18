@@ -54,7 +54,9 @@ const Register: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/register', {
+      const { makeApiCall } = await import('../config/api');
+      
+      const response = await makeApiCall('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +68,7 @@ const Register: React.FC = () => {
           password: formData.password,
           companyName: formData.companyName,
         }),
-      });
+      }) as Response;
 
       if (!response.ok) {
         const errorData = await response.json();

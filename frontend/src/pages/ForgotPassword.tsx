@@ -26,13 +26,15 @@ const ForgotPassword: React.FC = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/forgot-password', {
+      const { makeApiCall } = await import('../config/api');
+      
+      const response = await makeApiCall('/api/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
-      });
+      }) as Response;
 
       if (!response.ok) {
         const errorData = await response.json();

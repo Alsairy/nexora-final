@@ -43,13 +43,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const response = await fetch('/api/auth/login', {
+      const { makeApiCall, apiConfig } = await import('../config/api');
+      
+      const response = await makeApiCall('/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
-      });
+      }) as Response;
 
       if (!response.ok) {
         throw new Error('Login failed');
