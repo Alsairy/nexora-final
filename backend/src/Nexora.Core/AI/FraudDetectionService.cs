@@ -298,32 +298,139 @@ public class FraudDetectionService : IFraudDetectionService
 
     private double CalculateVelocityScore(Transaction transaction, IEnumerable<Transaction> recentTransactions)
     {
-        var last24Hours = recentTransactions.Where(t => t.CreatedAt >= DateTime.UtcNow.AddHours(-24));
-        var transactionCount = last24Hours.Count();
-        var totalAmount = last24Hours.Sum(t => t.Amount);
+        var velocityScore = 0.0;
+        var now = DateTime.UtcNow;
         
-        var velocityScore = Math.Min(1.0, (transactionCount / 50.0) + ((double)totalAmount / 100000.0));
-        return velocityScore;
+        var last1Hour = recentTransactions.Where(t => t.CreatedAt >= now.AddHours(-1));
+        var last24Hours = recentTransactions.Where(t => t.CreatedAt >= now.AddHours(-24));
+        var last7Days = recentTransactions.Where(t => t.CreatedAt >= now.AddDays(-7));
+        
+        var hourlyCount = last1Hour.Count();
+        var hourlyAmount = last1Hour.Sum(t => t.Amount);
+        if (hourlyCount > 10) velocityScore += 0.4;
+        if (hourlyAmount > 50000) velocityScore += 0.4;
+        
+        var dailyCount = last24Hours.Count();
+        var dailyAmount = last24Hours.Sum(t => t.Amount);
+        velocityScore += Math.Min(0.3, dailyCount / 50.0);
+        velocityScore += Math.Min(0.3, (double)dailyAmount / 200000.0);
+        
+        var weeklyCount = last7Days.Count();
+        var avgDailyTransactions = weeklyCount / 7.0;
+        if (dailyCount > avgDailyTransactions * 3) velocityScore += 0.2;
+        
+        var last15Minutes = recentTransactions.Where(t => t.CreatedAt >= now.AddMinutes(-15));
+        if (last15Minutes.Count() > 5) velocityScore += 0.3;
+        
+        return Math.Min(1.0, velocityScore);
     }
 
     private double CalculatePaymentVelocityScore(Payment payment, IEnumerable<Payment> recentPayments)
     {
-        var last24Hours = recentPayments.Where(p => p.CreatedAt >= DateTime.UtcNow.AddHours(-24));
-        var paymentCount = last24Hours.Count();
-        var totalAmount = last24Hours.Sum(p => p.Amount);
+        var velocityScore = 0.0;
+        var now = DateTime.UtcNow;
         
-        var velocityScore = Math.Min(1.0, (paymentCount / 20.0) + ((double)totalAmount / 50000.0));
-        return velocityScore;
+        var last1Hour = recentPayments.Where(p => p.CreatedAt >= now.AddHours(-1));
+        var last24Hours = recentPayments.Where(p => p.CreatedAt >= now.AddHours(-24));
+        var last7Days = recentPayments.Where(p => p.CreatedAt >= now.AddDays(-7));
+        
+        var hourlyCount = last1Hour.Count();
+        var hourlyAmount = last1Hour.Sum(p => p.Amount);
+        if (hourlyCount > 5) velocityScore += 0.5; // More restrictive for payments
+        if (hourlyAmount > 25000) velocityScore += 0.5;
+        
+        var dailyCount = last24Hours.Count();
+        var dailyAmount = last24Hours.Sum(p => p.Amount);
+        velocityScore += Math.Min(0.3, dailyCount / 20.0);
+        velocityScore += Math.Min(0.3, (double)dailyAmount / 100000.0);
+        
+        var failedPayments = last24Hours.Where(p => p.Status == "Failed" || p.Status == "Declined");
+        if (failedPayments.Count() > 3) velocityScore += 0.4;
+        
+        var uniquePaymentMethods = last24Hours.Select(p => p.PaymentMethod).Distinct().Count();
+        if (uniquePaymentMethods > 3) velocityScore += 0.3;
+        
+        return Math.Min(1.0, velocityScore);
     }
 
     private double CalculateLocationRisk(string metadata)
     {
-        return 0.1;
+        if (string.IsNullOrEmpty(metadata)) return 0.3;
+        
+        try
+        {
+            var metadataObj = JsonSerializer.Deserialize<Dictionary<string, object>>(metadata);
+            if (metadataObj == null) return 0.3;
+
+            var riskScore = 0.0;
+            
+            if (metadataObj.ContainsKey("country"))
+            {
+                var country = metadataObj["country"]?.ToString()?.ToUpper();
+                var highRiskCountries = new[] { "AF", "IR", "KP", "SY", "YE" }; // High-risk ISO codes
+                if (highRiskCountries.Contains(country))
+                    riskScore += 0.8;
+                else if (country != "SA") // Not Saudi Arabia
+                    riskScore += 0.3;
+            }
+
+            if (metadataObj.ContainsKey("isVpn") && bool.TryParse(metadataObj["isVpn"]?.ToString(), out bool isVpn) && isVpn)
+                riskScore += 0.4;
+
+            if (metadataObj.ContainsKey("previousCountry"))
+            {
+                var currentCountry = metadataObj["country"]?.ToString();
+                var previousCountry = metadataObj["previousCountry"]?.ToString();
+                if (!string.IsNullOrEmpty(currentCountry) && !string.IsNullOrEmpty(previousCountry) && 
+                    currentCountry != previousCountry)
+                    riskScore += 0.2;
+            }
+
+            return Math.Min(1.0, riskScore);
+        }
+        catch
+        {
+            return 0.3; // Default risk for unparseable metadata
+        }
     }
 
     private double CalculateDeviceRisk(string metadata)
     {
-        return 0.1;
+        if (string.IsNullOrEmpty(metadata)) return 0.2;
+        
+        try
+        {
+            var metadataObj = JsonSerializer.Deserialize<Dictionary<string, object>>(metadata);
+            if (metadataObj == null) return 0.2;
+
+            var riskScore = 0.0;
+            
+            if (metadataObj.ContainsKey("isNewDevice") && bool.TryParse(metadataObj["isNewDevice"]?.ToString(), out bool isNewDevice) && isNewDevice)
+                riskScore += 0.3;
+
+            if (metadataObj.ContainsKey("userAgent"))
+            {
+                var userAgent = metadataObj["userAgent"]?.ToString()?.ToLower();
+                var suspiciousAgents = new[] { "bot", "crawler", "spider", "scraper" };
+                if (!string.IsNullOrEmpty(userAgent) && suspiciousAgents.Any(agent => userAgent.Contains(agent)))
+                    riskScore += 0.6;
+            }
+
+            if (metadataObj.ContainsKey("deviceFingerprint") && metadataObj.ContainsKey("previousFingerprint"))
+            {
+                var currentFingerprint = metadataObj["deviceFingerprint"]?.ToString();
+                var previousFingerprint = metadataObj["previousFingerprint"]?.ToString();
+                if (!string.IsNullOrEmpty(currentFingerprint) && !string.IsNullOrEmpty(previousFingerprint) && 
+                    currentFingerprint != previousFingerprint)
+                    riskScore += 0.2;
+            }
+
+            return Math.Min(1.0, riskScore);
+        }
+        catch
+        {
+            return 0.2; // Default risk for unparseable metadata
+        }
     }
 
     private double CalculateProviderRisk(string provider)

@@ -1,19 +1,25 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Nexora.Core.Configuration;
 using Nexora.Core.Data;
 using Nexora.Core.Interfaces;
 using Nexora.Core.Resilience;
 using Nexora.Core.Telemetry;
 using Nexora.Infrastructure.Data.Migrations;
+using Nexora.Infrastructure.Hubs;
 using Nexora.Infrastructure.Repositories;
 using Nexora.Infrastructure.Services;
+using Nexora.Core.Security;
 using Nexora.Web.Api.Middleware;
 using System;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Nexora.Web.Api
 {
@@ -72,6 +78,17 @@ namespace Nexora.Web.Api
             services.AddScoped<IKeyVaultService, KeyVaultService>();
             services.AddScoped<ICryptoHelper, CryptoHelper>();
             services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<IPaymentAnalyticsService, PaymentAnalyticsService>();
+            services.AddScoped<ISmsBillingService, SmsBillingService>();
+            services.AddScoped<IRcsService, RcsService>();
+            services.AddScoped<IWhatsAppService, WhatsAppService>();
+            services.AddScoped<IVoiceService, VoiceService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IReportingService, ReportingService>();
+            services.AddScoped<IExportService, ExportService>();
+            
+            services.AddScoped<IPaymentSecurityService, PaymentSecurityService>();
 
             // Add repositories
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
@@ -100,6 +117,20 @@ namespace Nexora.Web.Api
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/notificationHub"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             // Add CORS
@@ -115,6 +146,14 @@ namespace Nexora.Web.Api
             });
 
             services.AddNexoraSwagger();
+
+            services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+                options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+                options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+                options.HandshakeTimeout = TimeSpan.FromSeconds(15);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -188,6 +227,7 @@ namespace Nexora.Web.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<NotificationHub>("/notificationHub");
             });
 
             // Initialize database
