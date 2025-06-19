@@ -34,7 +34,7 @@ namespace Nexora.Infrastructure.Services
             _httpClient = httpClient;
             _apiBaseUrl = _configuration["Email:ApiBaseUrl"] ?? "https://api.sendgrid.com/v3";
             _apiKey = _configuration["Email:ApiKey"] ?? "";
-            _fromEmail = _configuration["Email:FromEmail"] ?? "noreply@nexora.com";
+            _fromEmail = _configuration["Email:FromEmail"] ?? "noreply@nexora.sa";
             _fromName = _configuration["Email:FromName"] ?? "Nexora";
         }
 

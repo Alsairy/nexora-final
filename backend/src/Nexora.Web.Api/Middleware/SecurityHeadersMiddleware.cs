@@ -71,7 +71,7 @@ namespace Nexora.Web.Api.Middleware
         private string BuildContentSecurityPolicy(bool isDevelopment)
         {
             var allowedDomains = _configuration.GetSection("Security:AllowedDomains").Get<string[]>() 
-                ?? new[] { "https://app.nexora.com", "https://admin.nexora.com" };
+                ?? new[] { "https://app.nexora.sa", "https://admin.nexora.sa" };
 
             var cspBuilder = new List<string>();
 

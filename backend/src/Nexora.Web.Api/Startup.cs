@@ -141,7 +141,7 @@ namespace Nexora.Web.Api
             {
                 options.AddPolicy("NexoraPolicy", builder =>
                 {
-                    builder.WithOrigins("https://app.nexora.com", "https://admin.nexora.com", "http://localhost:3000", "https://localhost:3000")
+                    builder.WithOrigins("https://app.nexora.sa", "https://admin.nexora.sa", "http://localhost:3000", "https://localhost:3000")
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials();
