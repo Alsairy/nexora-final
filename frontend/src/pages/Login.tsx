@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -11,7 +10,9 @@ import {
   Link,
   Divider,
 } from '@mui/material';
+import React, { useState } from 'react';
 import { useNavigate, useLocation, Link as RouterLink } from 'react-router-dom';
+
 import { useAuth } from '../contexts/AuthContext';
 import ROUTES from '../routes';
 
@@ -20,11 +21,11 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const from = location.state?.from?.pathname || ROUTES.DASHBOARD;
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -80,7 +81,7 @@ const Login: React.FC = () => {
                 autoComplete="email"
                 autoFocus
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 disabled={isLoading}
               />
               <TextField
@@ -93,7 +94,7 @@ const Login: React.FC = () => {
                 id="password"
                 autoComplete="current-password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 disabled={isLoading}
               />
               <Button
@@ -105,7 +106,7 @@ const Login: React.FC = () => {
               >
                 {isLoading ? 'Signing In...' : 'Sign In'}
               </Button>
-              
+
               <Box sx={{ textAlign: 'center' }}>
                 <Link
                   component={RouterLink}
@@ -115,13 +116,13 @@ const Login: React.FC = () => {
                 >
                   Forgot your password?
                 </Link>
-                
+
                 <Divider sx={{ my: 2 }}>
                   <Typography variant="body2" color="text.secondary">
                     or
                   </Typography>
                 </Divider>
-                
+
                 <Typography variant="body2">
                   Don't have an account?{' '}
                   <Link component={RouterLink} to={ROUTES.REGISTER}>

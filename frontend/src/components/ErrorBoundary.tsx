@@ -1,7 +1,7 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-
 import { Button, Card, Container, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import type { ErrorInfo, ReactNode } from 'react';
+import React, { Component } from 'react';
 
 interface Props {
   children: ReactNode;
@@ -67,12 +67,12 @@ class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Log the error to an error reporting service
     console.error('Error caught by ErrorBoundary:', error, errorInfo);
-    
+
     this.setState({
       error,
       errorInfo,
     });
-    
+
     // Here you could also log to an error monitoring service like Sentry
     // if (process.env.NODE_ENV === 'production') {
     //   Sentry.captureException(error);
@@ -106,20 +106,15 @@ class ErrorBoundary extends Component<Props, State> {
             <Typography variant="body1" color="textSecondary" paragraph>
               We're sorry, but an error occurred while rendering this component.
             </Typography>
-            
+
             {process.env.NODE_ENV !== 'production' && error && (
               <ErrorDetails>
                 <strong>{error.toString()}</strong>
                 {errorInfo && errorInfo.componentStack}
               </ErrorDetails>
             )}
-            
-            <Button 
-              variant="contained" 
-              color="primary" 
-              onClick={this.handleReset}
-              sx={{ mt: 2 }}
-            >
+
+            <Button variant="contained" color="primary" onClick={this.handleReset} sx={{ mt: 2 }}>
               Try Again
             </Button>
           </ErrorCard>
@@ -132,4 +127,3 @@ class ErrorBoundary extends Component<Props, State> {
 }
 
 export default ErrorBoundary;
-

@@ -1,4 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import {
+  Add as AddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Block as BlockIcon,
+  CheckCircle as CheckCircleIcon,
+} from '@mui/icons-material';
 import {
   Box,
   Paper,
@@ -22,15 +28,9 @@ import {
   Select,
   MenuItem,
   Alert,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material';
-import {
-  Add as AddIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Block as BlockIcon,
-  CheckCircle as CheckCircleIcon
-} from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
 
 interface User {
   id: string;
@@ -54,7 +54,7 @@ const UserManagement: React.FC = () => {
     firstName: '',
     lastName: '',
     role: 'User',
-    status: 'Active' as const
+    status: 'Active' as const,
   });
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const UserManagement: React.FC = () => {
           role: 'Admin',
           status: 'Active',
           lastLogin: '2024-01-15T10:30:00Z',
-          createdAt: '2024-01-01T00:00:00Z'
+          createdAt: '2024-01-01T00:00:00Z',
         },
         {
           id: '2',
@@ -83,10 +83,10 @@ const UserManagement: React.FC = () => {
           role: 'User',
           status: 'Active',
           lastLogin: '2024-01-14T15:45:00Z',
-          createdAt: '2024-01-02T00:00:00Z'
-        }
+          createdAt: '2024-01-02T00:00:00Z',
+        },
       ];
-      
+
       setTimeout(() => {
         setUsers(mockUsers);
         setLoading(false);
@@ -105,7 +105,7 @@ const UserManagement: React.FC = () => {
         firstName: user.firstName,
         lastName: user.lastName,
         role: user.role,
-        status: user.status
+        status: user.status,
       });
     } else {
       setSelectedUser(null);
@@ -114,7 +114,7 @@ const UserManagement: React.FC = () => {
         firstName: '',
         lastName: '',
         role: 'User',
-        status: 'Active'
+        status: 'Active',
       });
     }
     setOpenDialog(true);
@@ -173,11 +173,7 @@ const UserManagement: React.FC = () => {
         <Typography variant="h4" component="h1">
           User Management
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={() => handleOpenDialog()}
-        >
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => handleOpenDialog()}>
           Add User
         </Button>
       </Box>
@@ -201,7 +197,7 @@ const UserManagement: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {users.map((user) => (
+            {users.map(user => (
               <TableRow key={user.id}>
                 <TableCell>
                   {user.firstName} {user.lastName}
@@ -215,22 +211,12 @@ const UserManagement: React.FC = () => {
                     size="small"
                   />
                 </TableCell>
+                <TableCell>{new Date(user.lastLogin).toLocaleDateString()}</TableCell>
                 <TableCell>
-                  {new Date(user.lastLogin).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <IconButton
-                    size="small"
-                    onClick={() => handleOpenDialog(user)}
-                    color="primary"
-                  >
+                  <IconButton size="small" onClick={() => handleOpenDialog(user)} color="primary">
                     <EditIcon />
                   </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => handleDeleteUser(user.id)}
-                    color="error"
-                  >
+                  <IconButton size="small" onClick={() => handleDeleteUser(user.id)} color="error">
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
@@ -241,16 +227,14 @@ const UserManagement: React.FC = () => {
       </TableContainer>
 
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-        <DialogTitle>
-          {selectedUser ? 'Edit User' : 'Add New User'}
-        </DialogTitle>
+        <DialogTitle>{selectedUser ? 'Edit User' : 'Add New User'}</DialogTitle>
         <DialogContent>
           <Box sx={{ pt: 1 }}>
             <TextField
               fullWidth
               label="Email"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={e => setFormData({ ...formData, email: e.target.value })}
               margin="normal"
               type="email"
               required
@@ -259,7 +243,7 @@ const UserManagement: React.FC = () => {
               fullWidth
               label="First Name"
               value={formData.firstName}
-              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+              onChange={e => setFormData({ ...formData, firstName: e.target.value })}
               margin="normal"
               required
             />
@@ -267,7 +251,7 @@ const UserManagement: React.FC = () => {
               fullWidth
               label="Last Name"
               value={formData.lastName}
-              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+              onChange={e => setFormData({ ...formData, lastName: e.target.value })}
               margin="normal"
               required
             />
@@ -275,7 +259,7 @@ const UserManagement: React.FC = () => {
               <InputLabel>Role</InputLabel>
               <Select
                 value={formData.role}
-                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                onChange={e => setFormData({ ...formData, role: e.target.value })}
                 label="Role"
               >
                 <MenuItem value="User">User</MenuItem>
@@ -287,7 +271,7 @@ const UserManagement: React.FC = () => {
               <InputLabel>Status</InputLabel>
               <Select
                 value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
+                onChange={e => setFormData({ ...formData, status: e.target.value as any })}
                 label="Status"
               >
                 <MenuItem value="Active">Active</MenuItem>

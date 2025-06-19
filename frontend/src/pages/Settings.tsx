@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import {
+  Save as SaveIcon,
+  Security as SecurityIcon,
+  Notifications as NotificationsIcon,
+  AccountCircle as AccountIcon,
+  Business as BusinessIcon,
+} from '@mui/icons-material';
 import {
   Box,
   Paper,
@@ -18,15 +24,9 @@ import {
   Select,
   MenuItem,
   Tabs,
-  Tab
+  Tab,
 } from '@mui/material';
-import {
-  Save as SaveIcon,
-  Security as SecurityIcon,
-  Notifications as NotificationsIcon,
-  AccountCircle as AccountIcon,
-  Business as BusinessIcon
-} from '@mui/icons-material';
+import React, { useState } from 'react';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -61,14 +61,14 @@ const Settings: React.FC = () => {
     email: 'john.doe@example.com',
     phone: '+1234567890',
     timezone: 'UTC',
-    language: 'en'
+    language: 'en',
   });
 
   const [securitySettings, setSecuritySettings] = useState({
     twoFactorEnabled: true,
     sessionTimeout: 30,
     passwordExpiry: 90,
-    loginNotifications: true
+    loginNotifications: true,
   });
 
   const [notificationSettings, setNotificationSettings] = useState({
@@ -77,7 +77,7 @@ const Settings: React.FC = () => {
     pushNotifications: true,
     marketingEmails: false,
     transactionAlerts: true,
-    securityAlerts: true
+    securityAlerts: true,
   });
 
   const [businessSettings, setBusinessSettings] = useState({
@@ -86,7 +86,7 @@ const Settings: React.FC = () => {
     country: 'US',
     currency: 'USD',
     taxId: '123-45-6789',
-    website: 'https://nexora.com'
+    website: 'https://nexora.com',
   });
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -180,7 +180,9 @@ const Settings: React.FC = () => {
                     fullWidth
                     label="First Name"
                     value={profileSettings.firstName}
-                    onChange={(e) => setProfileSettings({ ...profileSettings, firstName: e.target.value })}
+                    onChange={e =>
+                      setProfileSettings({ ...profileSettings, firstName: e.target.value })
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -188,7 +190,9 @@ const Settings: React.FC = () => {
                     fullWidth
                     label="Last Name"
                     value={profileSettings.lastName}
-                    onChange={(e) => setProfileSettings({ ...profileSettings, lastName: e.target.value })}
+                    onChange={e =>
+                      setProfileSettings({ ...profileSettings, lastName: e.target.value })
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -197,7 +201,9 @@ const Settings: React.FC = () => {
                     label="Email"
                     type="email"
                     value={profileSettings.email}
-                    onChange={(e) => setProfileSettings({ ...profileSettings, email: e.target.value })}
+                    onChange={e =>
+                      setProfileSettings({ ...profileSettings, email: e.target.value })
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -205,7 +211,9 @@ const Settings: React.FC = () => {
                     fullWidth
                     label="Phone"
                     value={profileSettings.phone}
-                    onChange={(e) => setProfileSettings({ ...profileSettings, phone: e.target.value })}
+                    onChange={e =>
+                      setProfileSettings({ ...profileSettings, phone: e.target.value })
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -213,7 +221,9 @@ const Settings: React.FC = () => {
                     <InputLabel>Timezone</InputLabel>
                     <Select
                       value={profileSettings.timezone}
-                      onChange={(e) => setProfileSettings({ ...profileSettings, timezone: e.target.value })}
+                      onChange={e =>
+                        setProfileSettings({ ...profileSettings, timezone: e.target.value })
+                      }
                       label="Timezone"
                     >
                       <MenuItem value="UTC">UTC</MenuItem>
@@ -228,7 +238,9 @@ const Settings: React.FC = () => {
                     <InputLabel>Language</InputLabel>
                     <Select
                       value={profileSettings.language}
-                      onChange={(e) => setProfileSettings({ ...profileSettings, language: e.target.value })}
+                      onChange={e =>
+                        setProfileSettings({ ...profileSettings, language: e.target.value })
+                      }
                       label="Language"
                     >
                       <MenuItem value="en">English</MenuItem>
@@ -241,11 +253,7 @@ const Settings: React.FC = () => {
               </Grid>
             </CardContent>
             <CardActions>
-              <Button
-                variant="contained"
-                startIcon={<SaveIcon />}
-                onClick={handleSaveProfile}
-              >
+              <Button variant="contained" startIcon={<SaveIcon />} onClick={handleSaveProfile}>
                 Save Profile
               </Button>
             </CardActions>
@@ -263,7 +271,12 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       checked={securitySettings.twoFactorEnabled}
-                      onChange={(e) => setSecuritySettings({ ...securitySettings, twoFactorEnabled: e.target.checked })}
+                      onChange={e =>
+                        setSecuritySettings({
+                          ...securitySettings,
+                          twoFactorEnabled: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Enable Two-Factor Authentication"
@@ -275,7 +288,12 @@ const Settings: React.FC = () => {
                   label="Session Timeout (minutes)"
                   type="number"
                   value={securitySettings.sessionTimeout}
-                  onChange={(e) => setSecuritySettings({ ...securitySettings, sessionTimeout: parseInt(e.target.value) })}
+                  onChange={e =>
+                    setSecuritySettings({
+                      ...securitySettings,
+                      sessionTimeout: parseInt(e.target.value),
+                    })
+                  }
                   sx={{ maxWidth: 300 }}
                 />
               </Box>
@@ -285,7 +303,12 @@ const Settings: React.FC = () => {
                   label="Password Expiry (days)"
                   type="number"
                   value={securitySettings.passwordExpiry}
-                  onChange={(e) => setSecuritySettings({ ...securitySettings, passwordExpiry: parseInt(e.target.value) })}
+                  onChange={e =>
+                    setSecuritySettings({
+                      ...securitySettings,
+                      passwordExpiry: parseInt(e.target.value),
+                    })
+                  }
                   sx={{ maxWidth: 300 }}
                 />
               </Box>
@@ -294,7 +317,12 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       checked={securitySettings.loginNotifications}
-                      onChange={(e) => setSecuritySettings({ ...securitySettings, loginNotifications: e.target.checked })}
+                      onChange={e =>
+                        setSecuritySettings({
+                          ...securitySettings,
+                          loginNotifications: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Login Notifications"
@@ -302,11 +330,7 @@ const Settings: React.FC = () => {
               </Box>
             </CardContent>
             <CardActions>
-              <Button
-                variant="contained"
-                startIcon={<SaveIcon />}
-                onClick={handleSaveSecurity}
-              >
+              <Button variant="contained" startIcon={<SaveIcon />} onClick={handleSaveSecurity}>
                 Save Security Settings
               </Button>
             </CardActions>
@@ -324,7 +348,12 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       checked={notificationSettings.emailNotifications}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, emailNotifications: e.target.checked })}
+                      onChange={e =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          emailNotifications: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Email Notifications"
@@ -335,7 +364,12 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       checked={notificationSettings.smsNotifications}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, smsNotifications: e.target.checked })}
+                      onChange={e =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          smsNotifications: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="SMS Notifications"
@@ -346,7 +380,12 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       checked={notificationSettings.pushNotifications}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, pushNotifications: e.target.checked })}
+                      onChange={e =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          pushNotifications: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Push Notifications"
@@ -361,7 +400,12 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       checked={notificationSettings.transactionAlerts}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, transactionAlerts: e.target.checked })}
+                      onChange={e =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          transactionAlerts: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Transaction Alerts"
@@ -372,7 +416,12 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       checked={notificationSettings.securityAlerts}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, securityAlerts: e.target.checked })}
+                      onChange={e =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          securityAlerts: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Security Alerts"
@@ -383,7 +432,12 @@ const Settings: React.FC = () => {
                   control={
                     <Switch
                       checked={notificationSettings.marketingEmails}
-                      onChange={(e) => setNotificationSettings({ ...notificationSettings, marketingEmails: e.target.checked })}
+                      onChange={e =>
+                        setNotificationSettings({
+                          ...notificationSettings,
+                          marketingEmails: e.target.checked,
+                        })
+                      }
                     />
                   }
                   label="Marketing Emails"
@@ -414,7 +468,9 @@ const Settings: React.FC = () => {
                     fullWidth
                     label="Company Name"
                     value={businessSettings.companyName}
-                    onChange={(e) => setBusinessSettings({ ...businessSettings, companyName: e.target.value })}
+                    onChange={e =>
+                      setBusinessSettings({ ...businessSettings, companyName: e.target.value })
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -422,7 +478,9 @@ const Settings: React.FC = () => {
                     <InputLabel>Business Type</InputLabel>
                     <Select
                       value={businessSettings.businessType}
-                      onChange={(e) => setBusinessSettings({ ...businessSettings, businessType: e.target.value })}
+                      onChange={e =>
+                        setBusinessSettings({ ...businessSettings, businessType: e.target.value })
+                      }
                       label="Business Type"
                     >
                       <MenuItem value="fintech">Fintech</MenuItem>
@@ -437,7 +495,9 @@ const Settings: React.FC = () => {
                     <InputLabel>Country</InputLabel>
                     <Select
                       value={businessSettings.country}
-                      onChange={(e) => setBusinessSettings({ ...businessSettings, country: e.target.value })}
+                      onChange={e =>
+                        setBusinessSettings({ ...businessSettings, country: e.target.value })
+                      }
                       label="Country"
                     >
                       <MenuItem value="US">United States</MenuItem>
@@ -452,7 +512,9 @@ const Settings: React.FC = () => {
                     <InputLabel>Currency</InputLabel>
                     <Select
                       value={businessSettings.currency}
-                      onChange={(e) => setBusinessSettings({ ...businessSettings, currency: e.target.value })}
+                      onChange={e =>
+                        setBusinessSettings({ ...businessSettings, currency: e.target.value })
+                      }
                       label="Currency"
                     >
                       <MenuItem value="USD">USD</MenuItem>
@@ -467,7 +529,9 @@ const Settings: React.FC = () => {
                     fullWidth
                     label="Tax ID"
                     value={businessSettings.taxId}
-                    onChange={(e) => setBusinessSettings({ ...businessSettings, taxId: e.target.value })}
+                    onChange={e =>
+                      setBusinessSettings({ ...businessSettings, taxId: e.target.value })
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -475,17 +539,15 @@ const Settings: React.FC = () => {
                     fullWidth
                     label="Website"
                     value={businessSettings.website}
-                    onChange={(e) => setBusinessSettings({ ...businessSettings, website: e.target.value })}
+                    onChange={e =>
+                      setBusinessSettings({ ...businessSettings, website: e.target.value })
+                    }
                   />
                 </Grid>
               </Grid>
             </CardContent>
             <CardActions>
-              <Button
-                variant="contained"
-                startIcon={<SaveIcon />}
-                onClick={handleSaveBusiness}
-              >
+              <Button variant="contained" startIcon={<SaveIcon />} onClick={handleSaveBusiness}>
                 Save Business Settings
               </Button>
             </CardActions>

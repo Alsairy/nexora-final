@@ -1,10 +1,7 @@
-import React from 'react';
-
-import {
-  Tooltip as MuiTooltip,
-  TooltipProps as MuiTooltipProps,
-} from '@mui/material';
+import type { TooltipProps as MuiTooltipProps } from '@mui/material';
+import { Tooltip as MuiTooltip } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import React from 'react';
 
 export interface TooltipProps extends Omit<MuiTooltipProps, 'title'> {
   content: React.ReactNode;
@@ -27,13 +24,7 @@ const StyledTooltip = styled(MuiTooltip)(({ theme }) => ({
 /**
  * Accessible tooltip component with customizable content and positioning.
  */
-const Tooltip: React.FC<TooltipProps> = ({
-  content,
-  children,
-  disabled = false,
-  id,
-  ...rest
-}) => {
+const Tooltip: React.FC<TooltipProps> = ({ content, children, disabled = false, id, ...rest }) => {
   // Generate unique ID for accessibility
   const tooltipId = id || `tooltip-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -62,4 +53,3 @@ const Tooltip: React.FC<TooltipProps> = ({
 };
 
 export default Tooltip;
-

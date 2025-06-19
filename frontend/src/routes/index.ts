@@ -1,6 +1,6 @@
 /**
  * Application route constants
- * 
+ *
  * This file contains all route paths used in the application.
  * Always use these constants instead of hardcoding paths.
  */
@@ -11,13 +11,13 @@ export enum ROUTES {
   REGISTER = '/register',
   FORGOT_PASSWORD = '/forgot-password',
   RESET_PASSWORD = '/reset-password',
-  
+
   // Main sections
   DASHBOARD = '/dashboard',
   ADMIN = '/admin',
   SETTINGS = '/settings',
   PROFILE = '/profile',
-  
+
   // Feature modules
   PAYMENT_GATEWAY = '/payment-gateway',
   SMS_GATEWAY = '/sms-gateway',
@@ -26,24 +26,24 @@ export enum ROUTES {
   E_SIGNATURE = '/e-signature',
   WHATSAPP_CHATBOT = '/whatsapp-chatbot',
   LOAN_MARKETPLACE = '/loan-marketplace',
-  
+
   // User management
   USER_MANAGEMENT = '/user-management',
   USER_DETAILS = '/user-management/:id',
   USER_CREATE = '/user-management/create',
   USER_EDIT = '/user-management/edit/:id',
-  
+
   // Admin console
   ADMIN_CONSOLE = '/admin-console',
   ADMIN_SETTINGS = '/admin-console/settings',
   ADMIN_USERS = '/admin-console/users',
   ADMIN_ROLES = '/admin-console/roles',
-  
+
   // Compliance
   COMPLIANCE_DASHBOARD = '/compliance-dashboard',
   PRIVACY_POLICY = '/privacy-policy',
   TERMS_OF_SERVICE = '/terms-of-service',
-  
+
   // Error pages
   NOT_FOUND = '/404',
   SERVER_ERROR = '/500',
@@ -80,11 +80,10 @@ export const FRAGMENTS = {
 };
 
 // Route builder functions
-export const buildUserDetailsRoute = (userId: number | string): string => 
+export const buildUserDetailsRoute = (userId: number | string): string =>
   ROUTES.USER_DETAILS.replace(':id', userId.toString());
 
-export const buildUserEditRoute = (userId: number | string): string => 
+export const buildUserEditRoute = (userId: number | string): string =>
   ROUTES.USER_EDIT.replace(':id', userId.toString());
 
 export default ROUTES;
-

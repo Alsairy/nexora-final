@@ -1,4 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import {
+  Add as AddIcon,
+  CreditCard as CreditCardIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  Security as SecurityIcon,
+  AccountBalance as BankIcon,
+  Payment as PaymentIcon,
+  Verified as VerifiedIcon,
+  Warning as WarningIcon,
+  Star as StarIcon,
+  StarBorder as StarBorderIcon,
+  Refresh as RefreshIcon,
+  Lock as LockIcon,
+  CheckCircle as CheckCircleIcon,
+  Error as ErrorIcon,
+} from '@mui/icons-material';
 import {
   Container,
   Box,
@@ -32,25 +48,9 @@ import {
   Tabs,
   CircularProgress,
   Tooltip,
-  Badge
+  Badge,
 } from '@mui/material';
-import {
-  Add as AddIcon,
-  CreditCard as CreditCardIcon,
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  Security as SecurityIcon,
-  AccountBalance as BankIcon,
-  Payment as PaymentIcon,
-  Verified as VerifiedIcon,
-  Warning as WarningIcon,
-  Star as StarIcon,
-  StarBorder as StarBorderIcon,
-  Refresh as RefreshIcon,
-  Lock as LockIcon,
-  CheckCircle as CheckCircleIcon,
-  Error as ErrorIcon
-} from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
 
 interface PaymentMethod {
   id: string;
@@ -117,13 +117,13 @@ const PaymentMethods: React.FC = () => {
       city: '',
       state: '',
       zipCode: '',
-      country: 'SA'
-    }
+      country: 'SA',
+    },
   });
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
-    severity: 'success' as 'success' | 'error' | 'warning' | 'info'
+    severity: 'success' as 'success' | 'error' | 'warning' | 'info',
   });
 
   const fetchPaymentMethods = async () => {
@@ -147,8 +147,8 @@ const PaymentMethods: React.FC = () => {
             city: 'Riyadh',
             state: 'Riyadh Province',
             zipCode: '11564',
-            country: 'SA'
-          }
+            country: 'SA',
+          },
         },
         {
           id: '2',
@@ -167,8 +167,8 @@ const PaymentMethods: React.FC = () => {
             city: 'Jeddah',
             state: 'Makkah Province',
             zipCode: '21589',
-            country: 'SA'
-          }
+            country: 'SA',
+          },
         },
         {
           id: '3',
@@ -184,8 +184,8 @@ const PaymentMethods: React.FC = () => {
             city: 'Riyadh',
             state: 'Riyadh Province',
             zipCode: '11564',
-            country: 'SA'
-          }
+            country: 'SA',
+          },
         },
         {
           id: '4',
@@ -202,9 +202,9 @@ const PaymentMethods: React.FC = () => {
             city: 'Riyadh',
             state: 'Riyadh Province',
             zipCode: '11564',
-            country: 'SA'
-          }
-        }
+            country: 'SA',
+          },
+        },
       ];
       setPaymentMethods(mockPaymentMethods);
       setLoading(false);
@@ -219,24 +219,25 @@ const PaymentMethods: React.FC = () => {
         type: formData.type,
         name: getPaymentMethodName(formData.type, formData.cardNumber),
         lastFour: formData.cardNumber.slice(-4),
-        expiryDate: formData.type === 'credit_card' || formData.type === 'debit_card' 
-          ? `${formData.expiryMonth}/${formData.expiryYear.slice(-2)}` 
-          : undefined,
+        expiryDate:
+          formData.type === 'credit_card' || formData.type === 'debit_card'
+            ? `${formData.expiryMonth}/${formData.expiryYear.slice(-2)}`
+            : undefined,
         brand: getBrandFromCardNumber(formData.cardNumber),
         isDefault: paymentMethods.length === 0,
         isVerified: formData.type === 'digital_wallet',
         status: formData.type === 'digital_wallet' ? 'active' : 'pending_verification',
         addedDate: new Date().toISOString().split('T')[0],
-        billingAddress: formData.billingAddress
+        billingAddress: formData.billingAddress,
       };
-      
+
       setPaymentMethods([...paymentMethods, newMethod]);
       setAddMethodDialog(false);
       resetForm();
       setSnackbar({
         open: true,
         message: 'Payment method added successfully',
-        severity: 'success'
+        severity: 'success',
       });
       setLoading(false);
     }, 1500);
@@ -245,13 +246,13 @@ const PaymentMethods: React.FC = () => {
   const handleSetDefault = async (methodId: string) => {
     const updatedMethods = paymentMethods.map(method => ({
       ...method,
-      isDefault: method.id === methodId
+      isDefault: method.id === methodId,
     }));
     setPaymentMethods(updatedMethods);
     setSnackbar({
       open: true,
       message: 'Default payment method updated',
-      severity: 'success'
+      severity: 'success',
     });
   };
 
@@ -261,7 +262,7 @@ const PaymentMethods: React.FC = () => {
     setSnackbar({
       open: true,
       message: 'Payment method removed',
-      severity: 'success'
+      severity: 'success',
     });
   };
 
@@ -271,24 +272,23 @@ const PaymentMethods: React.FC = () => {
       isVerifying: true,
       verificationMethod: method.type === 'bank_account' ? 'micro_deposits' : 'instant',
       estimatedTime: method.type === 'bank_account' ? '1-2 business days' : '2-3 minutes',
-      instructions: method.type === 'bank_account' 
-        ? 'We will send small deposits to your account. Please verify the amounts when they appear.'
-        : 'Please confirm the verification code sent to your registered mobile number.'
+      instructions:
+        method.type === 'bank_account'
+          ? 'We will send small deposits to your account. Please verify the amounts when they appear.'
+          : 'Please confirm the verification code sent to your registered mobile number.',
     });
     setVerificationDialog(true);
 
     setTimeout(() => {
-      const updatedMethods = paymentMethods.map(m => 
-        m.id === method.id 
-          ? { ...m, isVerified: true, status: 'active' as const }
-          : m
+      const updatedMethods = paymentMethods.map(m =>
+        m.id === method.id ? { ...m, isVerified: true, status: 'active' as const } : m,
       );
       setPaymentMethods(updatedMethods);
-      setVerificationStatus(prev => prev ? { ...prev, isVerifying: false } : null);
+      setVerificationStatus(prev => (prev ? { ...prev, isVerifying: false } : null));
       setSnackbar({
         open: true,
         message: 'Payment method verified successfully',
-        severity: 'success'
+        severity: 'success',
       });
     }, 3000);
   };
@@ -373,8 +373,8 @@ const PaymentMethods: React.FC = () => {
         city: '',
         state: '',
         zipCode: '',
-        country: 'SA'
-      }
+        country: 'SA',
+      },
     });
   };
 
@@ -385,7 +385,7 @@ const PaymentMethods: React.FC = () => {
   const formatCardNumber = (value: string) => {
     const v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
     const matches = v.match(/\d{4,16}/g);
-    const match = matches && matches[0] || '';
+    const match = (matches && matches[0]) || '';
     const parts = [];
     for (let i = 0, len = match.length; i < len; i += 4) {
       parts.push(match.substring(i, i + 4));
@@ -408,11 +408,16 @@ const PaymentMethods: React.FC = () => {
 
   const filteredMethods = paymentMethods.filter(method => {
     switch (activeTab) {
-      case 0: return true; // All
-      case 1: return method.type === 'credit_card' || method.type === 'debit_card';
-      case 2: return method.type === 'bank_account';
-      case 3: return method.type === 'digital_wallet';
-      default: return true;
+      case 0:
+        return true; // All
+      case 1:
+        return method.type === 'credit_card' || method.type === 'debit_card';
+      case 2:
+        return method.type === 'bank_account';
+      case 3:
+        return method.type === 'digital_wallet';
+      default:
+        return true;
     }
   });
 
@@ -448,9 +453,15 @@ const PaymentMethods: React.FC = () => {
 
         <Tabs value={activeTab} onChange={handleTabChange} sx={{ mb: 3 }}>
           <Tab label={`All (${paymentMethods.length})`} />
-          <Tab label={`Cards (${paymentMethods.filter(m => m.type === 'credit_card' || m.type === 'debit_card').length})`} />
-          <Tab label={`Bank Accounts (${paymentMethods.filter(m => m.type === 'bank_account').length})`} />
-          <Tab label={`Digital Wallets (${paymentMethods.filter(m => m.type === 'digital_wallet').length})`} />
+          <Tab
+            label={`Cards (${paymentMethods.filter(m => m.type === 'credit_card' || m.type === 'debit_card').length})`}
+          />
+          <Tab
+            label={`Bank Accounts (${paymentMethods.filter(m => m.type === 'bank_account').length})`}
+          />
+          <Tab
+            label={`Digital Wallets (${paymentMethods.filter(m => m.type === 'digital_wallet').length})`}
+          />
         </Tabs>
 
         {loading ? (
@@ -459,18 +470,18 @@ const PaymentMethods: React.FC = () => {
           </Box>
         ) : (
           <Grid container spacing={3}>
-            {filteredMethods.map((method) => (
+            {filteredMethods.map(method => (
               <Grid item xs={12} md={6} lg={4} key={method.id}>
-                <Card 
-                  sx={{ 
+                <Card
+                  sx={{
                     height: '100%',
                     position: 'relative',
                     border: method.isDefault ? '2px solid #2196F3' : '1px solid #e0e0e0',
                     '&:hover': {
                       boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
                       transform: 'translateY(-2px)',
-                      transition: 'all 0.3s ease'
-                    }
+                      transition: 'all 0.3s ease',
+                    },
                   }}
                 >
                   {method.isDefault && (
@@ -485,13 +496,13 @@ const PaymentMethods: React.FC = () => {
                         py: 0.5,
                         borderRadius: 1,
                         fontSize: '0.75rem',
-                        fontWeight: 600
+                        fontWeight: 600,
                       }}
                     >
                       DEFAULT
                     </Box>
                   )}
-                  
+
                   <CardContent>
                     <Box display="flex" alignItems="center" mb={2}>
                       {getPaymentMethodIcon(method.type, method.brand)}
@@ -552,7 +563,7 @@ const PaymentMethods: React.FC = () => {
                             </IconButton>
                           </Tooltip>
                         )}
-                        
+
                         {!method.isVerified && (
                           <Button
                             size="small"
@@ -578,7 +589,7 @@ const PaymentMethods: React.FC = () => {
                             <EditIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
-                        
+
                         <Tooltip title="Delete">
                           <IconButton
                             size="small"
@@ -620,8 +631,8 @@ const PaymentMethods: React.FC = () => {
       </Box>
 
       {/* Add Payment Method Dialog */}
-      <Dialog 
-        open={addMethodDialog} 
+      <Dialog
+        open={addMethodDialog}
         onClose={() => setAddMethodDialog(false)}
         maxWidth="md"
         fullWidth
@@ -639,7 +650,7 @@ const PaymentMethods: React.FC = () => {
               <Select
                 value={formData.type}
                 label="Payment Method Type"
-                onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
+                onChange={e => setFormData({ ...formData, type: e.target.value as any })}
               >
                 <MenuItem value="credit_card">Credit Card</MenuItem>
                 <MenuItem value="debit_card">Debit Card</MenuItem>
@@ -659,12 +670,12 @@ const PaymentMethods: React.FC = () => {
                   inputProps={{ maxLength: 19 }}
                   sx={{ mb: 2 }}
                 />
-                
+
                 <TextField
                   fullWidth
                   label="Cardholder Name"
                   value={formData.cardholderName}
-                  onChange={(e) => setFormData({ ...formData, cardholderName: e.target.value })}
+                  onChange={e => setFormData({ ...formData, cardholderName: e.target.value })}
                   sx={{ mb: 2 }}
                 />
 
@@ -674,7 +685,7 @@ const PaymentMethods: React.FC = () => {
                     <Select
                       value={formData.expiryMonth}
                       label="Month"
-                      onChange={(e) => setFormData({ ...formData, expiryMonth: e.target.value })}
+                      onChange={e => setFormData({ ...formData, expiryMonth: e.target.value })}
                     >
                       {Array.from({ length: 12 }, (_, i) => (
                         <MenuItem key={i + 1} value={String(i + 1).padStart(2, '0')}>
@@ -689,7 +700,7 @@ const PaymentMethods: React.FC = () => {
                     <Select
                       value={formData.expiryYear}
                       label="Year"
-                      onChange={(e) => setFormData({ ...formData, expiryYear: e.target.value })}
+                      onChange={e => setFormData({ ...formData, expiryYear: e.target.value })}
                     >
                       {Array.from({ length: 10 }, (_, i) => {
                         const year = new Date().getFullYear() + i;
@@ -705,7 +716,7 @@ const PaymentMethods: React.FC = () => {
                   <TextField
                     label="CVV"
                     value={formData.cvv}
-                    onChange={(e) => setFormData({ ...formData, cvv: e.target.value })}
+                    onChange={e => setFormData({ ...formData, cvv: e.target.value })}
                     inputProps={{ maxLength: 4 }}
                     sx={{ width: 100 }}
                   />
@@ -721,10 +732,12 @@ const PaymentMethods: React.FC = () => {
               fullWidth
               label="Street Address"
               value={formData.billingAddress.street}
-              onChange={(e) => setFormData({ 
-                ...formData, 
-                billingAddress: { ...formData.billingAddress, street: e.target.value }
-              })}
+              onChange={e =>
+                setFormData({
+                  ...formData,
+                  billingAddress: { ...formData.billingAddress, street: e.target.value },
+                })
+              }
               sx={{ mb: 2 }}
             />
 
@@ -732,20 +745,24 @@ const PaymentMethods: React.FC = () => {
               <TextField
                 label="City"
                 value={formData.billingAddress.city}
-                onChange={(e) => setFormData({ 
-                  ...formData, 
-                  billingAddress: { ...formData.billingAddress, city: e.target.value }
-                })}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    billingAddress: { ...formData.billingAddress, city: e.target.value },
+                  })
+                }
                 sx={{ flex: 1 }}
               />
-              
+
               <TextField
                 label="State/Province"
                 value={formData.billingAddress.state}
-                onChange={(e) => setFormData({ 
-                  ...formData, 
-                  billingAddress: { ...formData.billingAddress, state: e.target.value }
-                })}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    billingAddress: { ...formData.billingAddress, state: e.target.value },
+                  })
+                }
                 sx={{ flex: 1 }}
               />
             </Box>
@@ -754,22 +771,26 @@ const PaymentMethods: React.FC = () => {
               <TextField
                 label="ZIP/Postal Code"
                 value={formData.billingAddress.zipCode}
-                onChange={(e) => setFormData({ 
-                  ...formData, 
-                  billingAddress: { ...formData.billingAddress, zipCode: e.target.value }
-                })}
+                onChange={e =>
+                  setFormData({
+                    ...formData,
+                    billingAddress: { ...formData.billingAddress, zipCode: e.target.value },
+                  })
+                }
                 sx={{ flex: 1 }}
               />
-              
+
               <FormControl sx={{ flex: 1 }}>
                 <InputLabel>Country</InputLabel>
                 <Select
                   value={formData.billingAddress.country}
                   label="Country"
-                  onChange={(e) => setFormData({ 
-                    ...formData, 
-                    billingAddress: { ...formData.billingAddress, country: e.target.value }
-                  })}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      billingAddress: { ...formData.billingAddress, country: e.target.value },
+                    })
+                  }
                 >
                   <MenuItem value="SA">Saudi Arabia</MenuItem>
                   <MenuItem value="AE">United Arab Emirates</MenuItem>
@@ -783,28 +804,23 @@ const PaymentMethods: React.FC = () => {
             <Alert severity="info" sx={{ mt: 3 }}>
               <Box display="flex" alignItems="center" gap={1}>
                 <LockIcon fontSize="small" />
-                Your payment information is encrypted and stored securely. We never store your full card number or CVV.
+                Your payment information is encrypted and stored securely. We never store your full
+                card number or CVV.
               </Box>
             </Alert>
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setAddMethodDialog(false)}>
-            Cancel
-          </Button>
-          <Button 
-            variant="contained" 
-            onClick={handleAddPaymentMethod}
-            disabled={loading}
-          >
+          <Button onClick={() => setAddMethodDialog(false)}>Cancel</Button>
+          <Button variant="contained" onClick={handleAddPaymentMethod} disabled={loading}>
             {loading ? <CircularProgress size={20} /> : 'Add Payment Method'}
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Verification Dialog */}
-      <Dialog 
-        open={verificationDialog} 
+      <Dialog
+        open={verificationDialog}
         onClose={() => setVerificationDialog(false)}
         maxWidth="sm"
         fullWidth
@@ -839,7 +855,7 @@ const PaymentMethods: React.FC = () => {
                   </Typography>
                 </Box>
               )}
-              
+
               <Alert severity="info" sx={{ mt: 2 }}>
                 {verificationStatus.instructions}
               </Alert>
@@ -847,9 +863,7 @@ const PaymentMethods: React.FC = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setVerificationDialog(false)}>
-            Close
-          </Button>
+          <Button onClick={() => setVerificationDialog(false)}>Close</Button>
         </DialogActions>
       </Dialog>
 
@@ -860,7 +874,11 @@ const PaymentMethods: React.FC = () => {
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

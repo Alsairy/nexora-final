@@ -1,4 +1,14 @@
-import React, { useState } from 'react';
+import {
+  Api,
+  Add,
+  Code,
+  Security,
+  Speed,
+  CheckCircle,
+  Error,
+  Warning,
+  ContentCopy,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -28,17 +38,7 @@ import {
   Tab,
   IconButton,
 } from '@mui/material';
-import {
-  Api,
-  Add,
-  Code,
-  Security,
-  Speed,
-  CheckCircle,
-  Error,
-  Warning,
-  ContentCopy,
-} from '@mui/icons-material';
+import React, { useState } from 'react';
 
 interface ApiEndpoint {
   id: string;
@@ -68,11 +68,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`api-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -178,9 +174,13 @@ const ApiGateway: React.FC = () => {
   };
 
   const totalRequests = endpoints.reduce((sum, ep) => sum + ep.requests, 0);
-  const avgLatency = Math.round(endpoints.reduce((sum, ep) => sum + ep.latency, 0) / endpoints.length);
+  const avgLatency = Math.round(
+    endpoints.reduce((sum, ep) => sum + ep.latency, 0) / endpoints.length,
+  );
   const activeEndpoints = endpoints.filter(ep => ep.status === 'active').length;
-  const avgErrorRate = (endpoints.reduce((sum, ep) => sum + ep.errorRate, 0) / endpoints.length).toFixed(1);
+  const avgErrorRate = (
+    endpoints.reduce((sum, ep) => sum + ep.errorRate, 0) / endpoints.length
+  ).toFixed(1);
 
   return (
     <Container maxWidth="xl">
@@ -202,9 +202,7 @@ const ApiGateway: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Total Requests
                   </Typography>
-                  <Typography variant="h4">
-                    {totalRequests.toLocaleString()}
-                  </Typography>
+                  <Typography variant="h4">{totalRequests.toLocaleString()}</Typography>
                 </Box>
                 <Api color="primary" sx={{ fontSize: 40 }} />
               </Box>
@@ -219,9 +217,7 @@ const ApiGateway: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Active Endpoints
                   </Typography>
-                  <Typography variant="h4">
-                    {activeEndpoints}
-                  </Typography>
+                  <Typography variant="h4">{activeEndpoints}</Typography>
                 </Box>
                 <CheckCircle color="success" sx={{ fontSize: 40 }} />
               </Box>
@@ -236,9 +232,7 @@ const ApiGateway: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Avg Latency
                   </Typography>
-                  <Typography variant="h4">
-                    {avgLatency}ms
-                  </Typography>
+                  <Typography variant="h4">{avgLatency}ms</Typography>
                 </Box>
                 <Speed color="info" sx={{ fontSize: 40 }} />
               </Box>
@@ -253,9 +247,7 @@ const ApiGateway: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Error Rate
                   </Typography>
-                  <Typography variant="h4">
-                    {avgErrorRate}%
-                  </Typography>
+                  <Typography variant="h4">{avgErrorRate}%</Typography>
                 </Box>
                 <Error color="error" sx={{ fontSize: 40 }} />
               </Box>
@@ -273,21 +265,15 @@ const ApiGateway: React.FC = () => {
             <Tab label="Analytics" />
           </Tabs>
         </Box>
-        
+
         <TabPanel value={tabValue} index={0}>
           <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-            <Typography variant="h6">
-              API Endpoints
-            </Typography>
-            <Button
-              variant="contained"
-              startIcon={<Add />}
-              onClick={() => setOpenDialog(true)}
-            >
+            <Typography variant="h6">API Endpoints</Typography>
+            <Button variant="contained" startIcon={<Add />} onClick={() => setOpenDialog(true)}>
               Add Endpoint
             </Button>
           </Box>
-          
+
           <TableContainer>
             <Table>
               <TableHead>
@@ -302,7 +288,7 @@ const ApiGateway: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {endpoints.map((endpoint) => (
+                {endpoints.map(endpoint => (
                   <TableRow key={endpoint.id}>
                     <TableCell>{endpoint.name}</TableCell>
                     <TableCell>
@@ -333,9 +319,7 @@ const ApiGateway: React.FC = () => {
                     <TableCell>{endpoint.requests.toLocaleString()}</TableCell>
                     <TableCell>{endpoint.latency}ms</TableCell>
                     <TableCell>
-                      <Typography
-                        color={endpoint.errorRate > 2 ? 'error.main' : 'text.primary'}
-                      >
+                      <Typography color={endpoint.errorRate > 2 ? 'error.main' : 'text.primary'}>
                         {endpoint.errorRate}%
                       </Typography>
                     </TableCell>
@@ -345,7 +329,7 @@ const ApiGateway: React.FC = () => {
             </Table>
           </TableContainer>
         </TabPanel>
-        
+
         <TabPanel value={tabValue} index={1}>
           <Typography variant="h6" gutterBottom>
             API Documentation
@@ -355,28 +339,32 @@ const ApiGateway: React.FC = () => {
               Authentication
             </Typography>
             <Typography variant="body2" paragraph>
-              All API requests require authentication using Bearer tokens. Include the token in the Authorization header:
+              All API requests require authentication using Bearer tokens. Include the token in the
+              Authorization header:
             </Typography>
             <Paper sx={{ p: 2, bgcolor: 'grey.100', fontFamily: 'monospace' }}>
               Authorization: Bearer YOUR_API_TOKEN
             </Paper>
           </Paper>
-          
+
           <Paper sx={{ p: 3, mb: 3 }}>
             <Typography variant="h6" gutterBottom>
               Rate Limiting
             </Typography>
             <Typography variant="body2" paragraph>
-              API requests are limited to 1000 requests per hour per API key. Rate limit headers are included in responses:
+              API requests are limited to 1000 requests per hour per API key. Rate limit headers are
+              included in responses:
             </Typography>
             <Paper sx={{ p: 2, bgcolor: 'grey.100', fontFamily: 'monospace' }}>
-              X-RateLimit-Limit: 1000<br />
-              X-RateLimit-Remaining: 999<br />
+              X-RateLimit-Limit: 1000
+              <br />
+              X-RateLimit-Remaining: 999
+              <br />
               X-RateLimit-Reset: 1640995200
             </Paper>
           </Paper>
         </TabPanel>
-        
+
         <TabPanel value={tabValue} index={2}>
           <Typography variant="h6" gutterBottom>
             Security Settings
@@ -406,21 +394,15 @@ const ApiGateway: React.FC = () => {
                   Access Control
                 </Typography>
                 <Box display="flex" flexDirection="column" gap={2}>
-                  <Button variant="outlined">
-                    IP Whitelist
-                  </Button>
-                  <Button variant="outlined">
-                    CORS Settings
-                  </Button>
-                  <Button variant="outlined">
-                    Webhook Security
-                  </Button>
+                  <Button variant="outlined">IP Whitelist</Button>
+                  <Button variant="outlined">CORS Settings</Button>
+                  <Button variant="outlined">Webhook Security</Button>
                 </Box>
               </Paper>
             </Grid>
           </Grid>
         </TabPanel>
-        
+
         <TabPanel value={tabValue} index={3}>
           <Typography variant="h6" gutterBottom>
             API Analytics
@@ -459,7 +441,7 @@ const ApiGateway: React.FC = () => {
                 <TextField
                   label="Endpoint Name"
                   value={newEndpoint.name}
-                  onChange={(e) => setNewEndpoint({ ...newEndpoint, name: e.target.value })}
+                  onChange={e => setNewEndpoint({ ...newEndpoint, name: e.target.value })}
                   fullWidth
                   placeholder="User Authentication"
                 />
@@ -470,7 +452,9 @@ const ApiGateway: React.FC = () => {
                   <Select
                     value={newEndpoint.method}
                     label="HTTP Method"
-                    onChange={(e) => setNewEndpoint({ ...newEndpoint, method: e.target.value as any })}
+                    onChange={e =>
+                      setNewEndpoint({ ...newEndpoint, method: e.target.value as any })
+                    }
                   >
                     <MenuItem value="GET">GET</MenuItem>
                     <MenuItem value="POST">POST</MenuItem>
@@ -483,7 +467,7 @@ const ApiGateway: React.FC = () => {
                 <TextField
                   label="API Path"
                   value={newEndpoint.path}
-                  onChange={(e) => setNewEndpoint({ ...newEndpoint, path: e.target.value })}
+                  onChange={e => setNewEndpoint({ ...newEndpoint, path: e.target.value })}
                   fullWidth
                   placeholder="/api/users"
                 />
@@ -492,7 +476,7 @@ const ApiGateway: React.FC = () => {
                 <TextField
                   label="Description"
                   value={newEndpoint.description}
-                  onChange={(e) => setNewEndpoint({ ...newEndpoint, description: e.target.value })}
+                  onChange={e => setNewEndpoint({ ...newEndpoint, description: e.target.value })}
                   fullWidth
                   multiline
                   rows={3}

@@ -1,4 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import {
+  Assessment as ReportsIcon,
+  Download as DownloadIcon,
+  PictureAsPdf as PdfIcon,
+  TableChart as ExcelIcon,
+  Description as CsvIcon,
+  Schedule as ScheduleIcon,
+  FilterList as FilterIcon,
+  Refresh as RefreshIcon,
+  TrendingUp as TrendingUpIcon,
+  Payment as PaymentIcon,
+  Sms as SmsIcon,
+  AccountBalance as RevenueIcon,
+  Security as ComplianceIcon,
+  Settings as CustomIcon,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -29,27 +44,12 @@ import {
   CircularProgress,
   Alert,
   Tooltip,
-  LinearProgress
+  LinearProgress,
 } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import {
-  Assessment as ReportsIcon,
-  Download as DownloadIcon,
-  PictureAsPdf as PdfIcon,
-  TableChart as ExcelIcon,
-  Description as CsvIcon,
-  Schedule as ScheduleIcon,
-  FilterList as FilterIcon,
-  Refresh as RefreshIcon,
-  TrendingUp as TrendingUpIcon,
-  Payment as PaymentIcon,
-  Sms as SmsIcon,
-  AccountBalance as RevenueIcon,
-  Security as ComplianceIcon,
-  Settings as CustomIcon
-} from '@mui/icons-material';
 import { format, subDays, startOfMonth, endOfMonth } from 'date-fns';
+import React, { useState, useEffect } from 'react';
 
 interface ReportData {
   id: string;
@@ -95,7 +95,7 @@ const Reports: React.FC = () => {
     reportType: 'transaction',
     status: [],
     paymentMethods: [],
-    currencies: ['SAR', 'USD']
+    currencies: ['SAR', 'USD'],
   });
 
   useEffect(() => {
@@ -116,8 +116,8 @@ const Reports: React.FC = () => {
           summary: {
             totalTransactions: 1250,
             totalAmount: 125000,
-            successRate: 98.5
-          }
+            successRate: 98.5,
+          },
         },
         {
           id: '2',
@@ -128,16 +128,16 @@ const Reports: React.FC = () => {
           summary: {
             totalMessages: 5000,
             totalCost: 2500,
-            deliveryRate: 97.2
-          }
+            deliveryRate: 97.2,
+          },
         },
         {
           id: '3',
           type: 'revenue',
           name: 'Revenue Analytics',
           generatedAt: new Date().toISOString(),
-          status: 'generating'
-        }
+          status: 'generating',
+        },
       ];
       setReports(mockReports);
     } catch (err) {
@@ -156,7 +156,7 @@ const Reports: React.FC = () => {
           format: 'pdf',
           status: 'completed',
           createdAt: new Date().toISOString(),
-          downloadUrl: '/api/downloads/report-1.pdf'
+          downloadUrl: '/api/downloads/report-1.pdf',
         },
         {
           id: '2',
@@ -164,8 +164,8 @@ const Reports: React.FC = () => {
           format: 'excel',
           status: 'processing',
           createdAt: new Date().toISOString(),
-          progress: 65
-        }
+          progress: 65,
+        },
       ];
       setExportJobs(mockExportJobs);
     } catch (err) {
@@ -181,20 +181,21 @@ const Reports: React.FC = () => {
         type: reportType as any,
         name: `${reportType.charAt(0).toUpperCase() + reportType.slice(1)} Report`,
         generatedAt: new Date().toISOString(),
-        status: 'generating'
+        status: 'generating',
       };
 
       setReports(prev => [newReport, ...prev]);
       setGenerateDialogOpen(false);
 
       setTimeout(() => {
-        setReports(prev => prev.map(r => 
-          r.id === newReport.id 
-            ? { ...r, status: 'completed' as const, summary: getMockSummary(reportType) }
-            : r
-        ));
+        setReports(prev =>
+          prev.map(r =>
+            r.id === newReport.id
+              ? { ...r, status: 'completed' as const, summary: getMockSummary(reportType) }
+              : r,
+          ),
+        );
       }, 3000);
-
     } catch (err) {
       setError('Failed to generate report');
     } finally {
@@ -210,34 +211,37 @@ const Reports: React.FC = () => {
         format,
         status: 'processing',
         createdAt: new Date().toISOString(),
-        progress: 0
+        progress: 0,
       };
 
       setExportJobs(prev => [newExportJob, ...prev]);
       setExportDialogOpen(false);
 
       const progressInterval = setInterval(() => {
-        setExportJobs(prev => prev.map(job => 
-          job.id === newExportJob.id && job.progress !== undefined
-            ? { ...job, progress: Math.min((job.progress || 0) + 20, 100) }
-            : job
-        ));
+        setExportJobs(prev =>
+          prev.map(job =>
+            job.id === newExportJob.id && job.progress !== undefined
+              ? { ...job, progress: Math.min((job.progress || 0) + 20, 100) }
+              : job,
+          ),
+        );
       }, 500);
 
       setTimeout(() => {
         clearInterval(progressInterval);
-        setExportJobs(prev => prev.map(job => 
-          job.id === newExportJob.id 
-            ? { 
-                ...job, 
-                status: 'completed' as const, 
-                downloadUrl: `/api/downloads/report-${reportId}.${format}`,
-                progress: 100
-              }
-            : job
-        ));
+        setExportJobs(prev =>
+          prev.map(job =>
+            job.id === newExportJob.id
+              ? {
+                  ...job,
+                  status: 'completed' as const,
+                  downloadUrl: `/api/downloads/report-${reportId}.${format}`,
+                  progress: 100,
+                }
+              : job,
+          ),
+        );
       }, 3000);
-
     } catch (err) {
       setError('Failed to export report');
     }
@@ -249,19 +253,19 @@ const Reports: React.FC = () => {
         return {
           totalTransactions: Math.floor(Math.random() * 2000) + 500,
           totalAmount: Math.floor(Math.random() * 200000) + 50000,
-          successRate: 95 + Math.random() * 5
+          successRate: 95 + Math.random() * 5,
         };
       case 'sms-usage':
         return {
           totalMessages: Math.floor(Math.random() * 10000) + 1000,
           totalCost: Math.floor(Math.random() * 5000) + 1000,
-          deliveryRate: 95 + Math.random() * 5
+          deliveryRate: 95 + Math.random() * 5,
         };
       case 'revenue':
         return {
           totalRevenue: Math.floor(Math.random() * 500000) + 100000,
           growthRate: Math.random() * 20 - 5,
-          arpu: Math.floor(Math.random() * 200) + 50
+          arpu: Math.floor(Math.random() * 200) + 50,
         };
       default:
         return {};
@@ -270,28 +274,39 @@ const Reports: React.FC = () => {
 
   const getReportIcon = (type: string) => {
     switch (type) {
-      case 'transaction': return <PaymentIcon />;
-      case 'sms-usage': return <SmsIcon />;
-      case 'revenue': return <RevenueIcon />;
-      case 'compliance': return <ComplianceIcon />;
-      case 'custom': return <CustomIcon />;
-      default: return <ReportsIcon />;
+      case 'transaction':
+        return <PaymentIcon />;
+      case 'sms-usage':
+        return <SmsIcon />;
+      case 'revenue':
+        return <RevenueIcon />;
+      case 'compliance':
+        return <ComplianceIcon />;
+      case 'custom':
+        return <CustomIcon />;
+      default:
+        return <ReportsIcon />;
     }
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'success';
-      case 'generating': case 'processing': return 'warning';
-      case 'failed': return 'error';
-      default: return 'default';
+      case 'completed':
+        return 'success';
+      case 'generating':
+      case 'processing':
+        return 'warning';
+      case 'failed':
+        return 'error';
+      default:
+        return 'default';
     }
   };
 
-  const formatCurrency = (amount: number, currency: string = 'SAR') => {
+  const formatCurrency = (amount: number, currency = 'SAR') => {
     return new Intl.NumberFormat('en-SA', {
       style: 'currency',
-      currency: currency
+      currency: currency,
     }).format(amount);
   };
 
@@ -302,61 +317,45 @@ const Reports: React.FC = () => {
       case 'transaction':
         return (
           <Box display="flex" gap={2} flexWrap="wrap">
-            <Chip 
-              label={`${report.summary.totalTransactions} Transactions`} 
-              color="primary" 
-              size="small" 
+            <Chip
+              label={`${report.summary.totalTransactions} Transactions`}
+              color="primary"
+              size="small"
             />
-            <Chip 
-              label={formatCurrency(report.summary.totalAmount)} 
-              color="success" 
-              size="small" 
-            />
-            <Chip 
-              label={`${report.summary.successRate.toFixed(1)}% Success`} 
-              color="info" 
-              size="small" 
+            <Chip label={formatCurrency(report.summary.totalAmount)} color="success" size="small" />
+            <Chip
+              label={`${report.summary.successRate.toFixed(1)}% Success`}
+              color="info"
+              size="small"
             />
           </Box>
         );
       case 'sms-usage':
         return (
           <Box display="flex" gap={2} flexWrap="wrap">
-            <Chip 
-              label={`${report.summary.totalMessages} Messages`} 
-              color="primary" 
-              size="small" 
-            />
-            <Chip 
-              label={formatCurrency(report.summary.totalCost)} 
-              color="warning" 
-              size="small" 
-            />
-            <Chip 
-              label={`${report.summary.deliveryRate.toFixed(1)}% Delivered`} 
-              color="success" 
-              size="small" 
+            <Chip label={`${report.summary.totalMessages} Messages`} color="primary" size="small" />
+            <Chip label={formatCurrency(report.summary.totalCost)} color="warning" size="small" />
+            <Chip
+              label={`${report.summary.deliveryRate.toFixed(1)}% Delivered`}
+              color="success"
+              size="small"
             />
           </Box>
         );
       case 'revenue':
         return (
           <Box display="flex" gap={2} flexWrap="wrap">
-            <Chip 
-              label={formatCurrency(report.summary.totalRevenue)} 
-              color="success" 
-              size="small" 
+            <Chip
+              label={formatCurrency(report.summary.totalRevenue)}
+              color="success"
+              size="small"
             />
-            <Chip 
-              label={`${report.summary.growthRate > 0 ? '+' : ''}${report.summary.growthRate.toFixed(1)}% Growth`} 
-              color={report.summary.growthRate > 0 ? 'success' : 'error'} 
-              size="small" 
+            <Chip
+              label={`${report.summary.growthRate > 0 ? '+' : ''}${report.summary.growthRate.toFixed(1)}% Growth`}
+              color={report.summary.growthRate > 0 ? 'success' : 'error'}
+              size="small"
             />
-            <Chip 
-              label={`${formatCurrency(report.summary.arpu)} ARPU`} 
-              color="info" 
-              size="small" 
-            />
+            <Chip label={`${formatCurrency(report.summary.arpu)} ARPU`} color="info" size="small" />
           </Box>
         );
       default:
@@ -396,7 +395,7 @@ const Reports: React.FC = () => {
       )}
 
       <Grid container spacing={3}>
-        {reports.map((report) => (
+        {reports.map(report => (
           <Grid item xs={12} md={6} lg={4} key={report.id}>
             <Card>
               <CardContent>
@@ -410,24 +409,22 @@ const Reports: React.FC = () => {
                       {format(new Date(report.generatedAt), 'MMM dd, yyyy HH:mm')}
                     </Typography>
                   </Box>
-                  <Chip 
-                    label={report.status} 
+                  <Chip
+                    label={report.status}
                     color={getStatusColor(report.status) as any}
                     size="small"
                   />
                 </Box>
 
-                {report.status === 'generating' && (
-                  <LinearProgress sx={{ mb: 2 }} />
-                )}
+                {report.status === 'generating' && <LinearProgress sx={{ mb: 2 }} />}
 
                 {renderReportSummary(report)}
 
                 {report.status === 'completed' && (
                   <Box display="flex" gap={1} mt={2}>
                     <Tooltip title="Export to PDF">
-                      <IconButton 
-                        size="small" 
+                      <IconButton
+                        size="small"
                         onClick={() => {
                           setSelectedReport(report);
                           setExportDialogOpen(true);
@@ -469,11 +466,7 @@ const Reports: React.FC = () => {
         <Typography variant="h5" component="h2">
           Export Jobs
         </Typography>
-        <Button
-          variant="outlined"
-          startIcon={<RefreshIcon />}
-          onClick={loadExportJobs}
-        >
+        <Button variant="outlined" startIcon={<RefreshIcon />} onClick={loadExportJobs}>
           Refresh
         </Button>
       </Box>
@@ -491,43 +484,39 @@ const Reports: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {exportJobs.map((job) => (
+            {exportJobs.map(job => (
               <TableRow key={job.id}>
                 <TableCell>
                   {reports.find(r => r.id === job.reportId)?.name || 'Unknown Report'}
                 </TableCell>
                 <TableCell>
-                  <Chip 
-                    label={job.format.toUpperCase()} 
+                  <Chip
+                    label={job.format.toUpperCase()}
                     size="small"
                     icon={
-                      job.format === 'pdf' ? <PdfIcon /> :
-                      job.format === 'excel' ? <ExcelIcon /> :
-                      <CsvIcon />
+                      job.format === 'pdf' ? (
+                        <PdfIcon />
+                      ) : job.format === 'excel' ? (
+                        <ExcelIcon />
+                      ) : (
+                        <CsvIcon />
+                      )
                     }
                   />
                 </TableCell>
                 <TableCell>
-                  <Chip 
-                    label={job.status} 
-                    color={getStatusColor(job.status) as any}
-                    size="small"
-                  />
+                  <Chip label={job.status} color={getStatusColor(job.status) as any} size="small" />
                 </TableCell>
-                <TableCell>
-                  {format(new Date(job.createdAt), 'MMM dd, HH:mm')}
-                </TableCell>
+                <TableCell>{format(new Date(job.createdAt), 'MMM dd, HH:mm')}</TableCell>
                 <TableCell>
                   {job.status === 'processing' && job.progress !== undefined ? (
                     <Box display="flex" alignItems="center" gap={1}>
-                      <LinearProgress 
-                        variant="determinate" 
-                        value={job.progress} 
+                      <LinearProgress
+                        variant="determinate"
+                        value={job.progress}
                         sx={{ width: 100 }}
                       />
-                      <Typography variant="body2">
-                        {job.progress}%
-                      </Typography>
+                      <Typography variant="body2">{job.progress}%</Typography>
                     </Box>
                   ) : (
                     <Typography variant="body2" color="text.secondary">
@@ -563,7 +552,7 @@ const Reports: React.FC = () => {
           </Typography>
         </Box>
       )}
-    </Box>
+    </Box>,
   ];
 
   return (
@@ -576,11 +565,7 @@ const Reports: React.FC = () => {
           </Typography>
         </Box>
 
-        <Tabs 
-          value={activeTab} 
-          onChange={(_, newValue) => setActiveTab(newValue)}
-          sx={{ mb: 3 }}
-        >
+        <Tabs value={activeTab} onChange={(_, newValue) => setActiveTab(newValue)} sx={{ mb: 3 }}>
           <Tab label="Reports" />
           <Tab label="Export Jobs" />
         </Tabs>
@@ -588,8 +573,8 @@ const Reports: React.FC = () => {
         {tabContent[activeTab]}
 
         {/* Generate Report Dialog */}
-        <Dialog 
-          open={generateDialogOpen} 
+        <Dialog
+          open={generateDialogOpen}
           onClose={() => setGenerateDialogOpen(false)}
           maxWidth="md"
           fullWidth
@@ -603,7 +588,7 @@ const Reports: React.FC = () => {
                   <Select
                     value={filters.reportType}
                     label="Report Type"
-                    onChange={(e) => setFilters(prev => ({ ...prev, reportType: e.target.value }))}
+                    onChange={e => setFilters(prev => ({ ...prev, reportType: e.target.value }))}
                   >
                     <MenuItem value="transaction">Transaction Report</MenuItem>
                     <MenuItem value="sms-usage">SMS Usage Report</MenuItem>
@@ -617,7 +602,9 @@ const Reports: React.FC = () => {
                 <DatePicker
                   label="Start Date"
                   value={filters.startDate}
-                  onChange={(date: Date | null) => date && setFilters(prev => ({ ...prev, startDate: date }))}
+                  onChange={(date: Date | null) =>
+                    date && setFilters(prev => ({ ...prev, startDate: date }))
+                  }
                   slotProps={{ textField: { fullWidth: true } }}
                 />
               </Grid>
@@ -625,18 +612,18 @@ const Reports: React.FC = () => {
                 <DatePicker
                   label="End Date"
                   value={filters.endDate}
-                  onChange={(date: Date | null) => date && setFilters(prev => ({ ...prev, endDate: date }))}
+                  onChange={(date: Date | null) =>
+                    date && setFilters(prev => ({ ...prev, endDate: date }))
+                  }
                   slotProps={{ textField: { fullWidth: true } }}
                 />
               </Grid>
             </Grid>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setGenerateDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button 
-              variant="contained" 
+            <Button onClick={() => setGenerateDialogOpen(false)}>Cancel</Button>
+            <Button
+              variant="contained"
               onClick={() => generateReport(filters.reportType)}
               disabled={loading}
             >
@@ -646,10 +633,7 @@ const Reports: React.FC = () => {
         </Dialog>
 
         {/* Export Dialog */}
-        <Dialog 
-          open={exportDialogOpen} 
-          onClose={() => setExportDialogOpen(false)}
-        >
+        <Dialog open={exportDialogOpen} onClose={() => setExportDialogOpen(false)}>
           <DialogTitle>Export Report</DialogTitle>
           <DialogContent>
             <Typography variant="body1" sx={{ mb: 3 }}>
@@ -683,9 +667,7 @@ const Reports: React.FC = () => {
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setExportDialogOpen(false)}>
-              Cancel
-            </Button>
+            <Button onClick={() => setExportDialogOpen(false)}>Cancel</Button>
           </DialogActions>
         </Dialog>
       </Box>

@@ -1,4 +1,18 @@
-import React, { ReactNode } from 'react';
+import {
+  Menu as MenuIcon,
+  Dashboard as DashboardIcon,
+  Payment as PaymentIcon,
+  Sms as SmsIcon,
+  AccountBalanceWallet as WalletIcon,
+  Api as ApiIcon,
+  Draw as SignatureIcon,
+  WhatsApp as WhatsAppIcon,
+  AccountBalance as LoanIcon,
+  People as PeopleIcon,
+  AdminPanelSettings as AdminIcon,
+  Settings as SettingsIcon,
+  Logout as LogoutIcon,
+} from '@mui/icons-material';
 import {
   AppBar,
   Box,
@@ -15,22 +29,10 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  Payment as PaymentIcon,
-  Sms as SmsIcon,
-  AccountBalanceWallet as WalletIcon,
-  Api as ApiIcon,
-  Draw as SignatureIcon,
-  WhatsApp as WhatsAppIcon,
-  AccountBalance as LoanIcon,
-  People as PeopleIcon,
-  AdminPanelSettings as AdminIcon,
-  Settings as SettingsIcon,
-  Logout as LogoutIcon,
-} from '@mui/icons-material';
+import type { ReactNode } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+
 import { useAuth } from '../contexts/AuthContext';
 import ROUTES from '../routes';
 
@@ -100,7 +102,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </Typography>
       </Toolbar>
       <List>
-        {filteredNavigationItems.map((item) => (
+        {filteredNavigationItems.map(item => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton
               selected={location.pathname === item.path}
@@ -121,7 +123,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               >
                 {item.icon}
               </ListItemIcon>
-              <ListItemText 
+              <ListItemText
                 primary={item.text}
                 sx={{
                   color: location.pathname === item.path ? theme.palette.primary.main : 'inherit',

@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -10,7 +9,9 @@ import {
   Alert,
   Link,
 } from '@mui/material';
+import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+
 import ROUTES from '../routes';
 
 const ForgotPassword: React.FC = () => {
@@ -27,14 +28,14 @@ const ForgotPassword: React.FC = () => {
 
     try {
       const { makeApiCall } = await import('../config/api');
-      
-      const response = await makeApiCall('/api/auth/forgot-password', {
+
+      const response = (await makeApiCall('/api/auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email }),
-      }) as Response;
+      })) as Response;
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -43,7 +44,9 @@ const ForgotPassword: React.FC = () => {
 
       setMessage('Password reset instructions have been sent to your email address.');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to send reset email. Please try again.');
+      setError(
+        err instanceof Error ? err.message : 'Failed to send reset email. Please try again.',
+      );
     } finally {
       setIsLoading(false);
     }
@@ -96,10 +99,10 @@ const ForgotPassword: React.FC = () => {
                 autoComplete="email"
                 autoFocus
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 disabled={isLoading}
               />
-              
+
               <Button
                 type="submit"
                 fullWidth
@@ -109,13 +112,9 @@ const ForgotPassword: React.FC = () => {
               >
                 {isLoading ? 'Sending...' : 'Send Reset Instructions'}
               </Button>
-              
+
               <Box sx={{ textAlign: 'center' }}>
-                <Link
-                  component={RouterLink}
-                  to={ROUTES.LOGIN}
-                  variant="body2"
-                >
+                <Link component={RouterLink} to={ROUTES.LOGIN} variant="body2">
                   Back to Sign In
                 </Link>
               </Box>

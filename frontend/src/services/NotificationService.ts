@@ -1,4 +1,5 @@
-import { HubConnection, HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import type { HubConnection } from '@microsoft/signalr';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
 export interface NotificationData {
   type: string;
@@ -36,7 +37,16 @@ export interface SmsDeliveryNotification {
 export interface PaymentFailureAlert {
   paymentId: string;
   transactionId: string;
-  reason: 'InsufficientFunds' | 'InvalidCard' | 'ExpiredCard' | 'CardDeclined' | 'NetworkError' | 'ProcessingError' | 'FraudDetected' | 'LimitExceeded' | 'Unknown';
+  reason:
+    | 'InsufficientFunds'
+    | 'InvalidCard'
+    | 'ExpiredCard'
+    | 'CardDeclined'
+    | 'NetworkError'
+    | 'ProcessingError'
+    | 'FraudDetected'
+    | 'LimitExceeded'
+    | 'Unknown';
   errorCode: string;
   errorMessage: string;
   amount: number;
@@ -94,19 +104,19 @@ class NotificationService {
   private setupConnection() {
     const token = localStorage.getItem('authToken');
     const apiUrl = process.env.REACT_APP_API_URL || 'https://localhost:7001';
-    
+
     this.connection = new HubConnectionBuilder()
       .withUrl(`${apiUrl}/notificationHub`, {
         accessTokenFactory: () => token || '',
-        withCredentials: true
+        withCredentials: true,
       })
       .withAutomaticReconnect({
-        nextRetryDelayInMilliseconds: (retryContext) => {
+        nextRetryDelayInMilliseconds: retryContext => {
           if (retryContext.previousRetryCount < this.maxReconnectAttempts) {
             return Math.min(1000 * Math.pow(2, retryContext.previousRetryCount), 30000);
           }
           return null;
-        }
+        },
       })
       .configureLogging(LogLevel.Information)
       .build();
@@ -117,26 +127,26 @@ class NotificationService {
   private setupEventHandlers() {
     if (!this.connection) return;
 
-    this.connection.onclose((error) => {
+    this.connection.onclose(error => {
       console.log('SignalR connection closed:', error);
       this.isConnected = false;
       this.notifyCallbacks('connectionClosed', { error });
     });
 
-    this.connection.onreconnecting((error) => {
+    this.connection.onreconnecting(error => {
       console.log('SignalR reconnecting:', error);
       this.isConnected = false;
       this.notifyCallbacks('reconnecting', { error });
     });
 
-    this.connection.onreconnected((connectionId) => {
+    this.connection.onreconnected(connectionId => {
       console.log('SignalR reconnected:', connectionId);
       this.isConnected = true;
       this.reconnectAttempts = 0;
       this.notifyCallbacks('reconnected', { connectionId });
     });
 
-    this.connection.on('Connected', (data) => {
+    this.connection.on('Connected', data => {
       console.log('Connected to notification hub:', data);
       this.isConnected = true;
       this.notifyCallbacks('connected', data);
@@ -189,11 +199,11 @@ class NotificationService {
     } catch (error) {
       console.error('Failed to connect to SignalR hub:', error);
       this.reconnectAttempts++;
-      
+
       if (this.reconnectAttempts < this.maxReconnectAttempts) {
         setTimeout(() => this.connect(), this.reconnectDelay * this.reconnectAttempts);
       }
-      
+
       throw error;
     }
   }
@@ -254,7 +264,7 @@ class NotificationService {
     }
   }
 
-  async getNotificationHistory(pageSize: number = 50, pageNumber: number = 1): Promise<void> {
+  async getNotificationHistory(pageSize = 50, pageNumber = 1): Promise<void> {
     if (!this.connection || !this.isConnected) {
       throw new Error('Not connected to notification hub');
     }

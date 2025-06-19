@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { createTheme, Theme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import type { Theme } from '@mui/material/styles';
+import { createTheme, ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
+import type { ReactNode } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 interface ThemeContextType {
   isDarkMode: boolean;
@@ -158,11 +160,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     theme,
   };
 
-  return (
-    <ThemeContext.Provider value={value}>
-      {children(theme)}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children(theme)}</ThemeContext.Provider>;
 };
 
 export const useTheme = (): ThemeContextType => {

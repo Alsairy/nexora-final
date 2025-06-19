@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -12,7 +11,9 @@ import {
   Divider,
   Grid,
 } from '@mui/material';
+import React, { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
+
 import ROUTES from '../routes';
 
 const Register: React.FC = () => {
@@ -26,7 +27,7 @@ const Register: React.FC = () => {
   });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,8 +56,8 @@ const Register: React.FC = () => {
 
     try {
       const { makeApiCall } = await import('../config/api');
-      
-      const response = await makeApiCall('/api/auth/register', {
+
+      const response = (await makeApiCall('/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +69,7 @@ const Register: React.FC = () => {
           password: formData.password,
           companyName: formData.companyName,
         }),
-      }) as Response;
+      })) as Response;
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -76,7 +77,7 @@ const Register: React.FC = () => {
       }
 
       navigate(ROUTES.LOGIN, {
-        state: { message: 'Registration successful! Please sign in.' }
+        state: { message: 'Registration successful! Please sign in.' },
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Registration failed. Please try again.');
@@ -195,7 +196,7 @@ const Register: React.FC = () => {
                   />
                 </Grid>
               </Grid>
-              
+
               <Button
                 type="submit"
                 fullWidth
@@ -205,14 +206,14 @@ const Register: React.FC = () => {
               >
                 {isLoading ? 'Creating Account...' : 'Create Account'}
               </Button>
-              
+
               <Box sx={{ textAlign: 'center' }}>
                 <Divider sx={{ my: 2 }}>
                   <Typography variant="body2" color="text.secondary">
                     or
                   </Typography>
                 </Divider>
-                
+
                 <Typography variant="body2">
                   Already have an account?{' '}
                   <Link component={RouterLink} to={ROUTES.LOGIN}>

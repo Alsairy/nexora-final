@@ -1,19 +1,16 @@
-import React, { forwardRef } from 'react';
-
+import type { CheckboxProps as MuiCheckboxProps, FormControlLabelProps } from '@mui/material';
 import {
   Checkbox as MuiCheckbox,
-  CheckboxProps as MuiCheckboxProps,
   FormControl,
   FormControlLabel,
-  FormControlLabelProps,
   FormGroup,
   FormHelperText,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import React, { forwardRef } from 'react';
 
-export interface CheckboxProps
-  extends Omit<MuiCheckboxProps, 'onChange' | 'checked'> {
+export interface CheckboxProps extends Omit<MuiCheckboxProps, 'onChange' | 'checked'> {
   label: string;
   checked?: boolean;
   onChange?: (checked: boolean) => void;
@@ -52,7 +49,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
       disabled = false,
       ...rest
     },
-    ref
+    ref,
   ) => {
     // Generate unique IDs for accessibility
     const checkboxId = id || `checkbox-${label.toLowerCase().replace(/\s+/g, '-')}`;
@@ -60,11 +57,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
     const descriptionId = description ? `${checkboxId}-description` : undefined;
 
     // Combine aria-describedby values
-    const ariaDescribedBy = [
-      helperText ? helperId : null,
-      descriptionId,
-      rest['aria-describedby'],
-    ]
+    const ariaDescribedBy = [helperText ? helperId : null, descriptionId, rest['aria-describedby']]
       .filter(Boolean)
       .join(' ');
 
@@ -85,11 +78,13 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
                 checked={checked}
                 onChange={handleChange}
                 inputRef={ref}
-                inputProps={{
-                  'aria-describedby': ariaDescribedBy || undefined,
-                  'aria-invalid': error,
-                  'aria-required': required,
-                } as React.InputHTMLAttributes<HTMLInputElement>}
+                inputProps={
+                  {
+                    'aria-describedby': ariaDescribedBy || undefined,
+                    'aria-invalid': error,
+                    'aria-required': required,
+                  } as React.InputHTMLAttributes<HTMLInputElement>
+                }
                 disabled={disabled}
                 {...rest}
               />
@@ -102,11 +97,7 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
               >
                 {label}
                 {required && (
-                  <Typography
-                    component="span"
-                    color="error"
-                    aria-hidden="true"
-                  >
+                  <Typography component="span" color="error" aria-hidden="true">
                     {' *'}
                   </Typography>
                 )}
@@ -115,11 +106,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             labelPlacement={labelPlacement}
           />
         </FormGroup>
-        
-        {helperText && (
-          <FormHelperText id={helperId}>{helperText}</FormHelperText>
-        )}
-        
+
+        {helperText && <FormHelperText id={helperId}>{helperText}</FormHelperText>}
+
         {description && (
           <InputDescription id={descriptionId} variant="caption">
             {description}
@@ -127,10 +116,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         )}
       </StyledFormControl>
     );
-  }
+  },
 );
 
 Checkbox.displayName = 'Checkbox';
 
 export default Checkbox;
-

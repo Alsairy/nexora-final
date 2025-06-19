@@ -1,4 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import {
+  Notifications as NotificationsIcon,
+  Payment as PaymentIcon,
+  Sms as SmsIcon,
+  Warning as WarningIcon,
+  TrendingUp as TrendingUpIcon,
+  CheckCircle as CheckCircleIcon,
+  Error as ErrorIcon,
+  Info as InfoIcon,
+  Close as CloseIcon,
+} from '@mui/icons-material';
 import {
   Badge,
   IconButton,
@@ -15,20 +25,12 @@ import {
   Divider,
   Alert,
   CircularProgress,
-  Tooltip
+  Tooltip,
 } from '@mui/material';
-import {
-  Notifications as NotificationsIcon,
-  Payment as PaymentIcon,
-  Sms as SmsIcon,
-  Warning as WarningIcon,
-  TrendingUp as TrendingUpIcon,
-  CheckCircle as CheckCircleIcon,
-  Error as ErrorIcon,
-  Info as InfoIcon,
-  Close as CloseIcon
-} from '@mui/icons-material';
-import { notificationService, NotificationData, NotificationHistory } from '../services/NotificationService';
+import React, { useState, useEffect } from 'react';
+
+import type { NotificationData, NotificationHistory } from '../services/NotificationService';
+import { notificationService } from '../services/NotificationService';
 
 interface NotificationCenterProps {
   onNotificationClick?: (notification: NotificationData) => void;
@@ -183,7 +185,11 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ onNotificationC
       case 'paymentStatus':
         return data.status === 'Completed' ? 'success' : 'info';
       case 'smsDelivery':
-        return data.status === 'Delivered' ? 'success' : data.status === 'Failed' ? 'error' : 'info';
+        return data.status === 'Delivered'
+          ? 'success'
+          : data.status === 'Failed'
+            ? 'error'
+            : 'info';
       default:
         return 'info';
     }
@@ -191,7 +197,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ onNotificationC
 
   const formatNotificationMessage = (notification: NotificationData) => {
     const { type, data } = notification;
-    
+
     switch (type) {
       case 'paymentStatus':
         return `Payment ${data.paymentId} is ${data.status.toLowerCase()}`;
@@ -229,7 +235,7 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ onNotificationC
           onClick={handleClick}
           sx={{
             position: 'relative',
-            opacity: isConnected ? 1 : 0.6
+            opacity: isConnected ? 1 : 0.6,
           }}
         >
           <Badge badgeContent={unreadCount} color="error" max={99}>
@@ -260,40 +266,24 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ onNotificationC
             maxHeight: 600,
             overflow: 'hidden',
             display: 'flex',
-            flexDirection: 'column'
-          }
+            flexDirection: 'column',
+          },
         }}
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
           <Box display="flex" justifyContent="space-between" alignItems="center">
-            <Typography variant="h6">
-              Notifications
-            </Typography>
+            <Typography variant="h6">Notifications</Typography>
             <Box display="flex" alignItems="center" gap={1}>
               {connectionError && (
-                <Chip
-                  label="Offline"
-                  color="error"
-                  size="small"
-                  icon={<ErrorIcon />}
-                />
+                <Chip label="Offline" color="error" size="small" icon={<ErrorIcon />} />
               )}
               {isConnected && (
-                <Chip
-                  label="Live"
-                  color="success"
-                  size="small"
-                  icon={<CheckCircleIcon />}
-                />
+                <Chip label="Live" color="success" size="small" icon={<CheckCircleIcon />} />
               )}
               {notifications.length > 0 && (
-                <Button
-                  size="small"
-                  onClick={clearAllNotifications}
-                  startIcon={<CloseIcon />}
-                >
+                <Button size="small" onClick={clearAllNotifications} startIcon={<CloseIcon />}>
                   Clear All
                 </Button>
               )}
@@ -324,20 +314,22 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ onNotificationC
                     onClick={() => handleNotificationClick(notification, index)}
                     sx={{
                       '&:hover': {
-                        backgroundColor: 'action.hover'
-                      }
+                        backgroundColor: 'action.hover',
+                      },
                     }}
                   >
-                    <ListItemIcon>
-                      {getNotificationIcon(notification.type)}
-                    </ListItemIcon>
+                    <ListItemIcon>{getNotificationIcon(notification.type)}</ListItemIcon>
                     <ListItemText
                       primary={
                         <Box display="flex" justifyContent="space-between" alignItems="flex-start">
                           <Typography variant="body2" sx={{ fontWeight: 500 }}>
                             {formatNotificationMessage(notification)}
                           </Typography>
-                          <Typography variant="caption" color="text.secondary" sx={{ ml: 1, flexShrink: 0 }}>
+                          <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ ml: 1, flexShrink: 0 }}
+                          >
                             {formatTimestamp(notification.timestamp)}
                           </Typography>
                         </Box>
@@ -347,7 +339,9 @@ const NotificationCenter: React.FC<NotificationCenterProps> = ({ onNotificationC
                           <Chip
                             label={notification.type.replace(/([A-Z])/g, ' $1').trim()}
                             size="small"
-                            color={getNotificationSeverity(notification.type, notification.data) as any}
+                            color={
+                              getNotificationSeverity(notification.type, notification.data) as any
+                            }
                             variant="outlined"
                           />
                         </Box>

@@ -1,4 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import {
+  Sms,
+  Send,
+  CheckCircle,
+  Error,
+  Pending,
+  TrendingUp,
+  Campaign,
+  Analytics,
+  Security,
+  ContactPhone,
+  Schedule,
+  WhatsApp,
+  Email,
+  Phone,
+  ExpandMore,
+  Add,
+  Edit,
+  Delete,
+  Visibility,
+  Download,
+  Upload,
+  FilterList,
+  Search,
+  Refresh,
+  Settings,
+  Warning,
+  Info,
+  PlayArrow,
+  Pause,
+  Stop,
+  BarChart,
+  PieChart,
+  Timeline,
+  Group,
+  PersonAdd,
+  Segment,
+  Approval,
+  Notifications,
+  Shield,
+  Language,
+  AccessTime,
+  LocationOn,
+  Business,
+  VerifiedUser,
+  DragIndicator,
+  ExpandLess,
+  ExpandMore as ExpandMoreIcon,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -56,55 +104,7 @@ import {
   ListItemButton,
   Collapse,
 } from '@mui/material';
-import {
-  Sms,
-  Send,
-  CheckCircle,
-  Error,
-  Pending,
-  TrendingUp,
-  Campaign,
-  Analytics,
-  Security,
-  ContactPhone,
-  Schedule,
-  WhatsApp,
-  Email,
-  Phone,
-  ExpandMore,
-  Add,
-  Edit,
-  Delete,
-  Visibility,
-  Download,
-  Upload,
-  FilterList,
-  Search,
-  Refresh,
-  Settings,
-  Warning,
-  Info,
-  PlayArrow,
-  Pause,
-  Stop,
-  BarChart,
-  PieChart,
-  Timeline,
-  Group,
-  PersonAdd,
-  Segment,
-  Approval,
-  Notifications,
-  Shield,
-  Language,
-  AccessTime,
-  LocationOn,
-  Business,
-  VerifiedUser,
-  DragIndicator,
-  ExpandLess,
-  ExpandMore as ExpandMoreIcon,
-} from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
 
 interface SmsMessage {
   id: string;
@@ -195,12 +195,14 @@ interface AnalyticsData {
 const SmsGateway: React.FC = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [openDialog, setOpenDialog] = useState(false);
-  const [dialogType, setDialogType] = useState<'message' | 'campaign' | 'template' | 'contact'>('message');
+  const [dialogType, setDialogType] = useState<'message' | 'campaign' | 'template' | 'contact'>(
+    'message',
+  );
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState<Campaign | null>(null);
   const [complianceAlerts, setComplianceAlerts] = useState<ComplianceAlert[]>([]);
   const [realTimeData, setRealTimeData] = useState<AnalyticsData | null>(null);
-  
+
   const [newMessage, setNewMessage] = useState({
     recipient: '',
     message: '',
@@ -270,7 +272,7 @@ const SmsGateway: React.FC = () => {
       status: 'delivered',
       timestamp: '2024-06-18 09:15:00',
       deliveredAt: '2024-06-18 09:15:08',
-      cost: 0.30,
+      cost: 0.3,
       senderId: 'NEXORA',
       messageType: 'transactional',
       provider: 'Mobily',
@@ -296,7 +298,7 @@ const SmsGateway: React.FC = () => {
       message: 'Your loan application has been approved. Amount: 50,000 SAR',
       status: 'failed',
       timestamp: '2024-06-18 08:00:00',
-      cost: 0.00,
+      cost: 0.0,
       senderId: 'NEXORA',
       messageType: 'notification',
       provider: 'STC',
@@ -319,8 +321,8 @@ const SmsGateway: React.FC = () => {
       sentMessages: 12350,
       deliveredMessages: 11890,
       failedMessages: 460,
-      estimatedCost: 1850.50,
-      actualCost: 1642.30,
+      estimatedCost: 1850.5,
+      actualCost: 1642.3,
     },
     {
       id: 'CMP-002',
@@ -335,8 +337,8 @@ const SmsGateway: React.FC = () => {
       sentMessages: 0,
       deliveredMessages: 0,
       failedMessages: 0,
-      estimatedCost: 625.00,
-      actualCost: 0.00,
+      estimatedCost: 625.0,
+      actualCost: 0.0,
     },
     {
       id: 'CMP-003',
@@ -350,8 +352,8 @@ const SmsGateway: React.FC = () => {
       sentMessages: 8750,
       deliveredMessages: 8234,
       failedMessages: 516,
-      estimatedCost: 1312.50,
-      actualCost: 1235.10,
+      estimatedCost: 1312.5,
+      actualCost: 1235.1,
     },
   ];
 
@@ -371,7 +373,8 @@ const SmsGateway: React.FC = () => {
     {
       id: 'TPL-002',
       name: 'Payment Confirmation',
-      content: 'Payment confirmed: {{amount}} SAR received for transaction #{{transactionId}}. Thank you!',
+      content:
+        'Payment confirmed: {{amount}} SAR received for transaction #{{transactionId}}. Thank you!',
       type: 'transactional',
       status: 'approved',
       language: 'en',
@@ -393,7 +396,8 @@ const SmsGateway: React.FC = () => {
     {
       id: 'TPL-004',
       name: 'Loan Approval',
-      content: 'Congratulations! Your loan of {{amount}} SAR has been approved. Reference: {{refNumber}}',
+      content:
+        'Congratulations! Your loan of {{amount}} SAR has been approved. Reference: {{refNumber}}',
       type: 'notification',
       status: 'rejected',
       language: 'en',
@@ -480,7 +484,7 @@ const SmsGateway: React.FC = () => {
       deliveredMessages: 42150,
       failedMessages: 3080,
       deliveryRate: 93.2,
-      totalCost: 6784.50,
+      totalCost: 6784.5,
       averageCost: 0.15,
       topProviders: [
         { name: 'STC', count: 18500, rate: 94.5 },
@@ -540,9 +544,9 @@ const SmsGateway: React.FC = () => {
   const handleSendMessage = () => {
     console.log('Sending message:', newMessage);
     setOpenDialog(false);
-    setNewMessage({ 
-      recipient: '', 
-      message: '', 
+    setNewMessage({
+      recipient: '',
+      message: '',
       type: 'single',
       senderId: '',
       messageType: 'transactional',
@@ -598,9 +602,11 @@ const SmsGateway: React.FC = () => {
   };
 
   const totalMessages = realTimeData?.totalMessages || messages.length;
-  const deliveredMessages = realTimeData?.deliveredMessages || messages.filter(msg => msg.status === 'delivered').length;
+  const deliveredMessages =
+    realTimeData?.deliveredMessages || messages.filter(msg => msg.status === 'delivered').length;
   const totalCost = realTimeData?.totalCost || messages.reduce((sum, msg) => sum + msg.cost, 0);
-  const deliveryRate = realTimeData?.deliveryRate || Math.round((deliveredMessages / totalMessages) * 100);
+  const deliveryRate =
+    realTimeData?.deliveryRate || Math.round((deliveredMessages / totalMessages) * 100);
   const complianceScore = realTimeData?.complianceScore || 96.8;
 
   const unreadAlerts = complianceAlerts.filter(alert => !alert.resolved).length;
@@ -619,31 +625,40 @@ const SmsGateway: React.FC = () => {
               Create Campaign
             </Button>
           </Box>
-          
+
           <Grid container spacing={2}>
-            {campaigns.map((campaign) => (
+            {campaigns.map(campaign => (
               <Grid item xs={12} md={6} lg={4} key={campaign.id}>
                 <Card>
                   <CardContent>
-                    <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="flex-start"
+                      mb={2}
+                    >
                       <Typography variant="h6" component="div">
                         {campaign.name}
                       </Typography>
                       <Chip
                         label={campaign.status.toUpperCase()}
                         color={
-                          campaign.status === 'running' ? 'success' :
-                          campaign.status === 'scheduled' ? 'info' :
-                          campaign.status === 'completed' ? 'default' : 'warning'
+                          campaign.status === 'running'
+                            ? 'success'
+                            : campaign.status === 'scheduled'
+                              ? 'info'
+                              : campaign.status === 'completed'
+                                ? 'default'
+                                : 'warning'
                         }
                         size="small"
                       />
                     </Box>
-                    
+
                     <Typography variant="body2" color="text.secondary" mb={2}>
                       {campaign.description}
                     </Typography>
-                    
+
                     <Box mb={2}>
                       <Typography variant="body2" gutterBottom>
                         Channels: {campaign.channels.join(', ')}
@@ -655,7 +670,7 @@ const SmsGateway: React.FC = () => {
                         Recipients: {campaign.totalRecipients.toLocaleString()}
                       </Typography>
                     </Box>
-                    
+
                     <Box mb={2}>
                       <Box display="flex" justifyContent="space-between" mb={1}>
                         <Typography variant="body2">Progress</Typography>
@@ -669,7 +684,7 @@ const SmsGateway: React.FC = () => {
                         sx={{ height: 6, borderRadius: 3 }}
                       />
                     </Box>
-                    
+
                     <Box display="flex" justifyContent="space-between" alignItems="center">
                       <Typography variant="body2" color="text.secondary">
                         Cost: {campaign.actualCost.toFixed(2)} SAR
@@ -712,7 +727,7 @@ const SmsGateway: React.FC = () => {
               Create Template
             </Button>
           </Box>
-          
+
           <TableContainer>
             <Table>
               <TableHead>
@@ -726,7 +741,7 @@ const SmsGateway: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {templates.map((template) => (
+                {templates.map(template => (
                   <TableRow key={template.id}>
                     <TableCell>
                       <Typography variant="body2" fontWeight="medium">
@@ -748,9 +763,13 @@ const SmsGateway: React.FC = () => {
                       <Chip
                         label={template.status.replace('_', ' ').toUpperCase()}
                         color={
-                          template.status === 'approved' ? 'success' :
-                          template.status === 'pending_approval' ? 'warning' :
-                          template.status === 'rejected' ? 'error' : 'default'
+                          template.status === 'approved'
+                            ? 'success'
+                            : template.status === 'pending_approval'
+                              ? 'warning'
+                              : template.status === 'rejected'
+                                ? 'error'
+                                : 'default'
                         }
                         size="small"
                       />
@@ -798,7 +817,7 @@ const SmsGateway: React.FC = () => {
               </Button>
             </Box>
           </Box>
-          
+
           <TableContainer>
             <Table>
               <TableHead>
@@ -812,7 +831,7 @@ const SmsGateway: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {contacts.map((contact) => (
+                {contacts.map(contact => (
                   <TableRow key={contact.id}>
                     <TableCell>
                       <Box display="flex" alignItems="center">
@@ -832,7 +851,7 @@ const SmsGateway: React.FC = () => {
                     <TableCell>{contact.phoneNumber}</TableCell>
                     <TableCell>
                       <Box display="flex" gap={0.5} flexWrap="wrap">
-                        {contact.segments.map((segment) => (
+                        {contact.segments.map(segment => (
                           <Chip key={segment} label={segment} size="small" />
                         ))}
                       </Box>
@@ -842,19 +861,16 @@ const SmsGateway: React.FC = () => {
                         {contact.isOptedOut && (
                           <Chip label="Opted Out" color="error" size="small" />
                         )}
-                        {contact.isDnd && (
-                          <Chip label="DND" color="warning" size="small" />
-                        )}
+                        {contact.isDnd && <Chip label="DND" color="warning" size="small" />}
                         {!contact.isOptedOut && !contact.isDnd && (
                           <Chip label="Active" color="success" size="small" />
                         )}
                       </Box>
                     </TableCell>
                     <TableCell>
-                      {contact.lastMessageAt ? 
-                        new Date(contact.lastMessageAt).toLocaleDateString() : 
-                        'Never'
-                      }
+                      {contact.lastMessageAt
+                        ? new Date(contact.lastMessageAt).toLocaleDateString()
+                        : 'Never'}
                     </TableCell>
                     <TableCell>
                       <IconButton size="small">
@@ -890,7 +906,7 @@ const SmsGateway: React.FC = () => {
             </Typography>
           </Box>
         </Paper>
-        
+
         <Paper sx={{ p: 3 }}>
           <Typography variant="h6" gutterBottom>
             Provider Performance Comparison
@@ -907,7 +923,7 @@ const SmsGateway: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {realTimeData?.topProviders.map((provider) => (
+                {realTimeData?.topProviders.map(provider => (
                   <TableRow key={provider.name}>
                     <TableCell>{provider.name}</TableCell>
                     <TableCell>{provider.count.toLocaleString()}</TableCell>
@@ -920,7 +936,13 @@ const SmsGateway: React.FC = () => {
                           variant="determinate"
                           value={provider.rate}
                           sx={{ width: 60, height: 4 }}
-                          color={provider.rate > 95 ? 'success' : provider.rate > 90 ? 'warning' : 'error'}
+                          color={
+                            provider.rate > 95
+                              ? 'success'
+                              : provider.rate > 90
+                                ? 'warning'
+                                : 'error'
+                          }
                         />
                       </Box>
                     </TableCell>
@@ -933,7 +955,7 @@ const SmsGateway: React.FC = () => {
           </TableContainer>
         </Paper>
       </Grid>
-      
+
       <Grid item xs={12} md={4}>
         <Paper sx={{ p: 3, mb: 3 }}>
           <Typography variant="h6" gutterBottom>
@@ -958,7 +980,7 @@ const SmsGateway: React.FC = () => {
             ))}
           </Box>
         </Paper>
-        
+
         <Paper sx={{ p: 3 }}>
           <Typography variant="h6" gutterBottom>
             Real-time Metrics
@@ -999,25 +1021,30 @@ const SmsGateway: React.FC = () => {
       <Grid item xs={12}>
         <Alert severity="info" sx={{ mb: 3 }}>
           <Typography variant="body2">
-            KSA Compliance Dashboard - Monitor your messaging compliance with Saudi Arabian regulations
+            KSA Compliance Dashboard - Monitor your messaging compliance with Saudi Arabian
+            regulations
           </Typography>
         </Alert>
       </Grid>
-      
+
       <Grid item xs={12} md={8}>
         <Paper sx={{ p: 3 }}>
           <Typography variant="h6" gutterBottom>
             Compliance Alerts
           </Typography>
           <List>
-            {complianceAlerts.map((alert) => (
+            {complianceAlerts.map(alert => (
               <ListItem key={alert.id} divider>
                 <ListItemIcon>
-                  <Warning 
+                  <Warning
                     color={
-                      alert.severity === 'critical' ? 'error' :
-                      alert.severity === 'high' ? 'warning' :
-                      alert.severity === 'medium' ? 'info' : 'inherit'
+                      alert.severity === 'critical'
+                        ? 'error'
+                        : alert.severity === 'high'
+                          ? 'warning'
+                          : alert.severity === 'medium'
+                            ? 'info'
+                            : 'inherit'
                     }
                   />
                 </ListItemIcon>
@@ -1032,9 +1059,13 @@ const SmsGateway: React.FC = () => {
                         label={alert.severity.toUpperCase()}
                         size="small"
                         color={
-                          alert.severity === 'critical' ? 'error' :
-                          alert.severity === 'high' ? 'warning' :
-                          alert.severity === 'medium' ? 'info' : 'default'
+                          alert.severity === 'critical'
+                            ? 'error'
+                            : alert.severity === 'high'
+                              ? 'warning'
+                              : alert.severity === 'medium'
+                                ? 'info'
+                                : 'default'
                         }
                         sx={{ mt: 1 }}
                       />
@@ -1053,7 +1084,7 @@ const SmsGateway: React.FC = () => {
           </List>
         </Paper>
       </Grid>
-      
+
       <Grid item xs={12} md={4}>
         <Paper sx={{ p: 3, mb: 3 }}>
           <Typography variant="h6" gutterBottom>
@@ -1074,7 +1105,7 @@ const SmsGateway: React.FC = () => {
             color="success"
           />
         </Paper>
-        
+
         <Paper sx={{ p: 3 }}>
           <Typography variant="h6" gutterBottom>
             Compliance Checklist
@@ -1133,8 +1164,8 @@ const SmsGateway: React.FC = () => {
     <>
       {/* Real-time Alerts */}
       {unreadAlerts > 0 && (
-        <Alert 
-          severity="warning" 
+        <Alert
+          severity="warning"
           sx={{ mb: 3 }}
           action={
             <Button color="inherit" size="small" onClick={() => setActiveTab(5)}>
@@ -1156,9 +1187,7 @@ const SmsGateway: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Total Messages
                   </Typography>
-                  <Typography variant="h4">
-                    {totalMessages.toLocaleString()}
-                  </Typography>
+                  <Typography variant="h4">{totalMessages.toLocaleString()}</Typography>
                   <Typography variant="body2" color="success.main">
                     +12.5% from last month
                   </Typography>
@@ -1176,12 +1205,10 @@ const SmsGateway: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Delivery Rate
                   </Typography>
-                  <Typography variant="h4">
-                    {deliveryRate}%
-                  </Typography>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={deliveryRate} 
+                  <Typography variant="h4">{deliveryRate}%</Typography>
+                  <LinearProgress
+                    variant="determinate"
+                    value={deliveryRate}
                     sx={{ mt: 1, height: 6, borderRadius: 3 }}
                     color={deliveryRate > 95 ? 'success' : deliveryRate > 90 ? 'warning' : 'error'}
                   />
@@ -1199,9 +1226,7 @@ const SmsGateway: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Total Cost
                   </Typography>
-                  <Typography variant="h4">
-                    {totalCost.toLocaleString()} SAR
-                  </Typography>
+                  <Typography variant="h4">{totalCost.toLocaleString()} SAR</Typography>
                   <Typography variant="body2" color="text.secondary">
                     Avg: {(totalCost / totalMessages).toFixed(3)} SAR/msg
                   </Typography>
@@ -1219,17 +1244,26 @@ const SmsGateway: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Compliance Score
                   </Typography>
-                  <Typography variant="h4" color={complianceScore > 95 ? 'success.main' : 'warning.main'}>
+                  <Typography
+                    variant="h4"
+                    color={complianceScore > 95 ? 'success.main' : 'warning.main'}
+                  >
                     {complianceScore}%
                   </Typography>
                   <Box display="flex" alignItems="center" mt={1}>
-                    <Shield color={complianceScore > 95 ? 'success' : 'warning'} sx={{ mr: 0.5, fontSize: 16 }} />
+                    <Shield
+                      color={complianceScore > 95 ? 'success' : 'warning'}
+                      sx={{ mr: 0.5, fontSize: 16 }}
+                    />
                     <Typography variant="body2" color="text.secondary">
                       KSA Compliant
                     </Typography>
                   </Box>
                 </Box>
-                <Security color={complianceScore > 95 ? 'success' : 'warning'} sx={{ fontSize: 40 }} />
+                <Security
+                  color={complianceScore > 95 ? 'success' : 'warning'}
+                  sx={{ fontSize: 40 }}
+                />
               </Box>
             </CardContent>
           </Card>
@@ -1241,9 +1275,7 @@ const SmsGateway: React.FC = () => {
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-              <Typography variant="h6">
-                Recent Messages
-              </Typography>
+              <Typography variant="h6">Recent Messages</Typography>
               <Box display="flex" gap={1}>
                 <Button
                   variant="outlined"
@@ -1261,7 +1293,7 @@ const SmsGateway: React.FC = () => {
                 </Button>
               </Box>
             </Box>
-            
+
             <TableContainer>
               <Table>
                 <TableHead>
@@ -1276,7 +1308,7 @@ const SmsGateway: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {messages.slice(0, 5).map((message) => (
+                  {messages.slice(0, 5).map(message => (
                     <TableRow key={message.id}>
                       <TableCell>
                         <Typography variant="body2" fontWeight="medium">
@@ -1287,17 +1319,15 @@ const SmsGateway: React.FC = () => {
                         </Typography>
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2">
-                          {message.recipient}
-                        </Typography>
+                        <Typography variant="body2">{message.recipient}</Typography>
                         <Typography variant="caption" color="text.secondary">
                           {message.senderId}
                         </Typography>
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2">
-                          {message.message.length > 40 
-                            ? `${message.message.substring(0, 40)}...` 
+                          {message.message.length > 40
+                            ? `${message.message.substring(0, 40)}...`
                             : message.message}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
@@ -1318,9 +1348,7 @@ const SmsGateway: React.FC = () => {
                         )}
                       </TableCell>
                       <TableCell>
-                        <Typography variant="body2">
-                          {message.provider}
-                        </Typography>
+                        <Typography variant="body2">{message.provider}</Typography>
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2" fontWeight="medium">
@@ -1344,50 +1372,58 @@ const SmsGateway: React.FC = () => {
             </TableContainer>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 3, mb: 3 }}>
             <Typography variant="h6" gutterBottom>
               Active Campaigns
             </Typography>
             <List>
-              {campaigns.filter(c => c.status === 'running').map((campaign) => (
-                <ListItem key={campaign.id} disablePadding>
-                  <ListItemButton onClick={() => setSelectedCampaign(campaign)}>
-                    <ListItemIcon>
-                      <Campaign color="primary" />
-                    </ListItemIcon>
-                    <ListItemText
-                      primary={campaign.name}
-                      secondary={`${campaign.sentMessages}/${campaign.totalRecipients} sent`}
-                    />
-                    <Box>
-                      <LinearProgress 
-                        variant="determinate" 
-                        value={(campaign.sentMessages / campaign.totalRecipients) * 100}
-                        sx={{ width: 60, height: 4 }}
+              {campaigns
+                .filter(c => c.status === 'running')
+                .map(campaign => (
+                  <ListItem key={campaign.id} disablePadding>
+                    <ListItemButton onClick={() => setSelectedCampaign(campaign)}>
+                      <ListItemIcon>
+                        <Campaign color="primary" />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={campaign.name}
+                        secondary={`${campaign.sentMessages}/${campaign.totalRecipients} sent`}
                       />
-                    </Box>
-                  </ListItemButton>
-                </ListItem>
-              ))}
+                      <Box>
+                        <LinearProgress
+                          variant="determinate"
+                          value={(campaign.sentMessages / campaign.totalRecipients) * 100}
+                          sx={{ width: 60, height: 4 }}
+                        />
+                      </Box>
+                    </ListItemButton>
+                  </ListItem>
+                ))}
             </List>
           </Paper>
-          
+
           <Paper sx={{ p: 3, mb: 3 }}>
             <Typography variant="h6" gutterBottom>
               Channel Distribution
             </Typography>
             <Box>
               {realTimeData?.messagesByType.map((type, index) => (
-                <Box key={type.type} display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+                <Box
+                  key={type.type}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  mb={1}
+                >
                   <Typography variant="body2">{type.type}</Typography>
                   <Box display="flex" alignItems="center">
                     <Typography variant="body2" sx={{ mr: 1 }}>
                       {type.percentage}%
                     </Typography>
-                    <LinearProgress 
-                      variant="determinate" 
+                    <LinearProgress
+                      variant="determinate"
                       value={type.percentage}
                       sx={{ width: 60, height: 4 }}
                       color={index === 0 ? 'primary' : index === 1 ? 'secondary' : 'info'}
@@ -1403,7 +1439,7 @@ const SmsGateway: React.FC = () => {
               Provider Performance
             </Typography>
             <List>
-              {realTimeData?.topProviders.map((provider) => (
+              {realTimeData?.topProviders.map(provider => (
                 <ListItem key={provider.name} disablePadding>
                   <ListItemText
                     primary={provider.name}
@@ -1459,13 +1495,13 @@ const SmsGateway: React.FC = () => {
           <Tab icon={<Schedule />} label="Templates" />
           <Tab icon={<ContactPhone />} label="Contacts" />
           <Tab icon={<BarChart />} label="Analytics" />
-          <Tab 
+          <Tab
             icon={
               <Badge badgeContent={unreadAlerts} color="error">
                 <Security />
               </Badge>
-            } 
-            label="Compliance" 
+            }
+            label="Compliance"
           />
         </Tabs>
       </Box>
@@ -1491,7 +1527,7 @@ const SmsGateway: React.FC = () => {
                     <Select
                       value={newMessage.messageType}
                       label="Message Type"
-                      onChange={(e) => setNewMessage({ ...newMessage, messageType: e.target.value })}
+                      onChange={e => setNewMessage({ ...newMessage, messageType: e.target.value })}
                     >
                       <MenuItem value="transactional">Transactional</MenuItem>
                       <MenuItem value="promotional">Promotional</MenuItem>
@@ -1506,7 +1542,7 @@ const SmsGateway: React.FC = () => {
                     <Select
                       value={newMessage.senderId}
                       label="Sender ID"
-                      onChange={(e) => setNewMessage({ ...newMessage, senderId: e.target.value })}
+                      onChange={e => setNewMessage({ ...newMessage, senderId: e.target.value })}
                     >
                       <MenuItem value="NEXORA">NEXORA</MenuItem>
                       <MenuItem value="NEXORAPAY">NEXORAPAY</MenuItem>
@@ -1518,7 +1554,7 @@ const SmsGateway: React.FC = () => {
                   <TextField
                     label="Recipient Phone Number"
                     value={newMessage.recipient}
-                    onChange={(e) => setNewMessage({ ...newMessage, recipient: e.target.value })}
+                    onChange={e => setNewMessage({ ...newMessage, recipient: e.target.value })}
                     fullWidth
                     placeholder="+966501234567"
                     helperText="Enter Saudi Arabian phone number with country code"
@@ -1528,7 +1564,7 @@ const SmsGateway: React.FC = () => {
                   <TextField
                     label="Message Content"
                     value={newMessage.message}
-                    onChange={(e) => setNewMessage({ ...newMessage, message: e.target.value })}
+                    onChange={e => setNewMessage({ ...newMessage, message: e.target.value })}
                     fullWidth
                     multiline
                     rows={4}
@@ -1541,7 +1577,7 @@ const SmsGateway: React.FC = () => {
                     label="Scheduled Time (Optional)"
                     type="datetime-local"
                     value={newMessage.scheduledTime}
-                    onChange={(e) => setNewMessage({ ...newMessage, scheduledTime: e.target.value })}
+                    onChange={e => setNewMessage({ ...newMessage, scheduledTime: e.target.value })}
                     fullWidth
                     InputLabelProps={{ shrink: true }}
                   />
@@ -1552,14 +1588,16 @@ const SmsGateway: React.FC = () => {
                     <Select
                       value={newMessage.templateId}
                       label="Template (Optional)"
-                      onChange={(e) => setNewMessage({ ...newMessage, templateId: e.target.value })}
+                      onChange={e => setNewMessage({ ...newMessage, templateId: e.target.value })}
                     >
                       <MenuItem value="">None</MenuItem>
-                      {templates.filter(t => t.status === 'approved').map(template => (
-                        <MenuItem key={template.id} value={template.id}>
-                          {template.name}
-                        </MenuItem>
-                      ))}
+                      {templates
+                        .filter(t => t.status === 'approved')
+                        .map(template => (
+                          <MenuItem key={template.id} value={template.id}>
+                            {template.name}
+                          </MenuItem>
+                        ))}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -1572,7 +1610,7 @@ const SmsGateway: React.FC = () => {
                   <TextField
                     label="Campaign Name"
                     value={newCampaign.name}
-                    onChange={(e) => setNewCampaign({ ...newCampaign, name: e.target.value })}
+                    onChange={e => setNewCampaign({ ...newCampaign, name: e.target.value })}
                     fullWidth
                     required
                   />
@@ -1581,7 +1619,7 @@ const SmsGateway: React.FC = () => {
                   <TextField
                     label="Description"
                     value={newCampaign.description}
-                    onChange={(e) => setNewCampaign({ ...newCampaign, description: e.target.value })}
+                    onChange={e => setNewCampaign({ ...newCampaign, description: e.target.value })}
                     fullWidth
                     multiline
                     rows={2}
@@ -1593,7 +1631,9 @@ const SmsGateway: React.FC = () => {
                     <Select
                       value={newCampaign.targetAudience}
                       label="Target Audience"
-                      onChange={(e) => setNewCampaign({ ...newCampaign, targetAudience: e.target.value })}
+                      onChange={e =>
+                        setNewCampaign({ ...newCampaign, targetAudience: e.target.value })
+                      }
                     >
                       <MenuItem value="All Users">All Users</MenuItem>
                       <MenuItem value="Premium Users">Premium Users</MenuItem>
@@ -1607,7 +1647,9 @@ const SmsGateway: React.FC = () => {
                     label="Scheduled Time"
                     type="datetime-local"
                     value={newCampaign.scheduledTime}
-                    onChange={(e) => setNewCampaign({ ...newCampaign, scheduledTime: e.target.value })}
+                    onChange={e =>
+                      setNewCampaign({ ...newCampaign, scheduledTime: e.target.value })
+                    }
                     fullWidth
                     InputLabelProps={{ shrink: true }}
                   />
@@ -1621,7 +1663,7 @@ const SmsGateway: React.FC = () => {
                   <TextField
                     label="Template Name"
                     value={newTemplate.name}
-                    onChange={(e) => setNewTemplate({ ...newTemplate, name: e.target.value })}
+                    onChange={e => setNewTemplate({ ...newTemplate, name: e.target.value })}
                     fullWidth
                     required
                   />
@@ -1632,7 +1674,7 @@ const SmsGateway: React.FC = () => {
                     <Select
                       value={newTemplate.type}
                       label="Template Type"
-                      onChange={(e) => setNewTemplate({ ...newTemplate, type: e.target.value })}
+                      onChange={e => setNewTemplate({ ...newTemplate, type: e.target.value })}
                     >
                       <MenuItem value="transactional">Transactional</MenuItem>
                       <MenuItem value="promotional">Promotional</MenuItem>
@@ -1645,7 +1687,7 @@ const SmsGateway: React.FC = () => {
                   <TextField
                     label="Template Content"
                     value={newTemplate.content}
-                    onChange={(e) => setNewTemplate({ ...newTemplate, content: e.target.value })}
+                    onChange={e => setNewTemplate({ ...newTemplate, content: e.target.value })}
                     fullWidth
                     multiline
                     rows={4}
@@ -1659,7 +1701,7 @@ const SmsGateway: React.FC = () => {
                     <Select
                       value={newTemplate.language}
                       label="Language"
-                      onChange={(e) => setNewTemplate({ ...newTemplate, language: e.target.value })}
+                      onChange={e => setNewTemplate({ ...newTemplate, language: e.target.value })}
                     >
                       <MenuItem value="en">English</MenuItem>
                       <MenuItem value="ar">Arabic</MenuItem>
@@ -1675,7 +1717,7 @@ const SmsGateway: React.FC = () => {
                   <TextField
                     label="Phone Number"
                     value={newContact.phoneNumber}
-                    onChange={(e) => setNewContact({ ...newContact, phoneNumber: e.target.value })}
+                    onChange={e => setNewContact({ ...newContact, phoneNumber: e.target.value })}
                     fullWidth
                     required
                     placeholder="+966501234567"
@@ -1685,7 +1727,7 @@ const SmsGateway: React.FC = () => {
                   <TextField
                     label="First Name"
                     value={newContact.firstName}
-                    onChange={(e) => setNewContact({ ...newContact, firstName: e.target.value })}
+                    onChange={e => setNewContact({ ...newContact, firstName: e.target.value })}
                     fullWidth
                   />
                 </Grid>
@@ -1693,7 +1735,7 @@ const SmsGateway: React.FC = () => {
                   <TextField
                     label="Last Name"
                     value={newContact.lastName}
-                    onChange={(e) => setNewContact({ ...newContact, lastName: e.target.value })}
+                    onChange={e => setNewContact({ ...newContact, lastName: e.target.value })}
                     fullWidth
                   />
                 </Grid>
@@ -1702,7 +1744,7 @@ const SmsGateway: React.FC = () => {
                     label="Email"
                     type="email"
                     value={newContact.email}
-                    onChange={(e) => setNewContact({ ...newContact, email: e.target.value })}
+                    onChange={e => setNewContact({ ...newContact, email: e.target.value })}
                     fullWidth
                   />
                 </Grid>
@@ -1712,13 +1754,16 @@ const SmsGateway: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button 
+          <Button
             onClick={
-              dialogType === 'message' ? handleSendMessage :
-              dialogType === 'campaign' ? handleCreateCampaign :
-              dialogType === 'template' ? handleCreateTemplate :
-              handleAddContact
-            } 
+              dialogType === 'message'
+                ? handleSendMessage
+                : dialogType === 'campaign'
+                  ? handleCreateCampaign
+                  : dialogType === 'template'
+                    ? handleCreateTemplate
+                    : handleAddContact
+            }
             variant="contained"
           >
             {dialogType === 'message' && 'Send Message'}
@@ -1740,7 +1785,7 @@ const SmsGateway: React.FC = () => {
           Gateway Settings
         </Typography>
         <Divider sx={{ mb: 3 }} />
-        
+
         <Typography variant="subtitle1" gutterBottom>
           Default Configuration
         </Typography>
@@ -1752,7 +1797,7 @@ const SmsGateway: React.FC = () => {
             <MenuItem value="NEXORALOAN">NEXORALOAN</MenuItem>
           </Select>
         </FormControl>
-        
+
         <FormControl fullWidth sx={{ mb: 2 }}>
           <InputLabel>Default Provider</InputLabel>
           <Select value="AUTO" label="Default Provider">
@@ -1766,22 +1811,10 @@ const SmsGateway: React.FC = () => {
         <Typography variant="subtitle1" gutterBottom sx={{ mt: 3 }}>
           Compliance Settings
         </Typography>
-        <FormControlLabel
-          control={<Switch defaultChecked />}
-          label="Enable DND Checking"
-        />
-        <FormControlLabel
-          control={<Switch defaultChecked />}
-          label="Time Window Validation"
-        />
-        <FormControlLabel
-          control={<Switch defaultChecked />}
-          label="Content Filtering"
-        />
-        <FormControlLabel
-          control={<Switch defaultChecked />}
-          label="Real-time Alerts"
-        />
+        <FormControlLabel control={<Switch defaultChecked />} label="Enable DND Checking" />
+        <FormControlLabel control={<Switch defaultChecked />} label="Time Window Validation" />
+        <FormControlLabel control={<Switch defaultChecked />} label="Content Filtering" />
+        <FormControlLabel control={<Switch defaultChecked />} label="Real-time Alerts" />
 
         <Typography variant="subtitle1" gutterBottom sx={{ mt: 3 }}>
           Rate Limiting

@@ -1,4 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import {
+  Sms,
+  TrendingUp,
+  TrendingDown,
+  Warning,
+  CheckCircle,
+  Error,
+  Download,
+  Refresh,
+  Settings,
+  Analytics,
+  Payment,
+  Receipt,
+  Notifications,
+  AccountBalance,
+  CreditCard,
+  MonetizationOn,
+  ExpandMore,
+  Visibility,
+  Add,
+  Search,
+  FilterList,
+  DateRange,
+  PieChart,
+  BarChart,
+  Timeline,
+} from '@mui/icons-material';
 import {
   Container,
   Typography,
@@ -42,35 +68,9 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Snackbar
+  Snackbar,
 } from '@mui/material';
-import {
-  Sms,
-  TrendingUp,
-  TrendingDown,
-  Warning,
-  CheckCircle,
-  Error,
-  Download,
-  Refresh,
-  Settings,
-  Analytics,
-  Payment,
-  Receipt,
-  Notifications,
-  AccountBalance,
-  CreditCard,
-  MonetizationOn,
-  ExpandMore,
-  Visibility,
-  Add,
-  Search,
-  FilterList,
-  DateRange,
-  PieChart,
-  BarChart,
-  Timeline
-} from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
 
 interface SmsUsageData {
   totalMessages: number;
@@ -140,7 +140,7 @@ const SmsBilling: React.FC = () => {
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
-    severity: 'success' as 'success' | 'error' | 'warning' | 'info'
+    severity: 'success' as 'success' | 'error' | 'warning' | 'info',
   });
 
   const fetchSmsUsageData = async () => {
@@ -148,20 +148,20 @@ const SmsBilling: React.FC = () => {
     setTimeout(() => {
       const mockUsageData: SmsUsageData = {
         totalMessages: 15420,
-        totalCost: 462.60,
+        totalCost: 462.6,
         averageCostPerMessage: 0.03,
         successRate: 98.5,
         usageByCountry: {
           'Saudi Arabia': 8500,
-          'UAE': 3200,
-          'Kuwait': 2100,
-          'Bahrain': 980,
-          'Qatar': 640
+          UAE: 3200,
+          Kuwait: 2100,
+          Bahrain: 980,
+          Qatar: 640,
         },
         usageByType: {
-          'Transactional': 12500,
-          'Marketing': 2420,
-          'OTP': 500
+          Transactional: 12500,
+          Marketing: 2420,
+          OTP: 500,
         },
         dailyUsage: Array.from({ length: 30 }, (_, i) => {
           const date = new Date(Date.now() - (29 - i) * 24 * 60 * 60 * 1000);
@@ -169,9 +169,9 @@ const SmsBilling: React.FC = () => {
           return {
             date: dateString!,
             messages: Math.floor(Math.random() * 800) + 200,
-            cost: Math.floor(Math.random() * 25) + 5
+            cost: Math.floor(Math.random() * 25) + 5,
           };
-        })
+        }),
       };
       setSmsUsage(mockUsageData);
       setLoading(false);
@@ -185,17 +185,17 @@ const SmsBilling: React.FC = () => {
         startDate: '2024-01-01',
         endDate: '2024-01-31',
         totalMessages: 15420,
-        totalCost: 462.60,
-        status: 'active'
+        totalCost: 462.6,
+        status: 'active',
       },
       {
         id: '2',
         startDate: '2023-12-01',
         endDate: '2023-12-31',
         totalMessages: 18200,
-        totalCost: 546.00,
-        status: 'completed'
-      }
+        totalCost: 546.0,
+        status: 'completed',
+      },
     ];
     setBillingCycles(mockCycles);
   };
@@ -206,24 +206,24 @@ const SmsBilling: React.FC = () => {
         id: '1',
         invoiceNumber: 'INV-2024-001',
         billingCycleId: '1',
-        amount: 462.60,
+        amount: 462.6,
         currency: 'SAR',
         status: 'paid',
         issueDate: '2024-02-01',
         dueDate: '2024-02-15',
-        downloadUrl: '/invoices/INV-2024-001.pdf'
+        downloadUrl: '/invoices/INV-2024-001.pdf',
       },
       {
         id: '2',
         invoiceNumber: 'INV-2023-012',
         billingCycleId: '2',
-        amount: 546.00,
+        amount: 546.0,
         currency: 'SAR',
         status: 'paid',
         issueDate: '2024-01-01',
         dueDate: '2024-01-15',
-        downloadUrl: '/invoices/INV-2023-012.pdf'
-      }
+        downloadUrl: '/invoices/INV-2023-012.pdf',
+      },
     ];
     setInvoices(mockInvoices);
   };
@@ -237,7 +237,7 @@ const SmsBilling: React.FC = () => {
         currentValue: 85,
         isActive: true,
         message: 'Account balance is running low',
-        severity: 'warning'
+        severity: 'warning',
       },
       {
         id: '2',
@@ -246,8 +246,8 @@ const SmsBilling: React.FC = () => {
         currentValue: 8500,
         isActive: true,
         message: 'Monthly SMS usage approaching limit',
-        severity: 'info'
-      }
+        severity: 'info',
+      },
     ];
     setUsageAlerts(mockAlerts);
   };
@@ -260,15 +260,15 @@ const SmsBilling: React.FC = () => {
         last4: '4242',
         expiryDate: '12/25',
         isDefault: true,
-        status: 'active'
+        status: 'active',
       },
       {
         id: '2',
         type: 'bank_account',
         last4: '1234',
         isDefault: false,
-        status: 'active'
-      }
+        status: 'active',
+      },
     ];
     setPaymentMethods(mockPaymentMethods);
   };
@@ -286,7 +286,7 @@ const SmsBilling: React.FC = () => {
     setSnackbar({
       open: true,
       message: `Downloading invoice ${invoice.invoiceNumber}...`,
-      severity: 'info'
+      severity: 'info',
     });
   };
 
@@ -326,10 +326,10 @@ const SmsBilling: React.FC = () => {
     }
   };
 
-  const formatCurrency = (amount: number, currency: string = 'SAR') => {
+  const formatCurrency = (amount: number, currency = 'SAR') => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: currency
+      currency: currency,
     }).format(amount);
   };
 
@@ -350,7 +350,7 @@ const SmsBilling: React.FC = () => {
               <Select
                 value={selectedPeriod}
                 label="Period"
-                onChange={(e) => setSelectedPeriod(e.target.value)}
+                onChange={e => setSelectedPeriod(e.target.value)}
               >
                 <MenuItem value="current_month">Current Month</MenuItem>
                 <MenuItem value="last_month">Last Month</MenuItem>
@@ -385,7 +385,12 @@ const SmsBilling: React.FC = () => {
           {/* Usage Overview Cards */}
           <Grid container spacing={3} sx={{ mb: 4 }}>
             <Grid item xs={12} sm={6} md={3}>
-              <Card sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
+              <Card
+                sx={{
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white',
+                }}
+              >
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
                     <Box>
@@ -402,7 +407,12 @@ const SmsBilling: React.FC = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Card sx={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', color: 'white' }}>
+              <Card
+                sx={{
+                  background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                  color: 'white',
+                }}
+              >
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
                     <Box>
@@ -419,16 +429,19 @@ const SmsBilling: React.FC = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Card sx={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', color: 'white' }}>
+              <Card
+                sx={{
+                  background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                  color: 'white',
+                }}
+              >
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
                     <Box>
                       <Typography color="inherit" gutterBottom variant="h6">
                         Success Rate
                       </Typography>
-                      <Typography variant="h4">
-                        {smsUsage?.successRate || 0}%
-                      </Typography>
+                      <Typography variant="h4">{smsUsage?.successRate || 0}%</Typography>
                     </Box>
                     <TrendingUp sx={{ fontSize: 40, opacity: 0.8 }} />
                   </Box>
@@ -436,7 +449,12 @@ const SmsBilling: React.FC = () => {
               </Card>
             </Grid>
             <Grid item xs={12} sm={6} md={3}>
-              <Card sx={{ background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)', color: 'white' }}>
+              <Card
+                sx={{
+                  background: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+                  color: 'white',
+                }}
+              >
                 <CardContent>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
                     <Box>
@@ -444,7 +462,9 @@ const SmsBilling: React.FC = () => {
                         Avg Cost/SMS
                       </Typography>
                       <Typography variant="h4">
-                        {smsUsage ? formatCurrency(smsUsage.averageCostPerMessage) : formatCurrency(0)}
+                        {smsUsage
+                          ? formatCurrency(smsUsage.averageCostPerMessage)
+                          : formatCurrency(0)}
                       </Typography>
                     </Box>
                     <BarChart sx={{ fontSize: 40, opacity: 0.8 }} />
@@ -462,21 +482,22 @@ const SmsBilling: React.FC = () => {
                   <Typography variant="h6" gutterBottom>
                     Usage by Country
                   </Typography>
-                  {smsUsage?.usageByCountry && Object.entries(smsUsage.usageByCountry).map(([country, count]) => (
-                    <Box key={country} sx={{ mb: 2 }}>
-                      <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="body2">{country}</Typography>
-                        <Typography variant="body2" fontWeight="bold">
-                          {count.toLocaleString()}
-                        </Typography>
+                  {smsUsage?.usageByCountry &&
+                    Object.entries(smsUsage.usageByCountry).map(([country, count]) => (
+                      <Box key={country} sx={{ mb: 2 }}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                          <Typography variant="body2">{country}</Typography>
+                          <Typography variant="body2" fontWeight="bold">
+                            {count.toLocaleString()}
+                          </Typography>
+                        </Box>
+                        <LinearProgress
+                          variant="determinate"
+                          value={(count / (smsUsage?.totalMessages || 1)) * 100}
+                          sx={{ mt: 1 }}
+                        />
                       </Box>
-                      <LinearProgress
-                        variant="determinate"
-                        value={(count / (smsUsage?.totalMessages || 1)) * 100}
-                        sx={{ mt: 1 }}
-                      />
-                    </Box>
-                  ))}
+                    ))}
                 </CardContent>
               </Card>
             </Grid>
@@ -486,22 +507,23 @@ const SmsBilling: React.FC = () => {
                   <Typography variant="h6" gutterBottom>
                     Usage by Message Type
                   </Typography>
-                  {smsUsage?.usageByType && Object.entries(smsUsage.usageByType).map(([type, count]) => (
-                    <Box key={type} sx={{ mb: 2 }}>
-                      <Box display="flex" justifyContent="space-between" alignItems="center">
-                        <Typography variant="body2">{type}</Typography>
-                        <Typography variant="body2" fontWeight="bold">
-                          {count.toLocaleString()}
-                        </Typography>
+                  {smsUsage?.usageByType &&
+                    Object.entries(smsUsage.usageByType).map(([type, count]) => (
+                      <Box key={type} sx={{ mb: 2 }}>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                          <Typography variant="body2">{type}</Typography>
+                          <Typography variant="body2" fontWeight="bold">
+                            {count.toLocaleString()}
+                          </Typography>
+                        </Box>
+                        <LinearProgress
+                          variant="determinate"
+                          value={(count / (smsUsage?.totalMessages || 1)) * 100}
+                          sx={{ mt: 1 }}
+                          color="secondary"
+                        />
                       </Box>
-                      <LinearProgress
-                        variant="determinate"
-                        value={(count / (smsUsage?.totalMessages || 1)) * 100}
-                        sx={{ mt: 1 }}
-                        color="secondary"
-                      />
-                    </Box>
-                  ))}
+                    ))}
                 </CardContent>
               </Card>
             </Grid>
@@ -543,7 +565,10 @@ const SmsBilling: React.FC = () => {
                   <Grid item xs={12} md={4}>
                     <Box textAlign="center">
                       <Typography variant="h3" color="success.main">
-                        {Math.max(0, new Date(billingCycles[0].endDate).getDate() - new Date().getDate())}
+                        {Math.max(
+                          0,
+                          new Date(billingCycles[0].endDate).getDate() - new Date().getDate(),
+                        )}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         Days Remaining
@@ -574,7 +599,7 @@ const SmsBilling: React.FC = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {invoices.map((invoice) => (
+                    {invoices.map(invoice => (
                       <TableRow key={invoice.id}>
                         <TableCell>{invoice.invoiceNumber}</TableCell>
                         <TableCell>{formatCurrency(invoice.amount, invoice.currency)}</TableCell>
@@ -595,10 +620,7 @@ const SmsBilling: React.FC = () => {
                           >
                             <Visibility />
                           </IconButton>
-                          <IconButton
-                            size="small"
-                            onClick={() => handleDownloadInvoice(invoice)}
-                          >
+                          <IconButton size="small" onClick={() => handleDownloadInvoice(invoice)}>
                             <Download />
                           </IconButton>
                         </TableCell>
@@ -622,12 +644,10 @@ const SmsBilling: React.FC = () => {
                   Active Alerts
                 </Typography>
                 <List>
-                  {usageAlerts.map((alert) => (
+                  {usageAlerts.map(alert => (
                     <React.Fragment key={alert.id}>
                       <ListItem>
-                        <ListItemIcon>
-                          {getAlertIcon(alert.severity)}
-                        </ListItemIcon>
+                        <ListItemIcon>{getAlertIcon(alert.severity)}</ListItemIcon>
                         <ListItemText
                           primary={alert.message}
                           secondary={`Threshold: ${alert.threshold} | Current: ${alert.currentValue}`}
@@ -638,7 +658,7 @@ const SmsBilling: React.FC = () => {
                             setSnackbar({
                               open: true,
                               message: `Alert ${alert.isActive ? 'disabled' : 'enabled'}`,
-                              severity: 'info'
+                              severity: 'info',
                             });
                           }}
                         />
@@ -665,12 +685,7 @@ const SmsBilling: React.FC = () => {
                       <MenuItem value="cost">Cost Alert</MenuItem>
                     </Select>
                   </FormControl>
-                  <TextField
-                    fullWidth
-                    label="Threshold Value"
-                    type="number"
-                    sx={{ mb: 2 }}
-                  />
+                  <TextField fullWidth label="Threshold Value" type="number" sx={{ mb: 2 }} />
                   <Button variant="contained" fullWidth startIcon={<Add />}>
                     Create Alert
                   </Button>
@@ -691,7 +706,7 @@ const SmsBilling: React.FC = () => {
                   Payment Methods
                 </Typography>
                 <List>
-                  {paymentMethods.map((method) => (
+                  {paymentMethods.map(method => (
                     <React.Fragment key={method.id}>
                       <ListItem>
                         <ListItemIcon>
@@ -752,9 +767,7 @@ const SmsBilling: React.FC = () => {
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>
-          Invoice Details - {selectedInvoice?.invoiceNumber}
-        </DialogTitle>
+        <DialogTitle>Invoice Details - {selectedInvoice?.invoiceNumber}</DialogTitle>
         <DialogContent>
           {selectedInvoice && (
             <Grid container spacing={2}>
@@ -795,9 +808,7 @@ const SmsBilling: React.FC = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setInvoiceDialogOpen(false)}>
-            Close
-          </Button>
+          <Button onClick={() => setInvoiceDialogOpen(false)}>Close</Button>
           {selectedInvoice && (
             <Button
               variant="contained"
@@ -817,7 +828,11 @@ const SmsBilling: React.FC = () => {
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
-        <Alert onClose={() => setSnackbar({ ...snackbar, open: false })} severity={snackbar.severity} sx={{ width: '100%' }}>
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          sx={{ width: '100%' }}
+        >
           {snackbar.message}
         </Alert>
       </Snackbar>

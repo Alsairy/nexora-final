@@ -1,4 +1,13 @@
-import React, { useState } from 'react';
+import {
+  AccountBalance,
+  Add,
+  TrendingUp,
+  CheckCircle,
+  Error,
+  Pending,
+  Person,
+  AttachMoney,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -27,16 +36,7 @@ import {
   LinearProgress,
   Rating,
 } from '@mui/material';
-import {
-  AccountBalance,
-  Add,
-  TrendingUp,
-  CheckCircle,
-  Error,
-  Pending,
-  Person,
-  AttachMoney,
-} from '@mui/icons-material';
+import React, { useState } from 'react';
 
 interface LoanApplication {
   id: string;
@@ -192,7 +192,9 @@ const LoanMarketplace: React.FC = () => {
   const totalApplications = applications.length;
   const approvedApplications = applications.filter(app => app.status === 'approved').length;
   const totalLoanValue = applications.reduce((sum, app) => sum + app.loanAmount, 0);
-  const avgInterestRate = (applications.reduce((sum, app) => sum + app.interestRate, 0) / applications.length).toFixed(1);
+  const avgInterestRate = (
+    applications.reduce((sum, app) => sum + app.interestRate, 0) / applications.length
+  ).toFixed(1);
 
   return (
     <Container maxWidth="xl">
@@ -214,9 +216,7 @@ const LoanMarketplace: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Total Applications
                   </Typography>
-                  <Typography variant="h4">
-                    {totalApplications}
-                  </Typography>
+                  <Typography variant="h4">{totalApplications}</Typography>
                 </Box>
                 <AccountBalance color="primary" sx={{ fontSize: 40 }} />
               </Box>
@@ -231,9 +231,7 @@ const LoanMarketplace: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Approved
                   </Typography>
-                  <Typography variant="h4">
-                    {approvedApplications}
-                  </Typography>
+                  <Typography variant="h4">{approvedApplications}</Typography>
                 </Box>
                 <CheckCircle color="success" sx={{ fontSize: 40 }} />
               </Box>
@@ -248,9 +246,7 @@ const LoanMarketplace: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Total Value
                   </Typography>
-                  <Typography variant="h4">
-                    ${totalLoanValue.toLocaleString()}
-                  </Typography>
+                  <Typography variant="h4">${totalLoanValue.toLocaleString()}</Typography>
                 </Box>
                 <AttachMoney color="info" sx={{ fontSize: 40 }} />
               </Box>
@@ -265,9 +261,7 @@ const LoanMarketplace: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Avg Interest Rate
                   </Typography>
-                  <Typography variant="h4">
-                    {avgInterestRate}%
-                  </Typography>
+                  <Typography variant="h4">{avgInterestRate}%</Typography>
                 </Box>
                 <TrendingUp color="warning" sx={{ fontSize: 40 }} />
               </Box>
@@ -280,9 +274,7 @@ const LoanMarketplace: React.FC = () => {
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 3, mb: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-              <Typography variant="h6">
-                Loan Applications
-              </Typography>
+              <Typography variant="h6">Loan Applications</Typography>
               <Button
                 variant="contained"
                 startIcon={<Add />}
@@ -294,7 +286,7 @@ const LoanMarketplace: React.FC = () => {
                 New Application
               </Button>
             </Box>
-            
+
             <TableContainer>
               <Table>
                 <TableHead>
@@ -309,7 +301,7 @@ const LoanMarketplace: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {applications.map((application) => (
+                  {applications.map(application => (
                     <TableRow key={application.id}>
                       <TableCell>{application.applicantName}</TableCell>
                       <TableCell>${application.loanAmount.toLocaleString()}</TableCell>
@@ -324,14 +316,18 @@ const LoanMarketplace: React.FC = () => {
                       </TableCell>
                       <TableCell>
                         <Box display="flex" alignItems="center" gap={1}>
-                          <Typography variant="body2">
-                            {application.creditScore}
-                          </Typography>
+                          <Typography variant="body2">{application.creditScore}</Typography>
                           <LinearProgress
                             variant="determinate"
                             value={(application.creditScore / 850) * 100}
                             sx={{ width: 50, height: 4 }}
-                            color={application.creditScore > 700 ? 'success' : application.creditScore > 600 ? 'warning' : 'error'}
+                            color={
+                              application.creditScore > 700
+                                ? 'success'
+                                : application.creditScore > 600
+                                  ? 'warning'
+                                  : 'error'
+                            }
                           />
                         </Box>
                       </TableCell>
@@ -350,27 +346,30 @@ const LoanMarketplace: React.FC = () => {
               </Table>
             </TableContainer>
           </Paper>
-          
+
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Available Loan Offers
             </Typography>
             <Grid container spacing={2}>
-              {offers.map((offer) => (
+              {offers.map(offer => (
                 <Grid item xs={12} md={6} key={offer.id}>
                   <Card variant="outlined">
                     <CardContent>
-                      <Box display="flex" justifyContent="space-between" alignItems="start" sx={{ mb: 2 }}>
-                        <Typography variant="h6">
-                          {offer.lenderName}
-                        </Typography>
+                      <Box
+                        display="flex"
+                        justifyContent="space-between"
+                        alignItems="start"
+                        sx={{ mb: 2 }}
+                      >
+                        <Typography variant="h6">{offer.lenderName}</Typography>
                         <Rating value={offer.rating} precision={0.1} size="small" readOnly />
                       </Box>
-                      
+
                       <Typography variant="h4" color="primary" gutterBottom>
                         ${offer.amount.toLocaleString()}
                       </Typography>
-                      
+
                       <Box display="flex" justifyContent="space-between" sx={{ mb: 2 }}>
                         <Typography variant="body2" color="text.secondary">
                           Interest Rate: {offer.interestRate}%
@@ -379,7 +378,7 @@ const LoanMarketplace: React.FC = () => {
                           Term: {offer.term} months
                         </Typography>
                       </Box>
-                      
+
                       <Typography variant="subtitle2" gutterBottom>
                         Requirements:
                       </Typography>
@@ -394,7 +393,7 @@ const LoanMarketplace: React.FC = () => {
                           />
                         ))}
                       </Box>
-                      
+
                       <Button variant="outlined" fullWidth>
                         Apply Now
                       </Button>
@@ -405,7 +404,7 @@ const LoanMarketplace: React.FC = () => {
             </Grid>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 3, mb: 3 }}>
             <Typography variant="h6" gutterBottom>
@@ -443,7 +442,7 @@ const LoanMarketplace: React.FC = () => {
               </Button>
             </Box>
           </Paper>
-          
+
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Market Insights
@@ -489,7 +488,7 @@ const LoanMarketplace: React.FC = () => {
                 <TextField
                   label="Loan Amount"
                   value={newApplication.amount}
-                  onChange={(e) => setNewApplication({ ...newApplication, amount: e.target.value })}
+                  onChange={e => setNewApplication({ ...newApplication, amount: e.target.value })}
                   fullWidth
                   type="number"
                   InputProps={{
@@ -503,7 +502,9 @@ const LoanMarketplace: React.FC = () => {
                   <Select
                     value={newApplication.purpose}
                     label="Loan Purpose"
-                    onChange={(e) => setNewApplication({ ...newApplication, purpose: e.target.value })}
+                    onChange={e =>
+                      setNewApplication({ ...newApplication, purpose: e.target.value })
+                    }
                   >
                     <MenuItem value="Business Expansion">Business Expansion</MenuItem>
                     <MenuItem value="Equipment Purchase">Equipment Purchase</MenuItem>
@@ -519,7 +520,7 @@ const LoanMarketplace: React.FC = () => {
                   <Select
                     value={newApplication.term}
                     label="Loan Term"
-                    onChange={(e) => setNewApplication({ ...newApplication, term: e.target.value })}
+                    onChange={e => setNewApplication({ ...newApplication, term: e.target.value })}
                   >
                     <MenuItem value="6">6 months</MenuItem>
                     <MenuItem value="12">12 months</MenuItem>
@@ -533,7 +534,7 @@ const LoanMarketplace: React.FC = () => {
                 <TextField
                   label="Annual Income"
                   value={newApplication.income}
-                  onChange={(e) => setNewApplication({ ...newApplication, income: e.target.value })}
+                  onChange={e => setNewApplication({ ...newApplication, income: e.target.value })}
                   fullWidth
                   type="number"
                   InputProps={{

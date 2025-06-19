@@ -1,15 +1,14 @@
-import React, { forwardRef } from 'react';
-
+import type { SelectProps } from '@mui/material';
 import {
   FormControl,
   FormHelperText,
   InputLabel,
   MenuItem,
   Select,
-  SelectProps,
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import React, { forwardRef } from 'react';
 
 export interface DropdownOption {
   value: string | number;
@@ -58,7 +57,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
       disabled = false,
       ...rest
     },
-    ref
+    ref,
   ) => {
     // Generate unique IDs for accessibility
     const selectId = id || `dropdown-${label.toLowerCase().replace(/\s+/g, '-')}`;
@@ -67,11 +66,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
     const descriptionId = description ? `${selectId}-description` : undefined;
 
     // Combine aria-describedby values
-    const ariaDescribedBy = [
-      helperText ? helperId : null,
-      descriptionId,
-      rest['aria-describedby'],
-    ]
+    const ariaDescribedBy = [helperText ? helperId : null, descriptionId, rest['aria-describedby']]
       .filter(Boolean)
       .join(' ');
 
@@ -93,7 +88,7 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
         <InputLabel id={labelId} htmlFor={selectId}>
           {label}
         </InputLabel>
-        
+
         <Select
           id={selectId}
           labelId={labelId}
@@ -106,21 +101,15 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
           aria-required={required}
           {...rest}
         >
-          {options.map((option) => (
-            <MenuItem
-              key={option.value}
-              value={option.value}
-              disabled={option.disabled}
-            >
+          {options.map(option => (
+            <MenuItem key={option.value} value={option.value} disabled={option.disabled}>
               {option.label}
             </MenuItem>
           ))}
         </Select>
-        
-        {helperText && (
-          <FormHelperText id={helperId}>{helperText}</FormHelperText>
-        )}
-        
+
+        {helperText && <FormHelperText id={helperId}>{helperText}</FormHelperText>}
+
         {description && (
           <InputDescription id={descriptionId} variant="caption">
             {description}
@@ -128,10 +117,9 @@ const Dropdown = forwardRef<HTMLInputElement, DropdownProps>(
         )}
       </StyledFormControl>
     );
-  }
+  },
 );
 
 Dropdown.displayName = 'Dropdown';
 
 export default Dropdown;
-

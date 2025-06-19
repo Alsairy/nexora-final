@@ -1,4 +1,13 @@
-import React from 'react';
+import {
+  TrendingUp,
+  Payment,
+  People,
+  AccountBalance,
+  Notifications,
+  CheckCircle,
+  Warning,
+  Error,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -14,16 +23,8 @@ import {
   ListItemAvatar,
   Chip,
 } from '@mui/material';
-import {
-  TrendingUp,
-  Payment,
-  People,
-  AccountBalance,
-  Notifications,
-  CheckCircle,
-  Warning,
-  Error,
-} from '@mui/icons-material';
+import React from 'react';
+
 import { useAuth } from '../contexts/AuthContext';
 
 interface StatCardProps {
@@ -51,9 +52,7 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, icon, color, trend })
             </Typography>
           )}
         </Box>
-        <Avatar sx={{ bgcolor: color, width: 56, height: 56 }}>
-          {icon}
-        </Avatar>
+        <Avatar sx={{ bgcolor: color, width: 56, height: 56 }}>{icon}</Avatar>
       </Box>
     </CardContent>
   </Card>
@@ -154,12 +153,10 @@ const Dashboard: React.FC = () => {
               Recent Activity
             </Typography>
             <List>
-              {recentActivities.map((activity) => (
+              {recentActivities.map(activity => (
                 <ListItem key={activity.id} divider>
                   <ListItemAvatar>
-                    <Avatar sx={{ bgcolor: 'transparent' }}>
-                      {activity.icon}
-                    </Avatar>
+                    <Avatar sx={{ bgcolor: 'transparent' }}>{activity.icon}</Avatar>
                   </ListItemAvatar>
                   <ListItemText
                     primary={activity.title}
@@ -177,9 +174,13 @@ const Dashboard: React.FC = () => {
                   <Chip
                     label={activity.status}
                     color={
-                      activity.status === 'success' ? 'success' :
-                      activity.status === 'warning' ? 'warning' :
-                      activity.status === 'error' ? 'error' : 'info'
+                      activity.status === 'success'
+                        ? 'success'
+                        : activity.status === 'warning'
+                          ? 'warning'
+                          : activity.status === 'error'
+                            ? 'error'
+                            : 'info'
                     }
                     size="small"
                   />
@@ -188,34 +189,19 @@ const Dashboard: React.FC = () => {
             </List>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 3, mb: 3 }}>
             <Typography variant="h6" gutterBottom>
               Quick Actions
             </Typography>
             <Box display="flex" flexDirection="column" gap={2}>
-              <Chip
-                label="Process Payment"
-                clickable
-                color="primary"
-                icon={<Payment />}
-              />
-              <Chip
-                label="Send SMS"
-                clickable
-                color="secondary"
-                icon={<Notifications />}
-              />
-              <Chip
-                label="View Reports"
-                clickable
-                color="info"
-                icon={<TrendingUp />}
-              />
+              <Chip label="Process Payment" clickable color="primary" icon={<Payment />} />
+              <Chip label="Send SMS" clickable color="secondary" icon={<Notifications />} />
+              <Chip label="View Reports" clickable color="info" icon={<TrendingUp />} />
             </Box>
           </Paper>
-          
+
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               System Status

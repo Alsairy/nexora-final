@@ -1,4 +1,13 @@
-import React, { useState } from 'react';
+import {
+  AccountBalanceWallet,
+  Add,
+  Remove,
+  SwapHoriz,
+  TrendingUp,
+  CheckCircle,
+  Error,
+  Pending,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -25,16 +34,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material';
-import {
-  AccountBalanceWallet,
-  Add,
-  Remove,
-  SwapHoriz,
-  TrendingUp,
-  CheckCircle,
-  Error,
-  Pending,
-} from '@mui/icons-material';
+import React, { useState } from 'react';
 
 interface WalletTransaction {
   id: string;
@@ -49,7 +49,9 @@ interface WalletTransaction {
 
 const EWallet: React.FC = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const [transactionType, setTransactionType] = useState<'deposit' | 'withdrawal' | 'transfer'>('deposit');
+  const [transactionType, setTransactionType] = useState<'deposit' | 'withdrawal' | 'transfer'>(
+    'deposit',
+  );
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
 
@@ -57,32 +59,32 @@ const EWallet: React.FC = () => {
     {
       id: 'WAL-001',
       type: 'deposit',
-      amount: 1000.00,
+      amount: 1000.0,
       currency: 'USD',
       status: 'completed',
       description: 'Bank transfer deposit',
       timestamp: '2024-06-18 10:30:00',
-      balance: 5250.00,
+      balance: 5250.0,
     },
     {
       id: 'WAL-002',
       type: 'withdrawal',
-      amount: 500.00,
+      amount: 500.0,
       currency: 'USD',
       status: 'completed',
       description: 'ATM withdrawal',
       timestamp: '2024-06-18 09:15:00',
-      balance: 4250.00,
+      balance: 4250.0,
     },
     {
       id: 'WAL-003',
       type: 'transfer',
-      amount: 250.00,
+      amount: 250.0,
       currency: 'USD',
       status: 'pending',
       description: 'Transfer to John Doe',
       timestamp: '2024-06-18 08:45:00',
-      balance: 4750.00,
+      balance: 4750.0,
     },
   ];
 
@@ -132,9 +134,13 @@ const EWallet: React.FC = () => {
     setDescription('');
   };
 
-  const currentBalance = 5250.00;
-  const totalDeposits = transactions.filter(t => t.type === 'deposit').reduce((sum, t) => sum + t.amount, 0);
-  const totalWithdrawals = transactions.filter(t => t.type === 'withdrawal').reduce((sum, t) => sum + t.amount, 0);
+  const currentBalance = 5250.0;
+  const totalDeposits = transactions
+    .filter(t => t.type === 'deposit')
+    .reduce((sum, t) => sum + t.amount, 0);
+  const totalWithdrawals = transactions
+    .filter(t => t.type === 'withdrawal')
+    .reduce((sum, t) => sum + t.amount, 0);
   const pendingTransactions = transactions.filter(t => t.status === 'pending').length;
 
   return (
@@ -150,7 +156,9 @@ const EWallet: React.FC = () => {
 
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} md={6}>
-          <Card sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
+          <Card
+            sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}
+          >
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
@@ -179,9 +187,7 @@ const EWallet: React.FC = () => {
                       <Typography color="textSecondary" gutterBottom variant="body2">
                         Total Deposits
                       </Typography>
-                      <Typography variant="h5">
-                        ${totalDeposits.toLocaleString()}
-                      </Typography>
+                      <Typography variant="h5">${totalDeposits.toLocaleString()}</Typography>
                     </Box>
                     <Add color="success" sx={{ fontSize: 30 }} />
                   </Box>
@@ -196,9 +202,7 @@ const EWallet: React.FC = () => {
                       <Typography color="textSecondary" gutterBottom variant="body2">
                         Total Withdrawals
                       </Typography>
-                      <Typography variant="h5">
-                        ${totalWithdrawals.toLocaleString()}
-                      </Typography>
+                      <Typography variant="h5">${totalWithdrawals.toLocaleString()}</Typography>
                     </Box>
                     <Remove color="error" sx={{ fontSize: 30 }} />
                   </Box>
@@ -213,9 +217,7 @@ const EWallet: React.FC = () => {
                       <Typography color="textSecondary" gutterBottom variant="body2">
                         Pending
                       </Typography>
-                      <Typography variant="h5">
-                        {pendingTransactions}
-                      </Typography>
+                      <Typography variant="h5">{pendingTransactions}</Typography>
                     </Box>
                     <Pending color="warning" sx={{ fontSize: 30 }} />
                   </Box>
@@ -230,9 +232,7 @@ const EWallet: React.FC = () => {
                       <Typography color="textSecondary" gutterBottom variant="body2">
                         Growth
                       </Typography>
-                      <Typography variant="h5">
-                        +12%
-                      </Typography>
+                      <Typography variant="h5">+12%</Typography>
                     </Box>
                     <TrendingUp color="info" sx={{ fontSize: 30 }} />
                   </Box>
@@ -247,9 +247,7 @@ const EWallet: React.FC = () => {
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-              <Typography variant="h6">
-                Transaction History
-              </Typography>
+              <Typography variant="h6">Transaction History</Typography>
               <Box display="flex" gap={1}>
                 <Button
                   variant="contained"
@@ -283,7 +281,7 @@ const EWallet: React.FC = () => {
                 </Button>
               </Box>
             </Box>
-            
+
             <TableContainer>
               <Table>
                 <TableHead>
@@ -298,7 +296,7 @@ const EWallet: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {transactions.map((transaction) => (
+                  {transactions.map(transaction => (
                     <TableRow key={transaction.id}>
                       <TableCell>{transaction.id}</TableCell>
                       <TableCell>
@@ -312,11 +310,15 @@ const EWallet: React.FC = () => {
                       <TableCell>
                         <Typography
                           color={
-                            transaction.type === 'deposit' ? 'success.main' :
-                            transaction.type === 'withdrawal' ? 'error.main' : 'info.main'
+                            transaction.type === 'deposit'
+                              ? 'success.main'
+                              : transaction.type === 'withdrawal'
+                                ? 'error.main'
+                                : 'info.main'
                           }
                         >
-                          {transaction.type === 'deposit' ? '+' : '-'}${transaction.amount.toLocaleString()}
+                          {transaction.type === 'deposit' ? '+' : '-'}$
+                          {transaction.amount.toLocaleString()}
                         </Typography>
                       </TableCell>
                       <TableCell>{transaction.description}</TableCell>
@@ -337,7 +339,7 @@ const EWallet: React.FC = () => {
             </TableContainer>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 3, mb: 3 }}>
             <Typography variant="h6" gutterBottom>
@@ -355,7 +357,7 @@ const EWallet: React.FC = () => {
               </Button>
             </Box>
           </Paper>
-          
+
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Security Settings
@@ -377,8 +379,11 @@ const EWallet: React.FC = () => {
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
         <DialogTitle>
-          {transactionType === 'deposit' ? 'Deposit Funds' :
-           transactionType === 'withdrawal' ? 'Withdraw Funds' : 'Transfer Funds'}
+          {transactionType === 'deposit'
+            ? 'Deposit Funds'
+            : transactionType === 'withdrawal'
+              ? 'Withdraw Funds'
+              : 'Transfer Funds'}
         </DialogTitle>
         <DialogContent>
           <Box sx={{ pt: 2 }}>
@@ -389,7 +394,7 @@ const EWallet: React.FC = () => {
                   <Select
                     value={transactionType}
                     label="Transaction Type"
-                    onChange={(e) => setTransactionType(e.target.value as any)}
+                    onChange={e => setTransactionType(e.target.value as any)}
                   >
                     <MenuItem value="deposit">Deposit</MenuItem>
                     <MenuItem value="withdrawal">Withdrawal</MenuItem>
@@ -401,7 +406,7 @@ const EWallet: React.FC = () => {
                 <TextField
                   label="Amount"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onChange={e => setAmount(e.target.value)}
                   fullWidth
                   type="number"
                   InputProps={{
@@ -413,7 +418,7 @@ const EWallet: React.FC = () => {
                 <TextField
                   label="Description"
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={e => setDescription(e.target.value)}
                   fullWidth
                   multiline
                   rows={3}

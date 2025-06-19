@@ -1,4 +1,14 @@
-import React, { useState } from 'react';
+import {
+  WhatsApp,
+  Add,
+  SmartToy,
+  TrendingUp,
+  Message,
+  Person,
+  Settings,
+  PlayArrow,
+  Pause,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -26,17 +36,7 @@ import {
   Switch,
   FormControlLabel,
 } from '@mui/material';
-import {
-  WhatsApp,
-  Add,
-  SmartToy,
-  TrendingUp,
-  Message,
-  Person,
-  Settings,
-  PlayArrow,
-  Pause,
-} from '@mui/icons-material';
+import React, { useState } from 'react';
 
 interface ChatSession {
   id: string;
@@ -168,9 +168,7 @@ const WhatsAppChatbot: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Total Chats
                   </Typography>
-                  <Typography variant="h4">
-                    {totalChats}
-                  </Typography>
+                  <Typography variant="h4">{totalChats}</Typography>
                 </Box>
                 <WhatsApp color="success" sx={{ fontSize: 40 }} />
               </Box>
@@ -185,9 +183,7 @@ const WhatsAppChatbot: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Active Chats
                   </Typography>
-                  <Typography variant="h4">
-                    {activeChats}
-                  </Typography>
+                  <Typography variant="h4">{activeChats}</Typography>
                 </Box>
                 <Message color="primary" sx={{ fontSize: 40 }} />
               </Box>
@@ -219,9 +215,7 @@ const WhatsAppChatbot: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Response Rate
                   </Typography>
-                  <Typography variant="h4">
-                    98%
-                  </Typography>
+                  <Typography variant="h4">98%</Typography>
                 </Box>
                 <TrendingUp color="success" sx={{ fontSize: 40 }} />
               </Box>
@@ -234,16 +228,14 @@ const WhatsAppChatbot: React.FC = () => {
         <Grid item xs={12} md={6}>
           <Paper sx={{ p: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-              <Typography variant="h6">
-                Recent Conversations
-              </Typography>
+              <Typography variant="h6">Recent Conversations</Typography>
               <Button variant="outlined" startIcon={<Message />}>
                 View All
               </Button>
             </Box>
-            
+
             <List>
-              {chatSessions.map((session) => (
+              {chatSessions.map(session => (
                 <ListItem key={session.id} divider>
                   <ListItemAvatar>
                     <Avatar>
@@ -253,9 +245,7 @@ const WhatsAppChatbot: React.FC = () => {
                   <ListItemText
                     primary={
                       <Box display="flex" alignItems="center" justifyContent="space-between">
-                        <Typography variant="subtitle1">
-                          {session.customerName}
-                        </Typography>
+                        <Typography variant="subtitle1">{session.customerName}</Typography>
                         <Chip
                           label={session.status.toUpperCase()}
                           color={getStatusColor(session.status) as any}
@@ -269,7 +259,8 @@ const WhatsAppChatbot: React.FC = () => {
                           {session.lastMessage}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
-                          {new Date(session.timestamp).toLocaleString()} • {session.messageCount} messages
+                          {new Date(session.timestamp).toLocaleString()} • {session.messageCount}{' '}
+                          messages
                         </Typography>
                       </Box>
                     }
@@ -279,13 +270,11 @@ const WhatsAppChatbot: React.FC = () => {
             </List>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} md={6}>
           <Paper sx={{ p: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-              <Typography variant="h6">
-                Automated Responses
-              </Typography>
+              <Typography variant="h6">Automated Responses</Typography>
               <Button
                 variant="contained"
                 startIcon={<Add />}
@@ -297,9 +286,9 @@ const WhatsAppChatbot: React.FC = () => {
                 Add Automation
               </Button>
             </Box>
-            
+
             <List>
-              {automations.map((automation) => (
+              {automations.map(automation => (
                 <ListItem key={automation.id} divider>
                   <ListItemAvatar>
                     <Avatar sx={{ bgcolor: automation.isActive ? 'success.main' : 'grey.500' }}>
@@ -309,14 +298,16 @@ const WhatsAppChatbot: React.FC = () => {
                   <ListItemText
                     primary={
                       <Box display="flex" alignItems="center" justifyContent="space-between">
-                        <Typography variant="subtitle1">
-                          {automation.name}
-                        </Typography>
+                        <Typography variant="subtitle1">{automation.name}</Typography>
                         <Box display="flex" alignItems="center" gap={1}>
                           <Typography variant="caption" color="text.secondary">
                             Used {automation.usageCount} times
                           </Typography>
-                          {automation.isActive ? <PlayArrow color="success" /> : <Pause color="disabled" />}
+                          {automation.isActive ? (
+                            <PlayArrow color="success" />
+                          ) : (
+                            <Pause color="disabled" />
+                          )}
                         </Box>
                       </Box>
                     }
@@ -326,8 +317,8 @@ const WhatsAppChatbot: React.FC = () => {
                           Trigger: "{automation.trigger}"
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          {automation.response.length > 50 
-                            ? `${automation.response.substring(0, 50)}...` 
+                          {automation.response.length > 50
+                            ? `${automation.response.substring(0, 50)}...`
                             : automation.response}
                         </Typography>
                       </Box>
@@ -367,7 +358,7 @@ const WhatsAppChatbot: React.FC = () => {
             </Box>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
@@ -431,7 +422,7 @@ const WhatsAppChatbot: React.FC = () => {
                   <TextField
                     label="Automation Name"
                     value={newAutomation.name}
-                    onChange={(e) => setNewAutomation({ ...newAutomation, name: e.target.value })}
+                    onChange={e => setNewAutomation({ ...newAutomation, name: e.target.value })}
                     fullWidth
                     placeholder="Welcome Message"
                   />
@@ -440,7 +431,7 @@ const WhatsAppChatbot: React.FC = () => {
                   <TextField
                     label="Trigger Keywords"
                     value={newAutomation.trigger}
-                    onChange={(e) => setNewAutomation({ ...newAutomation, trigger: e.target.value })}
+                    onChange={e => setNewAutomation({ ...newAutomation, trigger: e.target.value })}
                     fullWidth
                     placeholder="hello, hi, start"
                     helperText="Keywords that will trigger this response (comma separated)"
@@ -450,7 +441,7 @@ const WhatsAppChatbot: React.FC = () => {
                   <TextField
                     label="Response Message"
                     value={newAutomation.response}
-                    onChange={(e) => setNewAutomation({ ...newAutomation, response: e.target.value })}
+                    onChange={e => setNewAutomation({ ...newAutomation, response: e.target.value })}
                     fullWidth
                     multiline
                     rows={4}
@@ -462,7 +453,9 @@ const WhatsAppChatbot: React.FC = () => {
                     control={
                       <Switch
                         checked={newAutomation.isActive}
-                        onChange={(e) => setNewAutomation({ ...newAutomation, isActive: e.target.checked })}
+                        onChange={e =>
+                          setNewAutomation({ ...newAutomation, isActive: e.target.checked })
+                        }
                       />
                     }
                     label="Activate immediately"
@@ -496,10 +489,7 @@ const WhatsAppChatbot: React.FC = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button
-            onClick={handleCreateAutomation}
-            variant="contained"
-          >
+          <Button onClick={handleCreateAutomation} variant="contained">
             {dialogType === 'automation' ? 'Create Automation' : 'Send Broadcast'}
           </Button>
         </DialogActions>

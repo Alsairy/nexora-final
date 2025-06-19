@@ -1,5 +1,3 @@
-import React, { forwardRef } from 'react';
-
 import {
   CheckCircle as CheckCircleIcon,
   Close as CloseIcon,
@@ -7,15 +5,10 @@ import {
   Info as InfoIcon,
   Warning as WarningIcon,
 } from '@mui/icons-material';
-import {
-  Alert,
-  AlertProps,
-  AlertTitle,
-  IconButton,
-  Snackbar,
-  SnackbarProps,
-} from '@mui/material';
+import type { AlertProps, SnackbarProps } from '@mui/material';
+import { Alert, AlertTitle, IconButton, Snackbar } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import React, { forwardRef } from 'react';
 
 export type ToastType = 'success' | 'error' | 'warning' | 'info';
 
@@ -49,7 +42,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
       alertProps,
       ...rest
     },
-    ref
+    ref,
   ) => {
     // Get icon based on type
     const getIcon = () => {
@@ -67,14 +60,11 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
     };
 
     // Handle close
-    const handleClose = (
-      event: React.SyntheticEvent | Event,
-      reason?: string
-    ) => {
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
       if (reason === 'clickaway') {
         return;
       }
-      
+
       if (onClose) {
         onClose();
       }
@@ -111,10 +101,9 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(
         </StyledAlert>
       </Snackbar>
     );
-  }
+  },
 );
 
 Toast.displayName = 'Toast';
 
 export default Toast;
-

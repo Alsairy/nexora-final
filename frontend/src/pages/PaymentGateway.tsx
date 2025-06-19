@@ -1,4 +1,41 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import {
+  Payment,
+  Add,
+  Visibility,
+  GetApp,
+  TrendingUp,
+  CheckCircle,
+  Error,
+  Pending,
+  AccountBalance,
+  CreditCard,
+  Smartphone,
+  Analytics,
+  Refresh,
+  FilterList,
+  Search,
+  Download,
+  Settings,
+  Notifications,
+  AttachMoney,
+  Euro,
+  CurrencyPound,
+  Schedule,
+  ExpandMore,
+  Dashboard,
+  Receipt,
+  SwapHoriz,
+  Security,
+  Speed,
+  TrendingDown,
+  Warning,
+  Info,
+  MonetizationOn,
+  Sms,
+  SubscriptionsOutlined,
+  CurrencyExchange,
+  Sync,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -45,44 +82,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from '@mui/material';
-import {
-  Payment,
-  Add,
-  Visibility,
-  GetApp,
-  TrendingUp,
-  CheckCircle,
-  Error,
-  Pending,
-  AccountBalance,
-  CreditCard,
-  Smartphone,
-  Analytics,
-  Refresh,
-  FilterList,
-  Search,
-  Download,
-  Settings,
-  Notifications,
-  AttachMoney,
-  Euro,
-  CurrencyPound,
-  Schedule,
-  ExpandMore,
-  Dashboard,
-  Receipt,
-  SwapHoriz,
-  Security,
-  Speed,
-  TrendingDown,
-  Warning,
-  Info,
-  MonetizationOn,
-  Sms,
-  SubscriptionsOutlined,
-  CurrencyExchange,
-  Sync,
-} from '@mui/icons-material';
+import React, { useState, useEffect, useCallback } from 'react';
 
 interface Transaction {
   id: string;
@@ -184,7 +184,11 @@ const PaymentGateway: React.FC = () => {
   const [currencyRates, setCurrencyRates] = useState<CurrencyRate[]>([]);
   const [alerts, setAlerts] = useState<PaymentAlert[]>([]);
   const [realTimeEnabled, setRealTimeEnabled] = useState(true);
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' as 'success' | 'error' | 'warning' | 'info' });
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: '',
+    severity: 'info' as 'success' | 'error' | 'warning' | 'info',
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [paymentMethodFilter, setPaymentMethodFilter] = useState('all');
@@ -194,7 +198,7 @@ const PaymentGateway: React.FC = () => {
   const mockTransactions: Transaction[] = [
     {
       id: 'TXN-001',
-      amount: 1250.00,
+      amount: 1250.0,
       currency: 'USD',
       status: 'completed',
       merchant: 'E-Commerce Store',
@@ -206,11 +210,11 @@ const PaymentGateway: React.FC = () => {
       netAmount: 1213.75,
       country: 'US',
       riskScore: 15,
-      processingTime: 2.3
+      processingTime: 2.3,
     },
     {
       id: 'TXN-002',
-      amount: 750.50,
+      amount: 750.5,
       currency: 'EUR',
       status: 'pending',
       merchant: 'Online Services',
@@ -222,11 +226,11 @@ const PaymentGateway: React.FC = () => {
       netAmount: 735.49,
       country: 'DE',
       riskScore: 8,
-      processingTime: 0
+      processingTime: 0,
     },
     {
       id: 'TXN-003',
-      amount: 2100.00,
+      amount: 2100.0,
       currency: 'SAR',
       status: 'failed',
       merchant: 'Digital Products',
@@ -238,7 +242,7 @@ const PaymentGateway: React.FC = () => {
       netAmount: 0,
       country: 'SA',
       riskScore: 85,
-      processingTime: 1.8
+      processingTime: 1.8,
     },
     {
       id: 'TXN-004',
@@ -254,8 +258,8 @@ const PaymentGateway: React.FC = () => {
       netAmount: -450.75,
       country: 'GB',
       riskScore: 12,
-      processingTime: 3.1
-    }
+      processingTime: 3.1,
+    },
   ];
 
   const mockSubscriptions: Subscription[] = [
@@ -267,7 +271,7 @@ const PaymentGateway: React.FC = () => {
       interval: 'monthly',
       status: 'active',
       nextBillingDate: '2024-07-18',
-      customerEmail: 'enterprise@company.com'
+      customerEmail: 'enterprise@company.com',
     },
     {
       id: 'SUB-002',
@@ -277,8 +281,8 @@ const PaymentGateway: React.FC = () => {
       interval: 'monthly',
       status: 'active',
       nextBillingDate: '2024-07-15',
-      customerEmail: 'startup@business.com'
-    }
+      customerEmail: 'startup@business.com',
+    },
   ];
 
   const mockAlerts: PaymentAlert[] = [
@@ -288,7 +292,7 @@ const PaymentGateway: React.FC = () => {
       message: 'Transaction volume 25% above normal for the past hour',
       severity: 'medium',
       timestamp: '2024-06-18 11:45:00',
-      isRead: false
+      isRead: false,
     },
     {
       id: 'ALERT-002',
@@ -296,8 +300,8 @@ const PaymentGateway: React.FC = () => {
       message: 'Suspicious payment pattern detected from IP 192.168.1.100',
       severity: 'high',
       timestamp: '2024-06-18 11:30:00',
-      isRead: false
-    }
+      isRead: false,
+    },
   ];
 
   const fetchPaymentMetrics = useCallback(async () => {
@@ -305,7 +309,7 @@ const PaymentGateway: React.FC = () => {
       setLoading(true);
       const endDate = new Date();
       const startDate = new Date();
-      
+
       switch (dateRange) {
         case '7d':
           startDate.setDate(endDate.getDate() - 7);
@@ -322,7 +326,9 @@ const PaymentGateway: React.FC = () => {
 
       const mockMetrics: PaymentMetrics = {
         totalTransactions: mockTransactions.length,
-        totalRevenue: mockTransactions.filter(t => t.status === 'completed').reduce((sum, t) => sum + t.amount, 0),
+        totalRevenue: mockTransactions
+          .filter(t => t.status === 'completed')
+          .reduce((sum, t) => sum + t.amount, 0),
         successfulPayments: mockTransactions.filter(t => t.status === 'completed').length,
         failedPayments: mockTransactions.filter(t => t.status === 'failed').length,
         refundedPayments: mockTransactions.filter(t => t.status === 'refunded').length,
@@ -330,28 +336,27 @@ const PaymentGateway: React.FC = () => {
         averageTransactionValue: 1137.81,
         totalRefundAmount: 450.75,
         netRevenue: 2949.49,
-        currency: selectedCurrency
+        currency: selectedCurrency,
       };
 
       setPaymentMetrics(mockMetrics);
       setTransactions(mockTransactions);
       setSubscriptions(mockSubscriptions);
       setAlerts(mockAlerts);
-      
+
       setSmsUsage({
         totalMessages: 15420,
-        totalCost: 462.60,
+        totalCost: 462.6,
         averageCostPerMessage: 0.03,
-        usageByCountry: { 'SA': 8500, 'US': 4200, 'GB': 2720 },
-        dailyUsage: []
+        usageByCountry: { SA: 8500, US: 4200, GB: 2720 },
+        dailyUsage: [],
       });
 
       setCurrencyRates([
         { from: 'USD', to: 'EUR', rate: 0.85, lastUpdated: '2024-06-18 12:00:00' },
         { from: 'USD', to: 'SAR', rate: 3.75, lastUpdated: '2024-06-18 12:00:00' },
-        { from: 'USD', to: 'GBP', rate: 0.79, lastUpdated: '2024-06-18 12:00:00' }
+        { from: 'USD', to: 'GBP', rate: 0.79, lastUpdated: '2024-06-18 12:00:00' },
       ]);
-
     } catch (error) {
       console.error('Error fetching payment metrics:', error);
       setSnackbar({ open: true, message: 'Failed to load payment data', severity: 'error' });
@@ -384,7 +389,11 @@ const PaymentGateway: React.FC = () => {
     try {
       setLoading(true);
       await new Promise(resolve => setTimeout(resolve, 1500));
-      setSnackbar({ open: true, message: 'Transactions exported successfully', severity: 'success' });
+      setSnackbar({
+        open: true,
+        message: 'Transactions exported successfully',
+        severity: 'success',
+      });
     } catch (error) {
       setSnackbar({ open: true, message: 'Export failed', severity: 'error' });
     } finally {
@@ -407,7 +416,7 @@ const PaymentGateway: React.FC = () => {
           message: 'New transaction processed',
           severity: 'low',
           timestamp: new Date().toISOString(),
-          isRead: false
+          isRead: false,
         };
         setAlerts(prev => [newAlert, ...prev.slice(0, 9)]);
       }
@@ -468,12 +477,14 @@ const PaymentGateway: React.FC = () => {
   };
 
   const filteredTransactions = transactions.filter(transaction => {
-    const matchesSearch = transaction.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         transaction.merchant.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         transaction.customerEmail?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch =
+      transaction.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      transaction.merchant.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      transaction.customerEmail?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || transaction.status === statusFilter;
-    const matchesPaymentMethod = paymentMethodFilter === 'all' || transaction.paymentMethod === paymentMethodFilter;
-    
+    const matchesPaymentMethod =
+      paymentMethodFilter === 'all' || transaction.paymentMethod === paymentMethodFilter;
+
     return matchesSearch && matchesStatus && matchesPaymentMethod;
   });
 
@@ -502,7 +513,12 @@ const PaymentGateway: React.FC = () => {
       <Box sx={{ mb: 4 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
           <Box>
-            <Typography variant="h4" component="h1" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
+            <Typography
+              variant="h4"
+              component="h1"
+              gutterBottom
+              sx={{ fontWeight: 600, color: 'primary.main' }}
+            >
               Payment Gateway
             </Typography>
             <Typography variant="body1" color="text.secondary">
@@ -514,7 +530,7 @@ const PaymentGateway: React.FC = () => {
               control={
                 <Switch
                   checked={realTimeEnabled}
-                  onChange={(e) => setRealTimeEnabled(e.target.checked)}
+                  onChange={e => setRealTimeEnabled(e.target.checked)}
                   color="primary"
                 />
               }
@@ -527,11 +543,7 @@ const PaymentGateway: React.FC = () => {
             />
             <FormControl size="small" sx={{ minWidth: 120 }}>
               <InputLabel>Period</InputLabel>
-              <Select
-                value={dateRange}
-                label="Period"
-                onChange={(e) => setDateRange(e.target.value)}
-              >
+              <Select value={dateRange} label="Period" onChange={e => setDateRange(e.target.value)}>
                 <MenuItem value="7d">Last 7 days</MenuItem>
                 <MenuItem value="30d">Last 30 days</MenuItem>
                 <MenuItem value="90d">Last 90 days</MenuItem>
@@ -542,7 +554,7 @@ const PaymentGateway: React.FC = () => {
               <Select
                 value={selectedCurrency}
                 label="Currency"
-                onChange={(e) => setSelectedCurrency(e.target.value)}
+                onChange={e => setSelectedCurrency(e.target.value)}
               >
                 <MenuItem value="USD">USD</MenuItem>
                 <MenuItem value="EUR">EUR</MenuItem>
@@ -551,10 +563,14 @@ const PaymentGateway: React.FC = () => {
               </Select>
             </FormControl>
             <Tooltip title="Refresh Data">
-              <IconButton 
-                onClick={refreshData} 
+              <IconButton
+                onClick={refreshData}
                 disabled={refreshing}
-                sx={{ bgcolor: 'primary.main', color: 'white', '&:hover': { bgcolor: 'primary.dark' } }}
+                sx={{
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  '&:hover': { bgcolor: 'primary.dark' },
+                }}
               >
                 {refreshing ? <CircularProgress size={20} color="inherit" /> : <Refresh />}
               </IconButton>
@@ -582,7 +598,9 @@ const PaymentGateway: React.FC = () => {
       {/* Enhanced Metrics Cards */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
+          <Card
+            sx={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}
+          >
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
@@ -594,7 +612,8 @@ const PaymentGateway: React.FC = () => {
                     {paymentMetrics?.totalRevenue.toLocaleString() || totalAmount.toLocaleString()}
                   </Typography>
                   <Typography variant="body2" sx={{ opacity: 0.8, mt: 1 }}>
-                    Net: {getCurrencyIcon(selectedCurrency)}{paymentMetrics?.netRevenue.toLocaleString() || '0'}
+                    Net: {getCurrencyIcon(selectedCurrency)}
+                    {paymentMetrics?.netRevenue.toLocaleString() || '0'}
                   </Typography>
                 </Box>
                 <MonetizationOn sx={{ fontSize: 48, opacity: 0.8 }} />
@@ -603,7 +622,9 @@ const PaymentGateway: React.FC = () => {
           </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', color: 'white' }}>
+          <Card
+            sx={{ background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)', color: 'white' }}
+          >
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
@@ -611,7 +632,9 @@ const PaymentGateway: React.FC = () => {
                     Success Rate
                   </Typography>
                   <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                    {paymentMetrics?.successRate.toFixed(1) || Math.round((completedTransactions / Math.max(transactions.length, 1)) * 100)}%
+                    {paymentMetrics?.successRate.toFixed(1) ||
+                      Math.round((completedTransactions / Math.max(transactions.length, 1)) * 100)}
+                    %
                   </Typography>
                   <Box display="flex" alignItems="center" sx={{ mt: 1 }}>
                     <TrendingUp sx={{ fontSize: 16, mr: 0.5 }} />
@@ -626,7 +649,9 @@ const PaymentGateway: React.FC = () => {
           </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', color: 'white' }}>
+          <Card
+            sx={{ background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)', color: 'white' }}
+          >
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
@@ -637,7 +662,8 @@ const PaymentGateway: React.FC = () => {
                     {paymentMetrics?.totalTransactions.toLocaleString() || transactions.length}
                   </Typography>
                   <Typography variant="body2" sx={{ opacity: 0.8, mt: 1 }}>
-                    Avg: {getCurrencyIcon(selectedCurrency)}{paymentMetrics?.averageTransactionValue.toFixed(2) || '0'}
+                    Avg: {getCurrencyIcon(selectedCurrency)}
+                    {paymentMetrics?.averageTransactionValue.toFixed(2) || '0'}
                   </Typography>
                 </Box>
                 <Receipt sx={{ fontSize: 48, opacity: 0.8 }} />
@@ -646,7 +672,9 @@ const PaymentGateway: React.FC = () => {
           </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Card sx={{ background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)', color: 'white' }}>
+          <Card
+            sx={{ background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)', color: 'white' }}
+          >
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
@@ -679,8 +707,15 @@ const PaymentGateway: React.FC = () => {
               </Typography>
             </Box>
             <List dense>
-              {alerts.slice(0, 3).map((alert) => (
-                <ListItem key={alert.id} sx={{ bgcolor: alert.isRead ? 'transparent' : 'action.hover', borderRadius: 1, mb: 1 }}>
+              {alerts.slice(0, 3).map(alert => (
+                <ListItem
+                  key={alert.id}
+                  sx={{
+                    bgcolor: alert.isRead ? 'transparent' : 'action.hover',
+                    borderRadius: 1,
+                    mb: 1,
+                  }}
+                >
                   <ListItemIcon>
                     {alert.type === 'fraud_detected' && <Security color="error" />}
                     {alert.type === 'high_volume' && <TrendingUp color="warning" />}
@@ -691,10 +726,16 @@ const PaymentGateway: React.FC = () => {
                     primary={alert.message}
                     secondary={`${alert.severity.toUpperCase()} • ${new Date(alert.timestamp).toLocaleString()}`}
                   />
-                  <Chip 
-                    label={alert.severity} 
-                    size="small" 
-                    color={alert.severity === 'high' ? 'error' : alert.severity === 'medium' ? 'warning' : 'default'}
+                  <Chip
+                    label={alert.severity}
+                    size="small"
+                    color={
+                      alert.severity === 'high'
+                        ? 'error'
+                        : alert.severity === 'medium'
+                          ? 'warning'
+                          : 'default'
+                    }
                   />
                 </ListItem>
               ))}
@@ -707,18 +748,12 @@ const PaymentGateway: React.FC = () => {
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-              <Typography variant="h6">
-                Recent Transactions
-              </Typography>
-              <Button
-                variant="contained"
-                startIcon={<Add />}
-                onClick={() => {}}
-              >
+              <Typography variant="h6">Recent Transactions</Typography>
+              <Button variant="contained" startIcon={<Add />} onClick={() => {}}>
                 New Transaction
               </Button>
             </Box>
-            
+
             <TableContainer>
               <Table>
                 <TableHead>
@@ -732,7 +767,7 @@ const PaymentGateway: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {transactions.map((transaction) => (
+                  {transactions.map(transaction => (
                     <TableRow key={transaction.id}>
                       <TableCell>{transaction.id}</TableCell>
                       <TableCell>
@@ -749,10 +784,7 @@ const PaymentGateway: React.FC = () => {
                       </TableCell>
                       <TableCell>{new Date(transaction.date).toLocaleString()}</TableCell>
                       <TableCell>
-                        <IconButton
-                          size="small"
-                          onClick={() => handleViewTransaction(transaction)}
-                        >
+                        <IconButton size="small" onClick={() => handleViewTransaction(transaction)}>
                           <Visibility />
                         </IconButton>
                         <IconButton size="small">
@@ -766,7 +798,7 @@ const PaymentGateway: React.FC = () => {
             </TableContainer>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
@@ -852,14 +884,20 @@ const PaymentGateway: React.FC = () => {
                   />
                   <TextField
                     label="Processing Time"
-                    value={selectedTransaction.processingTime ? `${selectedTransaction.processingTime}s` : 'N/A'}
+                    value={
+                      selectedTransaction.processingTime
+                        ? `${selectedTransaction.processingTime}s`
+                        : 'N/A'
+                    }
                     fullWidth
                     disabled
                     sx={{ mb: 2 }}
                   />
                   <TextField
                     label="Risk Score"
-                    value={selectedTransaction.riskScore ? `${selectedTransaction.riskScore}%` : 'N/A'}
+                    value={
+                      selectedTransaction.riskScore ? `${selectedTransaction.riskScore}%` : 'N/A'
+                    }
                     fullWidth
                     disabled
                     sx={{ mb: 2 }}
@@ -883,18 +921,26 @@ const PaymentGateway: React.FC = () => {
                 {selectedTransaction.fees && (
                   <Grid item xs={12}>
                     <Divider sx={{ my: 2 }} />
-                    <Typography variant="h6" gutterBottom>Financial Breakdown</Typography>
+                    <Typography variant="h6" gutterBottom>
+                      Financial Breakdown
+                    </Typography>
                     <Box display="flex" justifyContent="space-between" sx={{ mb: 1 }}>
                       <Typography>Gross Amount:</Typography>
-                      <Typography fontWeight="bold">{selectedTransaction.amount.toLocaleString()} {selectedTransaction.currency}</Typography>
+                      <Typography fontWeight="bold">
+                        {selectedTransaction.amount.toLocaleString()} {selectedTransaction.currency}
+                      </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" sx={{ mb: 1 }}>
                       <Typography>Processing Fees:</Typography>
-                      <Typography color="error.main">-{selectedTransaction.fees.toFixed(2)} {selectedTransaction.currency}</Typography>
+                      <Typography color="error.main">
+                        -{selectedTransaction.fees.toFixed(2)} {selectedTransaction.currency}
+                      </Typography>
                     </Box>
                     <Box display="flex" justifyContent="space-between" sx={{ mb: 1 }}>
                       <Typography variant="h6">Net Amount:</Typography>
-                      <Typography variant="h6" color="success.main">{selectedTransaction.netAmount?.toFixed(2)} {selectedTransaction.currency}</Typography>
+                      <Typography variant="h6" color="success.main">
+                        {selectedTransaction.netAmount?.toFixed(2)} {selectedTransaction.currency}
+                      </Typography>
                     </Box>
                   </Grid>
                 )}

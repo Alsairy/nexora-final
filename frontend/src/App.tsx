@@ -1,7 +1,6 @@
+import { CircularProgress, CssBaseline, ThemeProvider } from '@mui/material';
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
-import { CircularProgress, CssBaseline, ThemeProvider } from '@mui/material';
 
 import CookieBanner from './components/CookieBanner';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -31,12 +30,14 @@ const NotFound = React.lazy(() => import('./pages/NotFound'));
 
 // Loading fallback
 const LoadingFallback = () => (
-  <div style={{ 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    height: '100vh' 
-  }}>
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+    }}
+  >
     <CircularProgress aria-label="Loading content" />
   </div>
 );
@@ -45,7 +46,7 @@ const App: React.FC = () => {
   return (
     <ErrorBoundary>
       <CustomThemeProvider>
-        {(theme) => (
+        {theme => (
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <AuthProvider>
@@ -59,7 +60,7 @@ const App: React.FC = () => {
                         <Route path={ROUTES.REGISTER} element={<Register />} />
                         <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
                         <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />
-                        
+
                         {/* Protected routes */}
                         <Route element={<ProtectedRoute />}>
                           <Route path="/" element={<Dashboard />} />
@@ -75,13 +76,13 @@ const App: React.FC = () => {
                           <Route path={ROUTES.ADMIN_CONSOLE} element={<AdminConsole />} />
                           <Route path={ROUTES.SETTINGS} element={<Settings />} />
                         </Route>
-                        
+
                         {/* 404 route */}
                         <Route path="*" element={<NotFound />} />
                       </Routes>
                     </Suspense>
                   </ErrorBoundary>
-                  
+
                   {/* Cookie consent banner */}
                   <CookieBanner />
                 </Layout>
@@ -95,4 +96,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

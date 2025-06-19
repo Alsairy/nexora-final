@@ -1,4 +1,18 @@
-import React, { useState } from 'react';
+import {
+  AdminPanelSettings,
+  Security,
+  Settings,
+  Storage,
+  CloudSync,
+  Warning,
+  CheckCircle,
+  Error,
+  Info,
+  Refresh,
+  Download,
+  Upload,
+  Delete,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -34,21 +48,7 @@ import {
   ListItemIcon,
   Alert,
 } from '@mui/material';
-import {
-  AdminPanelSettings,
-  Security,
-  Settings,
-  Storage,
-  CloudSync,
-  Warning,
-  CheckCircle,
-  Error,
-  Info,
-  Refresh,
-  Download,
-  Upload,
-  Delete,
-} from '@mui/icons-material';
+import React, { useState } from 'react';
 
 interface SystemHealth {
   service: string;
@@ -85,11 +85,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`admin-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -234,9 +230,7 @@ const AdminConsole: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Total Services
                   </Typography>
-                  <Typography variant="h4">
-                    {totalServices}
-                  </Typography>
+                  <Typography variant="h4">{totalServices}</Typography>
                 </Box>
                 <AdminPanelSettings color="primary" sx={{ fontSize: 40 }} />
               </Box>
@@ -251,9 +245,7 @@ const AdminConsole: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Healthy
                   </Typography>
-                  <Typography variant="h4">
-                    {healthyServices}
-                  </Typography>
+                  <Typography variant="h4">{healthyServices}</Typography>
                 </Box>
                 <CheckCircle color="success" sx={{ fontSize: 40 }} />
               </Box>
@@ -268,9 +260,7 @@ const AdminConsole: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Warnings
                   </Typography>
-                  <Typography variant="h4">
-                    {warningServices}
-                  </Typography>
+                  <Typography variant="h4">{warningServices}</Typography>
                 </Box>
                 <Warning color="warning" sx={{ fontSize: 40 }} />
               </Box>
@@ -285,9 +275,7 @@ const AdminConsole: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Errors
                   </Typography>
-                  <Typography variant="h4">
-                    {errorServices}
-                  </Typography>
+                  <Typography variant="h4">{errorServices}</Typography>
                 </Box>
                 <Error color="error" sx={{ fontSize: 40 }} />
               </Box>
@@ -305,20 +293,15 @@ const AdminConsole: React.FC = () => {
             <Tab label="Maintenance" />
           </Tabs>
         </Box>
-        
+
         <TabPanel value={tabValue} index={0}>
           <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-            <Typography variant="h6">
-              System Health Status
-            </Typography>
-            <Button
-              variant="outlined"
-              startIcon={<Refresh />}
-            >
+            <Typography variant="h6">System Health Status</Typography>
+            <Button variant="outlined" startIcon={<Refresh />}>
               Refresh Status
             </Button>
           </Box>
-          
+
           <TableContainer>
             <Table>
               <TableHead>
@@ -331,7 +314,7 @@ const AdminConsole: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {systemHealth.map((service) => (
+                {systemHealth.map(service => (
                   <TableRow key={service.service}>
                     <TableCell>{service.service}</TableCell>
                     <TableCell>
@@ -351,20 +334,15 @@ const AdminConsole: React.FC = () => {
             </Table>
           </TableContainer>
         </TabPanel>
-        
+
         <TabPanel value={tabValue} index={1}>
           <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-            <Typography variant="h6">
-              Audit Logs
-            </Typography>
-            <Button
-              variant="outlined"
-              startIcon={<Download />}
-            >
+            <Typography variant="h6">Audit Logs</Typography>
+            <Button variant="outlined" startIcon={<Download />}>
               Export Logs
             </Button>
           </Box>
-          
+
           <TableContainer>
             <Table>
               <TableHead>
@@ -378,7 +356,7 @@ const AdminConsole: React.FC = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {auditLogs.map((log) => (
+                {auditLogs.map(log => (
                   <TableRow key={log.id}>
                     <TableCell>{new Date(log.timestamp).toLocaleString()}</TableCell>
                     <TableCell>{log.user}</TableCell>
@@ -399,7 +377,7 @@ const AdminConsole: React.FC = () => {
             </Table>
           </TableContainer>
         </TabPanel>
-        
+
         <TabPanel value={tabValue} index={2}>
           <Typography variant="h6" gutterBottom>
             System Configuration
@@ -485,7 +463,7 @@ const AdminConsole: React.FC = () => {
             </Grid>
           </Grid>
         </TabPanel>
-        
+
         <TabPanel value={tabValue} index={3}>
           <Typography variant="h6" gutterBottom>
             System Maintenance
@@ -525,15 +503,9 @@ const AdminConsole: React.FC = () => {
                   System Status
                 </Typography>
                 <Box display="flex" flexDirection="column" gap={2}>
-                  <Alert severity="info">
-                    Last backup: June 17, 2024 at 2:00 AM
-                  </Alert>
-                  <Alert severity="success">
-                    System health check: All services operational
-                  </Alert>
-                  <Alert severity="warning">
-                    Redis cache usage: 92% - consider scaling
-                  </Alert>
+                  <Alert severity="info">Last backup: June 17, 2024 at 2:00 AM</Alert>
+                  <Alert severity="success">System health check: All services operational</Alert>
+                  <Alert severity="warning">Redis cache usage: 92% - consider scaling</Alert>
                 </Box>
               </Paper>
             </Grid>
@@ -567,10 +539,7 @@ const AdminConsole: React.FC = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControlLabel
-                    control={<Switch defaultChecked />}
-                    label="Include user data"
-                  />
+                  <FormControlLabel control={<Switch defaultChecked />} label="Include user data" />
                 </Grid>
                 <Grid item xs={12}>
                   <FormControlLabel
@@ -580,9 +549,7 @@ const AdminConsole: React.FC = () => {
                 </Grid>
               </Grid>
             ) : (
-              <Typography>
-                Maintenance operation configuration will be displayed here.
-              </Typography>
+              <Typography>Maintenance operation configuration will be displayed here.</Typography>
             )}
           </Box>
         </DialogContent>

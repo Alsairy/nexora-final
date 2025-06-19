@@ -1,14 +1,7 @@
-import React, { forwardRef } from 'react';
-
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  OutlinedInput,
-  OutlinedInputProps,
-  Typography,
-} from '@mui/material';
+import type { OutlinedInputProps } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, OutlinedInput, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import React, { forwardRef } from 'react';
 
 export interface TextInputProps extends Omit<OutlinedInputProps, 'label'> {
   label: string;
@@ -49,7 +42,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       disabled = false,
       ...rest
     },
-    ref
+    ref,
   ) => {
     // Generate unique IDs for accessibility
     const inputId = id || `input-${label.toLowerCase().replace(/\s+/g, '-')}`;
@@ -57,11 +50,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const descriptionId = description ? `${inputId}-description` : undefined;
 
     // Combine aria-describedby values
-    const ariaDescribedBy = [
-      helperText ? helperId : null,
-      descriptionId,
-      rest['aria-describedby'],
-    ]
+    const ariaDescribedBy = [helperText ? helperId : null, descriptionId, rest['aria-describedby']]
       .filter(Boolean)
       .join(' ');
 
@@ -82,9 +71,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           disabled={disabled}
           {...rest}
         />
-        {helperText && (
-          <FormHelperText id={helperId}>{helperText}</FormHelperText>
-        )}
+        {helperText && <FormHelperText id={helperId}>{helperText}</FormHelperText>}
         {description && (
           <InputDescription id={descriptionId} variant="caption">
             {description}
@@ -92,10 +79,9 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         )}
       </StyledFormControl>
     );
-  }
+  },
 );
 
 TextInput.displayName = 'TextInput';
 
 export default TextInput;
-

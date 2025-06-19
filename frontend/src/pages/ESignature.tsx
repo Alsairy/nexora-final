@@ -1,4 +1,14 @@
-import React, { useState } from 'react';
+import {
+  Draw,
+  Add,
+  Send,
+  CheckCircle,
+  Error,
+  Pending,
+  Visibility,
+  GetApp,
+  Person,
+} from '@mui/icons-material';
 import {
   Box,
   Card,
@@ -26,17 +36,7 @@ import {
   MenuItem,
   LinearProgress,
 } from '@mui/material';
-import {
-  Draw,
-  Add,
-  Send,
-  CheckCircle,
-  Error,
-  Pending,
-  Visibility,
-  GetApp,
-  Person,
-} from '@mui/icons-material';
+import React, { useState } from 'react';
 
 interface Document {
   id: string;
@@ -166,9 +166,7 @@ const ESignature: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Total Documents
                   </Typography>
-                  <Typography variant="h4">
-                    {totalDocuments}
-                  </Typography>
+                  <Typography variant="h4">{totalDocuments}</Typography>
                 </Box>
                 <Draw color="primary" sx={{ fontSize: 40 }} />
               </Box>
@@ -183,9 +181,7 @@ const ESignature: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Completed
                   </Typography>
-                  <Typography variant="h4">
-                    {completedDocuments}
-                  </Typography>
+                  <Typography variant="h4">{completedDocuments}</Typography>
                 </Box>
                 <CheckCircle color="success" sx={{ fontSize: 40 }} />
               </Box>
@@ -200,9 +196,7 @@ const ESignature: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Pending
                   </Typography>
-                  <Typography variant="h4">
-                    {pendingDocuments}
-                  </Typography>
+                  <Typography variant="h4">{pendingDocuments}</Typography>
                 </Box>
                 <Send color="primary" sx={{ fontSize: 40 }} />
               </Box>
@@ -217,9 +211,7 @@ const ESignature: React.FC = () => {
                   <Typography color="textSecondary" gutterBottom variant="h6">
                     Completion Rate
                   </Typography>
-                  <Typography variant="h4">
-                    {completionRate}%
-                  </Typography>
+                  <Typography variant="h4">{completionRate}%</Typography>
                 </Box>
                 <CheckCircle color="success" sx={{ fontSize: 40 }} />
               </Box>
@@ -232,18 +224,12 @@ const ESignature: React.FC = () => {
         <Grid item xs={12} md={8}>
           <Paper sx={{ p: 3 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-              <Typography variant="h6">
-                Documents
-              </Typography>
-              <Button
-                variant="contained"
-                startIcon={<Add />}
-                onClick={() => setOpenDialog(true)}
-              >
+              <Typography variant="h6">Documents</Typography>
+              <Button variant="contained" startIcon={<Add />} onClick={() => setOpenDialog(true)}>
                 New Document
               </Button>
             </Box>
-            
+
             <TableContainer>
               <Table>
                 <TableHead>
@@ -258,7 +244,7 @@ const ESignature: React.FC = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {documents.map((document) => (
+                  {documents.map(document => (
                     <TableRow key={document.id}>
                       <TableCell>{document.name}</TableCell>
                       <TableCell>
@@ -276,9 +262,7 @@ const ESignature: React.FC = () => {
                             value={document.progress}
                             sx={{ width: 60, height: 6 }}
                           />
-                          <Typography variant="body2">
-                            {document.progress}%
-                          </Typography>
+                          <Typography variant="body2">{document.progress}%</Typography>
                         </Box>
                       </TableCell>
                       <TableCell>
@@ -301,7 +285,7 @@ const ESignature: React.FC = () => {
             </TableContainer>
           </Paper>
         </Grid>
-        
+
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 3, mb: 3 }}>
             <Typography variant="h6" gutterBottom>
@@ -322,7 +306,7 @@ const ESignature: React.FC = () => {
               </Button>
             </Box>
           </Paper>
-          
+
           <Paper sx={{ p: 3 }}>
             <Typography variant="h6" gutterBottom>
               Recent Activity
@@ -331,9 +315,7 @@ const ESignature: React.FC = () => {
               <Box display="flex" alignItems="center" gap={2}>
                 <Person fontSize="small" />
                 <Box>
-                  <Typography variant="body2">
-                    John Doe signed Employment Contract
-                  </Typography>
+                  <Typography variant="body2">John Doe signed Employment Contract</Typography>
                   <Typography variant="caption" color="text.secondary">
                     2 hours ago
                   </Typography>
@@ -342,9 +324,7 @@ const ESignature: React.FC = () => {
               <Box display="flex" alignItems="center" gap={2}>
                 <Send fontSize="small" />
                 <Box>
-                  <Typography variant="body2">
-                    NDA sent to Tech Corp
-                  </Typography>
+                  <Typography variant="body2">NDA sent to Tech Corp</Typography>
                   <Typography variant="caption" color="text.secondary">
                     1 day ago
                   </Typography>
@@ -353,9 +333,7 @@ const ESignature: React.FC = () => {
               <Box display="flex" alignItems="center" gap={2}>
                 <CheckCircle fontSize="small" />
                 <Box>
-                  <Typography variant="body2">
-                    Service Agreement completed
-                  </Typography>
+                  <Typography variant="body2">Service Agreement completed</Typography>
                   <Typography variant="caption" color="text.secondary">
                     3 days ago
                   </Typography>
@@ -375,7 +353,7 @@ const ESignature: React.FC = () => {
                 <TextField
                   label="Document Name"
                   value={newDocument.name}
-                  onChange={(e) => setNewDocument({ ...newDocument, name: e.target.value })}
+                  onChange={e => setNewDocument({ ...newDocument, name: e.target.value })}
                   fullWidth
                   placeholder="Employment Contract - John Doe"
                 />
@@ -384,7 +362,7 @@ const ESignature: React.FC = () => {
                 <TextField
                   label="Signer Email Addresses"
                   value={newDocument.signers}
-                  onChange={(e) => setNewDocument({ ...newDocument, signers: e.target.value })}
+                  onChange={e => setNewDocument({ ...newDocument, signers: e.target.value })}
                   fullWidth
                   multiline
                   rows={3}
@@ -398,7 +376,7 @@ const ESignature: React.FC = () => {
                   <Select
                     value={newDocument.expiryDays}
                     label="Expires In"
-                    onChange={(e) => setNewDocument({ ...newDocument, expiryDays: e.target.value })}
+                    onChange={e => setNewDocument({ ...newDocument, expiryDays: e.target.value })}
                   >
                     <MenuItem value="7">7 days</MenuItem>
                     <MenuItem value="14">14 days</MenuItem>
@@ -412,7 +390,7 @@ const ESignature: React.FC = () => {
                 <TextField
                   label="Message to Signers"
                   value={newDocument.message}
-                  onChange={(e) => setNewDocument({ ...newDocument, message: e.target.value })}
+                  onChange={e => setNewDocument({ ...newDocument, message: e.target.value })}
                   fullWidth
                   multiline
                   rows={3}

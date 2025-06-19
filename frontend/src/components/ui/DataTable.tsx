@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-
 import {
   Box,
   Paper,
@@ -15,6 +13,7 @@ import {
   visuallyHidden,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import React, { useState } from 'react';
 
 type Order = 'asc' | 'desc';
 
@@ -96,10 +95,10 @@ function DataTable<T extends object>({
   const handleRequestSort = (property: keyof T) => {
     const isAsc = orderBy === property && order === 'asc';
     const newOrder = isAsc ? 'desc' : 'asc';
-    
+
     setOrder(newOrder);
     setOrderBy(property);
-    
+
     if (onSort) {
       onSort(property, newOrder);
     }
@@ -110,7 +109,7 @@ function DataTable<T extends object>({
     if (!isControlled) {
       setUncontrolledPage(newPage);
     }
-    
+
     if (onPageChange) {
       onPageChange(newPage);
     }
@@ -119,16 +118,16 @@ function DataTable<T extends object>({
   // Handle rows per page change
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newRowsPerPage = parseInt(event.target.value, 10);
-    
+
     if (!isControlled) {
       setUncontrolledRowsPerPage(newRowsPerPage);
       setUncontrolledPage(0);
     }
-    
+
     if (onRowsPerPageChange) {
       onRowsPerPageChange(newRowsPerPage);
     }
-    
+
     if (onPageChange && !isControlled) {
       onPageChange(0);
     }
@@ -139,32 +138,28 @@ function DataTable<T extends object>({
     if (!orderBy || onSort) {
       return rows;
     }
-    
+
     return [...rows].sort((a, b) => {
       const aValue = a[orderBy];
       const bValue = b[orderBy];
-      
+
       if (aValue === bValue) {
         return 0;
       }
-      
+
       if (aValue === null || aValue === undefined) {
         return order === 'asc' ? -1 : 1;
       }
-      
+
       if (bValue === null || bValue === undefined) {
         return order === 'asc' ? 1 : -1;
       }
-      
+
       if (typeof aValue === 'string' && typeof bValue === 'string') {
-        return order === 'asc'
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
+        return order === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
       }
-      
-      return order === 'asc'
-        ? (aValue < bValue ? -1 : 1)
-        : (bValue < aValue ? -1 : 1);
+
+      return order === 'asc' ? (aValue < bValue ? -1 : 1) : bValue < aValue ? -1 : 1;
     });
   }, [rows, orderBy, order, onSort]);
 
@@ -186,10 +181,10 @@ function DataTable<T extends object>({
       <StyledTableContainer>
         <Table stickyHeader aria-label={ariaLabel}>
           {caption && <caption>{caption}</caption>}
-          
+
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {columns.map(column => (
                 <TableCell
                   key={String(column.id)}
                   align={column.align || 'left'}
@@ -216,11 +211,11 @@ function DataTable<T extends object>({
               ))}
             </TableRow>
           </TableHead>
-          
+
           <TableBody>
-            {sortedRows.map((row) => {
+            {sortedRows.map(row => {
               const rowId = getRowId(row);
-              
+
               return (
                 <TableRow
                   hover
@@ -230,7 +225,7 @@ function DataTable<T extends object>({
                   sx={onRowClick ? { cursor: 'pointer' } : undefined}
                   role={onRowClick ? 'button' : undefined}
                 >
-                  {columns.map((column) => {
+                  {columns.map(column => {
                     const value = row[column.id];
                     return (
                       <TableCell key={`${rowId}-${String(column.id)}`} align={column.align}>
@@ -244,7 +239,7 @@ function DataTable<T extends object>({
           </TableBody>
         </Table>
       </StyledTableContainer>
-      
+
       <TablePagination
         rowsPerPageOptions={rowsPerPageOptions}
         component="div"
@@ -261,4 +256,3 @@ function DataTable<T extends object>({
 }
 
 export default DataTable;
-
