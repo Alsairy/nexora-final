@@ -39,6 +39,7 @@ namespace Nexora.Web.Api
             services.Configure<SeedingSettings>(Configuration.GetSection("Seeding"));
             services.Configure<JwtSettings>(Configuration.GetSection("Jwt"));
             services.Configure<TenancySettings>(Configuration.GetSection("Tenancy"));
+            services.Configure<FintechSettings>(Configuration.GetSection("Fintech"));
 
             services.AddNexoraTelemetry(Configuration);
             services.AddNexoraSerilog(Configuration);
@@ -87,6 +88,7 @@ namespace Nexora.Web.Api
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IReportingService, ReportingService>();
             services.AddScoped<IExportService, ExportService>();
+            services.AddScoped<IConfigurationManagementService, ConfigurationManagementService>();
             
             services.AddScoped<IPaymentSecurityService, PaymentSecurityService>();
 
