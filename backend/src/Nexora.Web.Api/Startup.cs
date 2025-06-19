@@ -89,6 +89,7 @@ namespace Nexora.Web.Api
             services.AddScoped<IReportingService, ReportingService>();
             services.AddScoped<IExportService, ExportService>();
             services.AddScoped<IConfigurationManagementService, ConfigurationManagementService>();
+            services.AddScoped<IWebhookService, WebhookService>();
             
             services.AddScoped<IPaymentSecurityService, PaymentSecurityService>();
 
