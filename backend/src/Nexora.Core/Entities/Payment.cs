@@ -50,5 +50,8 @@ namespace Nexora.Core.Entities
 
         [ForeignKey("TransactionId")]
         public virtual Transaction Transaction { get; set; }
+        
+        public virtual PaymentProvider PaymentProvider { get; set; }
+        public virtual ICollection<SmsBilling> SmsBillings { get; set; } = new List<SmsBilling>();
     }
 }

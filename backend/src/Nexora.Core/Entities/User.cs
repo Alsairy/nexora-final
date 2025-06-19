@@ -44,6 +44,15 @@ namespace Nexora.Core.Entities
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
 
+        public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
+        public virtual ICollection<SmsMessage> SmsMessages { get; set; } = new List<SmsMessage>();
+        public virtual ICollection<SmsTemplate> SmsTemplates { get; set; } = new List<SmsTemplate>();
+        public virtual ICollection<SenderId> SenderIds { get; set; } = new List<SenderId>();
+        public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+        public virtual ICollection<PaymentMethod> PaymentMethods { get; set; } = new List<PaymentMethod>();
+        public virtual ICollection<SmsBilling> SmsBillings { get; set; } = new List<SmsBilling>();
+        public virtual ICollection<NotificationLog> NotificationLogs { get; set; } = new List<NotificationLog>();
+
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";
     }

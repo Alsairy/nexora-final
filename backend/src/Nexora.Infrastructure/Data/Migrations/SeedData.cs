@@ -40,6 +40,8 @@ namespace Nexora.Infrastructure.Data.Migrations
                 // Seed data
                 await SeedTenantsAsync(context, logger);
                 await SeedUsersAsync(context, seedingSettings, logger);
+                await SeedPaymentProvidersAsync(context, logger);
+                await SeedSmsProvidersAsync(context, logger);
                 
                 logger.LogInformation("Seeding completed successfully");
             }
@@ -99,6 +101,162 @@ namespace Nexora.Infrastructure.Data.Migrations
                 };
                 
                 await context.Users.AddAsync(adminUser);
+                await context.SaveChangesAsync();
+            }
+        }
+
+        private static async Task SeedPaymentProvidersAsync(NexoraDbContext context, ILogger logger)
+        {
+            if (!await context.PaymentProviders.AnyAsync())
+            {
+                logger.LogInformation("Seeding payment providers");
+                
+                await context.PaymentProviders.AddRangeAsync(
+                    new PaymentProvider
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "Stripe",
+                        DisplayName = "Stripe",
+                        Description = "Global payment processing platform",
+                        ApiEndpoint = "https://api.stripe.com/v1",
+                        CountryCode = "US",
+                        Currency = "USD",
+                        IsActive = true,
+                        SupportsCreditCards = true,
+                        SupportsDebitCards = true,
+                        SupportsBankTransfers = false,
+                        SupportsDigitalWallets = true,
+                        SupportsRecurringPayments = true,
+                        TransactionFeePercentage = 2.9m,
+                        FixedTransactionFee = 0.30m,
+                        Priority = 1,
+                        CreatedAt = DateTime.UtcNow
+                    },
+                    new PaymentProvider
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "PayPal",
+                        DisplayName = "PayPal",
+                        Description = "Digital payment platform",
+                        ApiEndpoint = "https://api.paypal.com/v1",
+                        CountryCode = "US",
+                        Currency = "USD",
+                        IsActive = true,
+                        SupportsCreditCards = true,
+                        SupportsDebitCards = true,
+                        SupportsBankTransfers = true,
+                        SupportsDigitalWallets = true,
+                        SupportsRecurringPayments = true,
+                        TransactionFeePercentage = 3.49m,
+                        FixedTransactionFee = 0.49m,
+                        Priority = 2,
+                        CreatedAt = DateTime.UtcNow
+                    },
+                    new PaymentProvider
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "Mada",
+                        DisplayName = "Mada",
+                        Description = "Saudi Arabia national payment scheme",
+                        ApiEndpoint = "https://api.mada.com.sa/v1",
+                        CountryCode = "SA",
+                        Currency = "SAR",
+                        IsActive = true,
+                        SupportsCreditCards = false,
+                        SupportsDebitCards = true,
+                        SupportsBankTransfers = true,
+                        SupportsDigitalWallets = false,
+                        SupportsRecurringPayments = true,
+                        TransactionFeePercentage = 1.75m,
+                        FixedTransactionFee = 0.00m,
+                        Priority = 1,
+                        CreatedAt = DateTime.UtcNow
+                    },
+                    new PaymentProvider
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "HyperPay",
+                        DisplayName = "HyperPay",
+                        Description = "Middle East payment gateway",
+                        ApiEndpoint = "https://oppwa.com/v1",
+                        CountryCode = "SA",
+                        Currency = "SAR",
+                        IsActive = true,
+                        SupportsCreditCards = true,
+                        SupportsDebitCards = true,
+                        SupportsBankTransfers = true,
+                        SupportsDigitalWallets = true,
+                        SupportsRecurringPayments = true,
+                        TransactionFeePercentage = 2.75m,
+                        FixedTransactionFee = 0.00m,
+                        Priority = 2,
+                        CreatedAt = DateTime.UtcNow
+                    }
+                );
+                
+                await context.SaveChangesAsync();
+            }
+        }
+
+        private static async Task SeedSmsProvidersAsync(NexoraDbContext context, ILogger logger)
+        {
+            if (!await context.SmsProviders.AnyAsync())
+            {
+                logger.LogInformation("Seeding SMS providers");
+                
+                await context.SmsProviders.AddRangeAsync(
+                    new SmsProvider
+                    {
+                        Id = 1,
+                        Name = "Twilio",
+                        Code = "TWILIO",
+                        Description = "Global SMS provider with high delivery rates",
+                        ApiEndpoint = "https://api.twilio.com/2010-04-01",
+                        Country = "SA",
+                        CostPerSms = 0.05m,
+                        Currency = "SAR",
+                        Priority = 1,
+                        IsActive = true,
+                        IsDefault = true,
+                        SupportsDeliveryReceipts = true,
+                        SupportsUnicode = true,
+                        SupportsLongMessages = true,
+                        MaxMessageLength = 1600,
+                        MaxConcurrentMessages = 100,
+                        RateLimitPerSecond = 10,
+                        RateLimitPerMinute = 600,
+                        RateLimitPerHour = 36000,
+                        IsKsaCompliant = true,
+                        SupportsCitcIntegration = true,
+                        CreatedAt = DateTime.UtcNow
+                    },
+                    new SmsProvider
+                    {
+                        Id = 2,
+                        Name = "Unifonic",
+                        Code = "UNIFONIC",
+                        Description = "Regional SMS provider for MENA region",
+                        ApiEndpoint = "https://api.unifonic.com/v1",
+                        Country = "SA",
+                        CostPerSms = 0.04m,
+                        Currency = "SAR",
+                        Priority = 2,
+                        IsActive = true,
+                        IsDefault = false,
+                        SupportsDeliveryReceipts = true,
+                        SupportsUnicode = true,
+                        SupportsLongMessages = true,
+                        MaxMessageLength = 1600,
+                        MaxConcurrentMessages = 50,
+                        RateLimitPerSecond = 5,
+                        RateLimitPerMinute = 300,
+                        RateLimitPerHour = 18000,
+                        IsKsaCompliant = true,
+                        SupportsCitcIntegration = true,
+                        CreatedAt = DateTime.UtcNow
+                    }
+                );
+                
                 await context.SaveChangesAsync();
             }
         }
