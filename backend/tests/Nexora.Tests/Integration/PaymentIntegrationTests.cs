@@ -5,18 +5,19 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Nexora.Core.Data;
 using Nexora.Core.Entities;
+using Nexora.Web.Api;
 using System.Net.Http.Json;
 using System.Text.Json;
 using Xunit;
 
 namespace Nexora.Tests.Integration;
 
-public class PaymentIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
+public class PaymentIntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
 {
-    private readonly WebApplicationFactory<Program> _factory;
+    private readonly WebApplicationFactory<Startup> _factory;
     private readonly HttpClient _client;
 
-    public PaymentIntegrationTests(WebApplicationFactory<Program> factory)
+    public PaymentIntegrationTests(WebApplicationFactory<Startup> factory)
     {
         _factory = factory.WithWebHostBuilder(builder =>
         {

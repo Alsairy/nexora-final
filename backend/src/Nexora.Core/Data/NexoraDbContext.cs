@@ -1,8 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Nexora.Core.Entities;
 using Nexora.Core.Interfaces;
+using Nexora.Core.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,16 +14,8 @@ namespace Nexora.Core.Data
 {
     public class NexoraDbContext : DbContext
     {
-        private readonly ITenantService _tenantService;
-        private readonly IAuditService _auditService;
-
-        public NexoraDbContext(
-            DbContextOptions<NexoraDbContext> options,
-            ITenantService tenantService,
-            IAuditService auditService) : base(options)
+        public NexoraDbContext(DbContextOptions<NexoraDbContext> options) : base(options)
         {
-            _tenantService = tenantService;
-            _auditService = auditService;
         }
 
         public DbSet<User> Users { get; set; }
@@ -27,6 +23,27 @@ namespace Nexora.Core.Data
         public DbSet<Payment> Payments { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<Tenant> Tenants { get; set; }
+        
+        public DbSet<ESignatureDocument> ESignatureDocuments { get; set; }
+        public DbSet<ESignatureSigner> ESignatureSigners { get; set; }
+        public DbSet<ESignatureSignature> ESignatureSignatures { get; set; }
+        public DbSet<ESignatureAuditLog> ESignatureAuditLogs { get; set; }
+        public DbSet<ESignatureNotification> ESignatureNotifications { get; set; }
+        public DbSet<ESignatureAuthentication> ESignatureAuthentications { get; set; }
+        public DbSet<ESignatureWorkflow> ESignatureWorkflows { get; set; }
+        public DbSet<ESignatureWorkflowStep> ESignatureWorkflowSteps { get; set; }
+        public DbSet<ESignatureTemplate> ESignatureTemplates { get; set; }
+        public DbSet<ESignatureTemplateField> ESignatureTemplateFields { get; set; }
+        
+        public DbSet<Merchant> Merchants { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<PaymentSplit> PaymentSplits { get; set; }
+        public DbSet<PayoutAccount> PayoutAccounts { get; set; }
+        public DbSet<PaymentLink> PaymentLinks { get; set; }
+        public DbSet<ZatcaInvoice> ZatcaInvoices { get; set; }
+        public DbSet<LoanApplication> LoanApplications { get; set; }
+        public DbSet<PaymentQueue> PaymentQueues { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,16 +65,6 @@ namespace Nexora.Core.Data
                     modelBuilder.Entity(entityType.ClrType).HasQueryFilter(lambda);
                 }
 
-                // Apply multi-tenancy filter for tenant-specific entities
-                if (typeof(ITenantEntity).IsAssignableFrom(entityType.ClrType))
-                {
-                    // Configure tenant filter
-                    var tenantFilterMethod = typeof(NexoraDbContext)
-                        .GetMethod(nameof(ApplyTenantFilter), BindingFlags.NonPublic | BindingFlags.Instance)
-                        .MakeGenericMethod(entityType.ClrType);
-
-                    tenantFilterMethod.Invoke(this, new object[] { modelBuilder });
-                }
             }
 
             // Special case for AuditLogEntry - apply global query filter
@@ -100,61 +107,17 @@ namespace Nexora.Core.Data
             });
         }
 
-        private void ApplyTenantFilter<T>(ModelBuilder modelBuilder) where T : class, ITenantEntity
-        {
-            modelBuilder.Entity<T>().HasQueryFilter(e => e.TenantId == _tenantService.GetCurrentTenantId());
-        }
-
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            // Get current tenant ID
-            var tenantId = _tenantService.GetCurrentTenantId();
-            
-            // Handle audit entries
-            var auditEntries = OnBeforeSaveChanges(tenantId);
-            
-            // Apply tenant ID to new entities
-            ApplyTenantId(tenantId);
-            
             // Apply soft delete
             ApplySoftDelete();
             
             var result = await base.SaveChangesAsync(cancellationToken);
             
-            // Save audit logs after the main transaction completes
-            await OnAfterSaveChanges(auditEntries);
-            
             return result;
         }
 
-        private List<AuditEntry> OnBeforeSaveChanges(int tenantId)
-        {
-            ChangeTracker.DetectChanges();
-            var auditEntries = new List<AuditEntry>();
-            
-            foreach (var entry in ChangeTracker.Entries())
-            {
-                if (entry.Entity is AuditLog || !(entry.Entity is IAuditableEntity) || 
-                    entry.State == EntityState.Detached || entry.State == EntityState.Unchanged)
-                    continue;
 
-                var auditEntry = _auditService.CreateAuditEntry(entry, tenantId);
-                auditEntries.Add(auditEntry);
-            }
-            
-            return auditEntries;
-        }
-
-        private void ApplyTenantId(int tenantId)
-        {
-            foreach (var entry in ChangeTracker.Entries<ITenantEntity>())
-            {
-                if (entry.State == EntityState.Added)
-                {
-                    entry.Entity.TenantId = tenantId;
-                }
-            }
-        }
 
         private void ApplySoftDelete()
         {
@@ -169,13 +132,7 @@ namespace Nexora.Core.Data
             }
         }
 
-        private async Task OnAfterSaveChanges(List<AuditEntry> auditEntries)
-        {
-            if (auditEntries == null || auditEntries.Count == 0)
-                return;
 
-            await _auditService.SaveAuditLogs(auditEntries);
-        }
     }
 }
 

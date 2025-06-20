@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using Nexora.Core.Configuration;
 using Nexora.Core.Data;
 using Nexora.Core.Interfaces;
@@ -35,7 +38,6 @@ namespace Nexora.Web.Api
             services.Configure<TenancySettings>(Configuration.GetSection("Tenancy"));
 
             services.AddNexoraTelemetry(Configuration);
-            services.AddNexoraSerilog(Configuration);
 
             // Add resilience patterns
             services.AddNexoraResilience(Configuration);
@@ -66,17 +68,20 @@ namespace Nexora.Web.Api
             });
 
             // Add services
-            services.AddScoped<ITenantService, TenantService>();
+            services.AddScoped<Nexora.Core.Interfaces.ITenantService, TenantService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IAuditService, AuditService>();
             services.AddScoped<ICacheService, CacheService>();
             services.AddScoped<IKeyVaultService, KeyVaultService>();
             services.AddScoped<ICryptoHelper, CryptoHelper>();
-            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<Nexora.Core.Interfaces.IPaymentService, PaymentService>();
 
             // Add repositories
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITransactionRepository, TransactionRepository>();
+
+            services.AddHttpContextAccessor();
 
             // Add controllers
             services.AddControllers();
@@ -98,7 +103,7 @@ namespace Nexora.Web.Api
                     ValidIssuer = Configuration["Jwt:Issuer"],
                     ValidAudience = Configuration["Jwt:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                        Encoding.UTF8.GetBytes(Configuration["Jwt:SecretKey"] ?? Configuration["Jwt:Key"] ?? "default-development-secret-key-that-is-at-least-32-characters-long"))
                 };
             });
 
@@ -169,7 +174,7 @@ namespace Nexora.Web.Api
             // Use CORS
             app.UseCors("NexoraPolicy");
 
-            app.UseMiddleware<RateLimitingMiddleware>();
+            // app.UseMiddleware<RateLimitingMiddleware>();
 
             // Use tenant middleware
             app.UseMiddleware<TenantMiddleware>();

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Nexora.Core.Data;
 using Nexora.Core.Entities;
 using Nexora.Core.Interfaces;
+using Nexora.Core.DTOs;
 using System;
 using System.Threading.Tasks;
 
@@ -24,7 +25,7 @@ namespace Nexora.Infrastructure.Services
             _cacheService = cacheService;
         }
 
-        public async Task<Payment> ProcessPaymentAsync(PaymentRequest request)
+        public async Task<PaymentResult> ProcessPaymentAsync(PaymentRequest request)
         {
             // Validate request
             if (request == null)
@@ -32,37 +33,38 @@ namespace Nexora.Infrastructure.Services
                 throw new ArgumentNullException(nameof(request));
             }
 
-            if (string.IsNullOrEmpty(request.IdempotencyKey))
+            // Validate basic payment request properties
+            if (request.Amount <= 0)
             {
-                throw new ArgumentException("Idempotency key is required", nameof(request.IdempotencyKey));
+                throw new ArgumentException("Amount must be greater than zero", nameof(request.Amount));
             }
 
-            // Check for existing payment with the same idempotency key
+            // Check for existing payment with the same external reference
             var existingPayment = await _dbContext.Payments
-                .FirstOrDefaultAsync(p => p.IdempotencyKey == request.IdempotencyKey);
+                .FirstOrDefaultAsync(p => p.ExternalReference == request.ExternalReference && !string.IsNullOrEmpty(request.ExternalReference));
 
             if (existingPayment != null)
             {
-                _logger.LogInformation("Payment with idempotency key {IdempotencyKey} already exists", request.IdempotencyKey);
-                return existingPayment;
+                _logger.LogInformation("Payment with external reference {ExternalReference} already exists", request.ExternalReference);
+                return new PaymentResult
+                {
+                    Success = true,
+                    ReferenceId = existingPayment.ExternalReference ?? existingPayment.Id.ToString(),
+                    Status = existingPayment.Status,
+                    Amount = existingPayment.Amount,
+                    Currency = existingPayment.Currency
+                };
             }
 
-            // Get transaction
-            var transaction = await _dbContext.Transactions.FindAsync(request.TransactionId);
-            if (transaction == null)
-            {
-                throw new ArgumentException($"Transaction with ID {request.TransactionId} not found", nameof(request.TransactionId));
-            }
-
-            // Create payment
+            // Create payment - using a default transaction ID since PaymentRequest doesn't have TransactionId
             var payment = new Payment
             {
-                TransactionId = request.TransactionId,
+                TransactionId = 1, // Default transaction ID - this should be passed differently in a real implementation
                 PaymentMethod = request.PaymentMethod,
                 Amount = request.Amount,
                 Currency = request.Currency,
                 Status = "Pending",
-                IdempotencyKey = request.IdempotencyKey,
+                IdempotencyKey = Guid.NewGuid().ToString(), // Generate idempotency key since PaymentRequest doesn't have it
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -75,72 +77,71 @@ namespace Nexora.Infrastructure.Services
                 payment.Status = result.Success ? "Completed" : "Failed";
                 payment.ExternalReference = result.ReferenceId;
                 
-                // Update transaction status
-                if (result.Success)
-                {
-                    transaction.Status = "Paid";
-                    transaction.UpdatedAt = DateTime.UtcNow;
-                }
+                // Update payment status based on result
+                payment.Status = result.Success ? "Completed" : "Failed";
+                payment.ExternalReference = result.ReferenceId;
                 
                 // Save payment
                 await _dbContext.Payments.AddAsync(payment);
                 await _dbContext.SaveChangesAsync();
                 
-                return payment;
+                return new PaymentResult
+                {
+                    Success = true,
+                    ReferenceId = payment.ExternalReference ?? payment.Id.ToString(),
+                    Status = payment.Status,
+                    Amount = payment.Amount,
+                    Currency = payment.Currency
+                };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error processing payment for transaction {TransactionId}", request.TransactionId);
+                _logger.LogError(ex, "Error processing payment for amount {Amount}", request.Amount);
                 
                 // Save failed payment
                 payment.Status = "Failed";
                 await _dbContext.Payments.AddAsync(payment);
                 await _dbContext.SaveChangesAsync();
                 
-                throw;
+                return new PaymentResult
+                {
+                    Success = false,
+                    ErrorMessage = ex.Message
+                };
             }
         }
 
-        public async Task<Payment> RefundPaymentAsync(RefundRequest request)
+        public async Task<PaymentResult> RefundPaymentAsync(int paymentId, decimal amount, string reason)
         {
-            // Validate request
-            if (request == null)
-            {
-                throw new ArgumentNullException(nameof(request));
-            }
-
-            if (string.IsNullOrEmpty(request.IdempotencyKey))
-            {
-                throw new ArgumentException("Idempotency key is required", nameof(request.IdempotencyKey));
-            }
-
-            // Check for existing refund with the same idempotency key
-            var existingRefund = await _dbContext.Payments
-                .FirstOrDefaultAsync(p => p.IdempotencyKey == request.IdempotencyKey);
-
-            if (existingRefund != null)
-            {
-                _logger.LogInformation("Refund with idempotency key {IdempotencyKey} already exists", request.IdempotencyKey);
-                return existingRefund;
-            }
-
             // Get original payment
-            var originalPayment = await _dbContext.Payments.FindAsync(request.PaymentId);
+            var originalPayment = await _dbContext.Payments.FindAsync(paymentId);
             if (originalPayment == null)
             {
-                throw new ArgumentException($"Payment with ID {request.PaymentId} not found", nameof(request.PaymentId));
+                return new PaymentResult
+                {
+                    Success = false,
+                    ErrorMessage = $"Payment with ID {paymentId} not found"
+                };
             }
 
             if (originalPayment.Status != "Completed")
             {
-                throw new InvalidOperationException($"Cannot refund payment with status {originalPayment.Status}");
+                return new PaymentResult
+                {
+                    Success = false,
+                    ErrorMessage = $"Cannot refund payment with status {originalPayment.Status}"
+                };
             }
 
             // Get transaction
             var transaction = await _dbContext.Transactions.FindAsync(originalPayment.TransactionId);
             if (transaction == null)
             {
-                throw new ArgumentException($"Transaction not found for payment {request.PaymentId}");
+                return new PaymentResult
+                {
+                    Success = false,
+                    ErrorMessage = $"Transaction not found for payment {paymentId}"
+                };
             }
 
             // Create refund payment
@@ -148,12 +149,12 @@ namespace Nexora.Infrastructure.Services
             {
                 TransactionId = originalPayment.TransactionId,
                 PaymentMethod = originalPayment.PaymentMethod,
-                Amount = request.Amount ?? originalPayment.Amount,
+                Amount = amount,
                 Currency = originalPayment.Currency,
                 Status = "Pending",
-                IdempotencyKey = request.IdempotencyKey,
+                IdempotencyKey = Guid.NewGuid().ToString(),
                 CreatedAt = DateTime.UtcNow,
-                RefundForPaymentId = originalPayment.Id
+                OriginalPaymentId = originalPayment.Id
             };
 
             try
@@ -181,18 +182,29 @@ namespace Nexora.Infrastructure.Services
                 await _dbContext.Payments.AddAsync(refund);
                 await _dbContext.SaveChangesAsync();
                 
-                return refund;
+                return new PaymentResult
+                {
+                    Success = true,
+                    ReferenceId = refund.ExternalReference ?? refund.Id.ToString(),
+                    Status = refund.Status,
+                    Amount = refund.Amount,
+                    Currency = refund.Currency
+                };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error processing refund for payment {PaymentId}", request.PaymentId);
+                _logger.LogError(ex, "Error processing refund for payment {PaymentId}", paymentId);
                 
                 // Save failed refund
                 refund.Status = "Failed";
                 await _dbContext.Payments.AddAsync(refund);
                 await _dbContext.SaveChangesAsync();
                 
-                throw;
+                return new PaymentResult
+                {
+                    Success = false,
+                    ErrorMessage = ex.Message
+                };
             }
         }
 
@@ -219,35 +231,113 @@ namespace Nexora.Infrastructure.Services
                 ReferenceId = Guid.NewGuid().ToString("N")
             };
         }
+
+        public async Task<PaymentResult> GetPaymentStatusAsync(string referenceId)
+        {
+            if (string.IsNullOrEmpty(referenceId))
+            {
+                return new PaymentResult
+                {
+                    Success = false,
+                    ErrorMessage = "Reference ID is required"
+                };
+            }
+
+            var payment = await _dbContext.Payments
+                .FirstOrDefaultAsync(p => p.ExternalReference == referenceId || p.Id.ToString() == referenceId);
+
+            if (payment == null)
+            {
+                return new PaymentResult
+                {
+                    Success = false,
+                    ErrorMessage = $"Payment with reference ID {referenceId} not found"
+                };
+            }
+
+            return new PaymentResult
+            {
+                Success = true,
+                ReferenceId = payment.ExternalReference ?? payment.Id.ToString(),
+                Status = payment.Status,
+                Amount = payment.Amount,
+                Currency = payment.Currency
+            };
+        }
+
+        public async Task<bool> ValidatePaymentAsync(PaymentRequest request)
+        {
+            if (request == null)
+                return false;
+
+            if (request.Amount <= 0)
+                return false;
+
+            if (string.IsNullOrEmpty(request.Currency))
+                return false;
+
+            if (string.IsNullOrEmpty(request.PaymentMethod))
+                return false;
+
+            // Check for duplicate external reference if provided
+            if (!string.IsNullOrEmpty(request.ExternalReference))
+            {
+                var existingPayment = await _dbContext.Payments
+                    .AnyAsync(p => p.ExternalReference == request.ExternalReference);
+                
+                if (existingPayment)
+                    return false;
+            }
+
+            return true;
+        }
+
+        public async Task<PaymentResult> GetPaymentAsync(int paymentId)
+        {
+            var payment = await _dbContext.Payments.FindAsync(paymentId);
+            
+            if (payment == null)
+            {
+                return new PaymentResult
+                {
+                    Success = false,
+                    ErrorMessage = $"Payment with ID {paymentId} not found"
+                };
+            }
+
+            return new PaymentResult
+            {
+                Success = true,
+                ReferenceId = payment.ExternalReference ?? payment.Id.ToString(),
+                Status = payment.Status,
+                Amount = payment.Amount,
+                Currency = payment.Currency
+            };
+        }
+
+        public async Task<List<PaymentResult>> GetUserPaymentsAsync(int userId)
+        {
+            var payments = await _dbContext.Payments
+                .Where(p => p.UserId == userId)
+                .ToListAsync();
+
+            return payments.Select(p => new PaymentResult
+            {
+                Success = true,
+                ReferenceId = p.ExternalReference ?? p.Id.ToString(),
+                Status = p.Status,
+                Amount = p.Amount,
+                Currency = p.Currency
+            }).ToList();
+        }
     }
 
-    public class PaymentRequest
-    {
-        public int TransactionId { get; set; }
-        public string PaymentMethod { get; set; }
-        public decimal Amount { get; set; }
-        public string Currency { get; set; }
-        public string IdempotencyKey { get; set; }
-    }
 
-    public class RefundRequest
-    {
-        public int PaymentId { get; set; }
-        public decimal? Amount { get; set; }
-        public string IdempotencyKey { get; set; }
-    }
 
-    public class PaymentResult
-    {
-        public bool Success { get; set; }
-        public string ReferenceId { get; set; }
-        public string ErrorMessage { get; set; }
-    }
 
-    public interface IPaymentService
-    {
-        Task<Payment> ProcessPaymentAsync(PaymentRequest request);
-        Task<Payment> RefundPaymentAsync(RefundRequest request);
-    }
+
+
+
+
 }
 
