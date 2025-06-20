@@ -53,7 +53,7 @@ public static class SerilogExtensions
                 EmitEventFailure = EmitEventFailureHandling.WriteToSelfLog |
                                    EmitEventFailureHandling.WriteToFailureSink |
                                    EmitEventFailureHandling.RaiseCallback,
-                FailureSink = new FileSink("logs/elasticsearch-failures-.log", new ElasticsearchJsonFormatter(), null)
+                FailureSink = null
             })
             .CreateLogger();
 

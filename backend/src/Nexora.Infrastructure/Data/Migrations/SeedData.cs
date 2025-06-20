@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,7 +25,7 @@ namespace Nexora.Infrastructure.Data.Migrations
             var logger = services.GetRequiredService<ILogger<NexoraDbContext>>();
 
             // Check if seeding is allowed in current environment
-            if (!seedingSettings.EnabledEnvironments.Contains(environment.EnvironmentName))
+            if (seedingSettings.EnabledEnvironments == null || !seedingSettings.EnabledEnvironments.Contains(environment.EnvironmentName))
             {
                 logger.LogInformation("Seeding is not enabled for environment: {Environment}", environment.EnvironmentName);
                 return;
@@ -83,8 +84,8 @@ namespace Nexora.Infrastructure.Data.Migrations
             {
                 logger.LogInformation("Seeding users");
                 
-                var passwordHasher = new PasswordHasher();
-                var hashedPassword = passwordHasher.HashPassword(settings.AdminUser.Password);
+                var passwordHasher = new PasswordHasher<User>();
+                var hashedPassword = passwordHasher.HashPassword(null, settings.AdminUser.Password);
                 
                 var adminUser = new User
                 {

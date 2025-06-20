@@ -55,12 +55,8 @@ public static class TelemetryExtensions
                         activity.SetTag("db.query.parameters", command.Parameters.Count);
                     };
                 })
-                .AddRedisInstrumentation()
-                .AddJaegerExporter(options =>
-                {
-                    options.AgentHost = configuration["Telemetry:Jaeger:Host"] ?? "localhost";
-                    options.AgentPort = int.Parse(configuration["Telemetry:Jaeger:Port"] ?? "6831");
-                })
+
+
                 .AddOtlpExporter(options =>
                 {
                     options.Endpoint = new Uri(configuration["Telemetry:OTLP:Endpoint"] ?? "http://localhost:4317");
@@ -72,12 +68,7 @@ public static class TelemetryExtensions
                 .AddHttpClientInstrumentation()
                 .AddRuntimeInstrumentation()
                 .AddProcessInstrumentation()
-                .AddPrometheusExporter()
-                .AddOtlpExporter(options =>
-                {
-                    options.Endpoint = new Uri(configuration["Telemetry:OTLP:Endpoint"] ?? "http://localhost:4317");
-                    options.Protocol = OtlpExportProtocol.Grpc;
-                }));
+                .AddPrometheusExporter());
 
         return services;
     }
@@ -121,10 +112,12 @@ public class NexoraTelemetry
     
     public static readonly ObservableGauge<int> ActiveUsersGauge = Meter.CreateObservableGauge<int>(
         "nexora_active_users",
+        () => GetActiveUsersCount(),
         "Number of currently active users");
     
     public static readonly ObservableGauge<decimal> TotalBalanceGauge = Meter.CreateObservableGauge<decimal>(
         "nexora_total_balance",
+        () => GetTotalBalance(),
         "Total balance across all accounts");
     
     public static Activity? StartActivity(string name, ActivityKind kind = ActivityKind.Internal)
@@ -134,13 +127,11 @@ public class NexoraTelemetry
     
     public static void RecordApiCall(string endpoint, string method, int statusCode, double duration)
     {
-        var tags = new TagList
-        {
-            ["endpoint"] = endpoint,
-            ["method"] = method,
-            ["status_code"] = statusCode,
-            ["status_class"] = GetStatusClass(statusCode)
-        };
+        var tags = new TagList();
+        tags.Add("endpoint", endpoint ?? "unknown");
+        tags.Add("method", method ?? "unknown");
+        tags.Add("status_code", statusCode.ToString());
+        tags.Add("status_class", GetStatusClass(statusCode));
         
         ApiCallsTotal.Add(1, tags);
         ApiCallsDuration.Record(duration, tags);
@@ -148,12 +139,10 @@ public class NexoraTelemetry
     
     public static void RecordPaymentTransaction(string type, string status, decimal amount, double duration)
     {
-        var tags = new TagList
-        {
-            ["type"] = type,
-            ["status"] = status,
-            ["amount_range"] = GetAmountRange(amount)
-        };
+        var tags = new TagList();
+        tags.Add("type", type ?? "unknown");
+        tags.Add("status", status ?? "unknown");
+        tags.Add("amount_range", GetAmountRange(amount));
         
         PaymentTransactionsTotal.Add(1, tags);
         PaymentProcessingDuration.Record(duration, tags);
@@ -161,24 +150,20 @@ public class NexoraTelemetry
     
     public static void RecordUserActivity(string userId, string activity, string tenantId)
     {
-        var tags = new TagList
-        {
-            ["user_id"] = userId,
-            ["activity"] = activity,
-            ["tenant_id"] = tenantId
-        };
+        var tags = new TagList();
+        tags.Add("user_id", userId ?? "unknown");
+        tags.Add("activity", activity ?? "unknown");
+        tags.Add("tenant_id", tenantId ?? "unknown");
         
         UserActivitiesTotal.Add(1, tags);
     }
     
     public static void RecordFraudDetection(string transactionId, bool isFraud, double riskScore)
     {
-        var tags = new TagList
-        {
-            ["transaction_id"] = transactionId,
-            ["is_fraud"] = isFraud.ToString(),
-            ["risk_level"] = GetRiskLevel(riskScore)
-        };
+        var tags = new TagList();
+        tags.Add("transaction_id", transactionId ?? "unknown");
+        tags.Add("is_fraud", isFraud.ToString());
+        tags.Add("risk_level", GetRiskLevel(riskScore));
         
         FraudDetectionTotal.Add(1, tags);
     }
@@ -215,5 +200,15 @@ public class NexoraTelemetry
             < 0.9 => "high",
             _ => "critical"
         };
+    }
+    
+    private static int GetActiveUsersCount()
+    {
+        return 0;
+    }
+    
+    private static decimal GetTotalBalance()
+    {
+        return 0m;
     }
 }

@@ -42,7 +42,7 @@ public class ComprehensiveAuditService : IComprehensiveAuditService
             UserId = userId,
             IpAddress = ipAddress,
             Data = JsonSerializer.Serialize(data),
-            TenantId = _tenantService.GetCurrentTenantId(),
+            TenantId = int.TryParse(_tenantService.GetCurrentTenantId().ToString(), out var tenantIdInt) ? tenantIdInt : 1,
             Timestamp = DateTime.UtcNow
         };
 
@@ -62,7 +62,7 @@ public class ComprehensiveAuditService : IComprehensiveAuditService
             Description = description,
             UserId = userId,
             Data = data != null ? JsonSerializer.Serialize(data) : null,
-            TenantId = _tenantService.GetCurrentTenantId(),
+            TenantId = int.TryParse(_tenantService.GetCurrentTenantId().ToString(), out var tenantIdInt) ? tenantIdInt : 1,
             Timestamp = DateTime.UtcNow,
             Severity = GetSeverityForSecurityEvent(eventType)
         };
@@ -84,7 +84,7 @@ public class ComprehensiveAuditService : IComprehensiveAuditService
             EntityType = entityType,
             EntityId = entityId,
             UserId = userId,
-            TenantId = _tenantService.GetCurrentTenantId(),
+            TenantId = int.TryParse(_tenantService.GetCurrentTenantId().ToString(), out var tenantIdInt) ? tenantIdInt : 1,
             Timestamp = DateTime.UtcNow
         };
 
@@ -103,7 +103,7 @@ public class ComprehensiveAuditService : IComprehensiveAuditService
             Action = eventType,
             Description = description,
             Data = data != null ? JsonSerializer.Serialize(data) : null,
-            TenantId = _tenantService.GetCurrentTenantId(),
+            TenantId = int.TryParse(_tenantService.GetCurrentTenantId().ToString(), out var tenantIdInt) ? tenantIdInt : 1,
             Timestamp = DateTime.UtcNow
         };
 
@@ -115,7 +115,8 @@ public class ComprehensiveAuditService : IComprehensiveAuditService
 
     public async Task<IEnumerable<AuditLog>> GetAuditTrailAsync(string entityType, string entityId, DateTime? fromDate = null, DateTime? toDate = null)
     {
-        var query = await _auditRepository.GetAsync(a => 
+        var allAudits = await _auditRepository.GetAllAsync();
+        var query = allAudits.Where(a => 
             a.EntityType == entityType && 
             a.EntityId == entityId &&
             (!fromDate.HasValue || a.Timestamp >= fromDate.Value) &&
@@ -126,7 +127,8 @@ public class ComprehensiveAuditService : IComprehensiveAuditService
 
     public async Task<IEnumerable<AuditLog>> GetUserAuditTrailAsync(string userId, DateTime? fromDate = null, DateTime? toDate = null)
     {
-        var query = await _auditRepository.GetAsync(a => 
+        var allAudits = await _auditRepository.GetAllAsync();
+        var query = allAudits.Where(a => 
             a.UserId == userId &&
             (!fromDate.HasValue || a.Timestamp >= fromDate.Value) &&
             (!toDate.HasValue || a.Timestamp <= toDate.Value));

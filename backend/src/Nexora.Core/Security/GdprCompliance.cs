@@ -242,7 +242,8 @@ public class GdprComplianceService : IGdprComplianceService
             var retentionPeriod = TimeSpan.FromDays(2555); // 7 years for financial data
             var cutoffDate = DateTime.UtcNow.Subtract(retentionPeriod);
 
-            var expiredAuditLogs = await _auditRepository.GetAsync(a => a.Timestamp < cutoffDate);
+            var allAuditLogs = await _auditRepository.GetAllAsync();
+            var expiredAuditLogs = allAuditLogs.Where(a => a.Timestamp < cutoffDate);
             
             if (expiredAuditLogs.Any())
             {
@@ -261,7 +262,8 @@ public class GdprComplianceService : IGdprComplianceService
 
     private async Task<object> GetUserTransactionsAsync(string userId)
     {
-        var transactions = await _transactionRepository.GetAsync(t => t.UserId == int.Parse(userId));
+        var allTransactions = await _transactionRepository.GetAllAsync();
+        var transactions = allTransactions.Where(t => t.UserId == int.Parse(userId));
         return transactions.Select(t => new
         {
             t.Id,
@@ -278,7 +280,8 @@ public class GdprComplianceService : IGdprComplianceService
 
     private async Task<object> GetUserPaymentsAsync(string userId)
     {
-        var payments = await _paymentRepository.GetAsync(p => p.UserId == int.Parse(userId));
+        var allPayments = await _paymentRepository.GetAllAsync();
+        var payments = allPayments.Where(p => p.UserId == int.Parse(userId));
         return payments.Select(p => new
         {
             p.Id,
@@ -294,7 +297,8 @@ public class GdprComplianceService : IGdprComplianceService
 
     private async Task<object> GetUserAuditLogsAsync(string userId)
     {
-        var auditLogs = await _auditRepository.GetAsync(a => a.UserId == userId);
+        var allAuditLogs = await _auditRepository.GetAllAsync();
+        var auditLogs = allAuditLogs.Where(a => a.UserId == userId);
         return auditLogs.Select(a => new
         {
             a.Id,
@@ -313,14 +317,16 @@ public class GdprComplianceService : IGdprComplianceService
 
     private async Task AnonymizeUserDataInternalAsync(string userId)
     {
-        var transactions = await _transactionRepository.GetAsync(t => t.UserId == int.Parse(userId));
+        var allTransactions = await _transactionRepository.GetAllAsync();
+        var transactions = allTransactions.Where(t => t.UserId == int.Parse(userId));
         foreach (var transaction in transactions)
         {
             transaction.Description = "Anonymized transaction";
             await _transactionRepository.UpdateAsync(transaction);
         }
 
-        var payments = await _paymentRepository.GetAsync(p => p.UserId == int.Parse(userId));
+        var allPayments = await _paymentRepository.GetAllAsync();
+        var payments = allPayments.Where(p => p.UserId == int.Parse(userId));
         foreach (var payment in payments)
         {
             payment.PaymentMethod = "Anonymized";
@@ -330,7 +336,8 @@ public class GdprComplianceService : IGdprComplianceService
 
     private async Task DeleteUserTransactionsAsync(string userId)
     {
-        var transactions = await _transactionRepository.GetAsync(t => t.UserId == int.Parse(userId));
+        var allTransactions = await _transactionRepository.GetAllAsync();
+        var transactions = allTransactions.Where(t => t.UserId == int.Parse(userId));
         foreach (var transaction in transactions)
         {
             await _transactionRepository.DeleteAsync(transaction);
@@ -339,7 +346,8 @@ public class GdprComplianceService : IGdprComplianceService
 
     private async Task DeleteUserPaymentsAsync(string userId)
     {
-        var payments = await _paymentRepository.GetAsync(p => p.UserId == int.Parse(userId));
+        var allPayments = await _paymentRepository.GetAllAsync();
+        var payments = allPayments.Where(p => p.UserId == int.Parse(userId));
         foreach (var payment in payments)
         {
             await _paymentRepository.DeleteAsync(payment);
@@ -348,7 +356,8 @@ public class GdprComplianceService : IGdprComplianceService
 
     private async Task DeleteUserAuditLogsAsync(string userId)
     {
-        var auditLogs = await _auditRepository.GetAsync(a => a.UserId == userId);
+        var allAuditLogs = await _auditRepository.GetAllAsync();
+        var auditLogs = allAuditLogs.Where(a => a.UserId == userId);
         foreach (var auditLog in auditLogs)
         {
             await _auditRepository.DeleteAsync(auditLog);
