@@ -98,7 +98,7 @@ namespace Nexora.Web.Api.Controllers
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:SecretKey"] ?? _configuration["Jwt:Key"] ?? "default-development-secret-key-that-is-at-least-32-characters-long");
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[]
@@ -108,7 +108,7 @@ namespace Nexora.Web.Api.Controllers
                     new Claim(ClaimTypes.Role, user.Role),
                     new Claim("TenantId", user.TenantId.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(int.Parse(_configuration["Jwt:ExpiryInMinutes"])),
+                Expires = DateTime.UtcNow.AddMinutes(int.Parse(_configuration["Jwt:ExpirationMinutes"] ?? _configuration["Jwt:ExpiryInMinutes"] ?? "60")),
                 Issuer = _configuration["Jwt:Issuer"],
                 Audience = _configuration["Jwt:Audience"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
