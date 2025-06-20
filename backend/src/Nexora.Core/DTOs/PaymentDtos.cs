@@ -2,6 +2,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Nexora.Core.DTOs
 {
+    public class PaymentRequest
+    {
+        [Required]
+        public decimal Amount { get; set; }
+        
+        [Required]
+        public string Currency { get; set; } = "SAR";
+        
+        [Required]
+        public string PaymentMethod { get; set; } = string.Empty;
+        
+        public string Description { get; set; } = string.Empty;
+        public string CustomerEmail { get; set; } = string.Empty;
+        public string CustomerPhone { get; set; } = string.Empty;
+        public string ExternalReference { get; set; } = string.Empty;
+        public Dictionary<string, object> Metadata { get; set; } = new();
+    }
     public class CreatePaymentDto
     {
         [Required]

@@ -48,7 +48,7 @@ public class FraudDetectionService : IFraudDetectionService
             
             var analysis = new FraudRiskAnalysis
             {
-                TransactionId = transaction.Id,
+                TransactionId = transaction.Id.ToString(),
                 RiskScore = riskScore,
                 RiskLevel = riskLevel,
                 Factors = features.RiskFactors,
@@ -66,7 +66,7 @@ public class FraudDetectionService : IFraudDetectionService
             _logger.LogError(ex, "Error analyzing transaction {TransactionId} for fraud", transaction.Id);
             return new FraudRiskAnalysis
             {
-                TransactionId = transaction.Id,
+                TransactionId = transaction.Id.ToString(),
                 RiskScore = 0.5,
                 RiskLevel = FraudRiskLevel.Medium,
                 Factors = new List<string> { "Analysis failed - manual review required" },
@@ -85,7 +85,7 @@ public class FraudDetectionService : IFraudDetectionService
             
             var analysis = new FraudRiskAnalysis
             {
-                PaymentId = payment.Id,
+                PaymentId = payment.Id.ToString(),
                 RiskScore = riskScore,
                 RiskLevel = riskLevel,
                 Factors = features.RiskFactors,
@@ -103,7 +103,7 @@ public class FraudDetectionService : IFraudDetectionService
             _logger.LogError(ex, "Error analyzing payment {PaymentId} for fraud", payment.Id);
             return new FraudRiskAnalysis
             {
-                PaymentId = payment.Id,
+                PaymentId = payment.Id.ToString(),
                 RiskScore = 0.5,
                 RiskLevel = FraudRiskLevel.Medium,
                 Factors = new List<string> { "Analysis failed - manual review required" },
@@ -114,8 +114,9 @@ public class FraudDetectionService : IFraudDetectionService
 
     public async Task<SpendingAnalysis> AnalyzeSpendingPatternsAsync(string userId, DateTime fromDate, DateTime toDate)
     {
-        var transactions = await _transactionRepository.GetAsync(t => 
-            t.UserId == userId && 
+        var allTransactions = await _transactionRepository.GetAllAsync();
+        var transactions = allTransactions.Where(t => 
+            t.UserId == int.Parse(userId) && 
             t.CreatedAt >= fromDate && 
             t.CreatedAt <= toDate);
 
@@ -137,11 +138,12 @@ public class FraudDetectionService : IFraudDetectionService
 
     public async Task<PersonalizedInsights> GenerateInsightsAsync(string userId)
     {
-        var user = await _userRepository.GetByIdAsync(userId);
+        var user = await _userRepository.GetByIdAsync(int.Parse(userId));
         if (user == null) return null;
 
-        var recentTransactions = await _transactionRepository.GetAsync(t => 
-            t.UserId == userId && 
+        var allTransactions = await _transactionRepository.GetAllAsync();
+        var recentTransactions = allTransactions.Where(t => 
+            t.UserId == int.Parse(userId) && 
             t.CreatedAt >= DateTime.UtcNow.AddDays(-30));
 
         var insights = new PersonalizedInsights
@@ -168,7 +170,8 @@ public class FraudDetectionService : IFraudDetectionService
     private async Task<FraudFeatures> ExtractTransactionFeaturesAsync(Transaction transaction)
     {
         var features = new FraudFeatures();
-        var userTransactions = await _transactionRepository.GetAsync(t => 
+        var allTransactions = await _transactionRepository.GetAllAsync();
+        var userTransactions = allTransactions.Where(t => 
             t.UserId == transaction.UserId && 
             t.CreatedAt >= DateTime.UtcNow.AddDays(-30));
 
@@ -194,7 +197,8 @@ public class FraudDetectionService : IFraudDetectionService
     private async Task<FraudFeatures> ExtractPaymentFeaturesAsync(Payment payment)
     {
         var features = new FraudFeatures();
-        var userPayments = await _paymentRepository.GetAsync(p => 
+        var allPayments = await _paymentRepository.GetAllAsync();
+        var userPayments = allPayments.Where(p => 
             p.UserId == payment.UserId && 
             p.CreatedAt >= DateTime.UtcNow.AddDays(-30));
 
@@ -378,7 +382,7 @@ public class FraudDetectionService : IFraudDetectionService
                 {
                     anomalies.Add(new SpendingAnomaly
                     {
-                        TransactionId = transaction.Id,
+                        TransactionId = transaction.Id.ToString(),
                         Amount = transaction.Amount,
                         AnomalyType = "Unusual Amount",
                         Severity = transaction.Amount > (decimal)avg ? "High Spending" : "Low Spending",

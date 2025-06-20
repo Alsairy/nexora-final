@@ -13,7 +13,7 @@ namespace Nexora.Core.Entities
         [Required]
         public int TenantId { get; set; }
 
-        public int? UserId { get; set; }
+        public string? UserId { get; set; }
 
         [Required]
         [MaxLength(100)]
@@ -27,9 +27,34 @@ namespace Nexora.Core.Entities
         [MaxLength(50)]
         public string Action { get; set; }
 
-        public string OldValues { get; set; }
+        [MaxLength(100)]
+        public string? EventType { get; set; }
 
-        public string NewValues { get; set; }
+        public string? Description { get; set; }
+
+        public string? Data { get; set; }
+
+        public string? OldValues { get; set; }
+
+        public string? NewValues { get; set; }
+
+        public string? Changes { get; set; }
+
+        public string? OriginalValues { get; set; }
+
+        public DateTime Timestamp { get; set; }
+
+        public string? IpAddress { get; set; }
+
+        public string? UserAgent { get; set; }
+
+        public string? SessionId { get; set; }
+
+        [MaxLength(50)]
+        public string? Severity { get; set; }
+
+        [MaxLength(100)]
+        public string? EntityType { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -37,9 +62,6 @@ namespace Nexora.Core.Entities
         public DateTime? DeletedAt { get; set; }
 
         [ForeignKey("TenantId")]
-        public virtual Tenant Tenant { get; set; }
-
-        [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual Tenant? Tenant { get; set; }
     }
 }

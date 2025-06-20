@@ -37,13 +37,7 @@ public static class HealthCheckExtensions
             healthChecksBuilder.AddAzureKeyVault(
                 new Uri(keyVaultUrl),
                 new Azure.Identity.DefaultAzureCredential(),
-                options =>
-                {
-                    options.Name = "keyvault";
-                    options.Tags.Add("critical");
-                    options.Tags.Add("security");
-                    options.Timeout = TimeSpan.FromSeconds(10);
-                });
+                options => { });
         }
 
         var paymentGatewayUrl = configuration["ExternalServices:PaymentGateway:BaseUrl"];

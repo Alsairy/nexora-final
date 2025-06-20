@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -38,8 +39,13 @@ namespace Nexora.Core.Entities
         [MaxLength(50)]
         public string Type { get; set; }
 
+        [MaxLength(100)]
+        public string? Category { get; set; }
+
         [MaxLength(500)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
+
+        public string? Metadata { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -47,9 +53,11 @@ namespace Nexora.Core.Entities
         public DateTime? DeletedAt { get; set; }
 
         [ForeignKey("TenantId")]
-        public virtual Tenant Tenant { get; set; }
+        public virtual Tenant? Tenant { get; set; }
 
         [ForeignKey("UserId")]
-        public virtual User User { get; set; }
+        public virtual User? User { get; set; }
+
+        public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
     }
 }

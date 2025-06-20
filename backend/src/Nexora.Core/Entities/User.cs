@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -26,6 +27,9 @@ namespace Nexora.Core.Entities
         [MaxLength(100)]
         public string LastName { get; set; }
 
+        [MaxLength(20)]
+        public string? PhoneNumber { get; set; }
+
         [Required]
         public string PasswordHash { get; set; }
 
@@ -42,7 +46,9 @@ namespace Nexora.Core.Entities
         public DateTime? DeletedAt { get; set; }
 
         [ForeignKey("TenantId")]
-        public virtual Tenant Tenant { get; set; }
+        public virtual Tenant? Tenant { get; set; }
+
+        public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
 
         [NotMapped]
         public string FullName => $"{FirstName} {LastName}";

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -20,6 +21,11 @@ namespace Nexora.Core.Entities
         public string Subdomain { get; set; }
 
         public bool IsActive { get; set; }
+
+        [MaxLength(500)]
+        public string ConnectionString { get; set; } = "DefaultConnection";
+
+        public Dictionary<string, object> Settings { get; set; } = new();
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

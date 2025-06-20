@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -127,12 +130,6 @@ public class SwaggerOperationFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        operation.Extensions.Add("x-rate-limit", new OpenApiObject
-        {
-            ["requests"] = new OpenApiInteger(1000),
-            ["period"] = new OpenApiString("hour"),
-            ["scope"] = new OpenApiString("tenant")
-        });
 
         foreach (var response in operation.Responses.Values)
         {

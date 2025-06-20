@@ -17,7 +17,7 @@ namespace Nexora.Core.DTOs.Mappings
             
             CreateMap<UpdateUserDto, User>()
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
-                .ForAllOtherMembers(opt => opt.Ignore());
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<Transaction, TransactionDto>()
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? $"{src.User.FirstName} {src.User.LastName}" : ""));
@@ -29,7 +29,7 @@ namespace Nexora.Core.DTOs.Mappings
             
             CreateMap<UpdateTransactionStatusDto, Transaction>()
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
-                .ForAllOtherMembers(opt => opt.Ignore());
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<Payment, PaymentDto>();
             
@@ -48,10 +48,10 @@ namespace Nexora.Core.DTOs.Mappings
             
             CreateMap<UpdateTenantDto, Tenant>()
                 .ForMember(dest => dest.UpdatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))
-                .ForAllOtherMembers(opt => opt.Ignore());
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
 
             CreateMap<AuditLog, AuditLogDto>()
-                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? $"{src.User.FirstName} {src.User.LastName}" : "System"));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => "System"));
         }
     }
 

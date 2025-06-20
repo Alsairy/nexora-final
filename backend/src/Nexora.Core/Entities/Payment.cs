@@ -14,7 +14,13 @@ namespace Nexora.Core.Entities
         public int TenantId { get; set; }
 
         [Required]
-        public int TransactionId { get; set; }
+        public int UserId { get; set; }
+
+        public int? TransactionId { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string ReferenceId { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -35,10 +41,15 @@ namespace Nexora.Core.Entities
         public string Status { get; set; }
 
         [MaxLength(100)]
-        public string ExternalReference { get; set; }
+        public string? Provider { get; set; }
 
         [MaxLength(100)]
-        public string IdempotencyKey { get; set; }
+        public string? ExternalReference { get; set; }
+
+        [MaxLength(100)]
+        public string? IdempotencyKey { get; set; }
+
+        public int? OriginalPaymentId { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -46,9 +57,12 @@ namespace Nexora.Core.Entities
         public DateTime? DeletedAt { get; set; }
 
         [ForeignKey("TenantId")]
-        public virtual Tenant Tenant { get; set; }
+        public virtual Tenant? Tenant { get; set; }
+
+        [ForeignKey("UserId")]
+        public virtual User? User { get; set; }
 
         [ForeignKey("TransactionId")]
-        public virtual Transaction Transaction { get; set; }
+        public virtual Transaction? Transaction { get; set; }
     }
 }

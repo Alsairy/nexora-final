@@ -120,7 +120,7 @@ public static class SecretsConfiguration
         if (missingSecrets.Any() || placeholderSecrets.Any())
         {
             var logger = LoggerFactory.Create(builder => builder.AddConsole())
-                .CreateLogger<SecretsConfiguration>();
+                .CreateLogger(typeof(SecretsConfiguration));
             
             if (missingSecrets.Any())
             {
