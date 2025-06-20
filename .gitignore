@@ -399,3 +399,11 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+# Build artifacts
+frontend/dist/
+# Database files
+*.db
+*.db-shm
+*.db-wal
+# Package files
+*.deb
