@@ -53,6 +53,7 @@ export default defineConfig({
     strictPort: true,
     host: true,
     cors: true,
+    allowedHosts: ['code-review-app-tunnel-91p5mp85.devinapps.com', 'localhost', '127.0.0.1'],
   },
   preview: {
     port: 3000,

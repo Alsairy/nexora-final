@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { getApiUrl } from '../config/api';
+import { getApiUrl, getAuthHeaders } from '../config/api';
 
 interface User {
   id: number;
@@ -46,9 +46,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const response = await fetch(getApiUrl('/api/auth/login'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(true),
         body: JSON.stringify({ email, password }),
       });
 
