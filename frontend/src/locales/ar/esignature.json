@@ -1,0 +1,172 @@
+{
+  "esignature": {
+    "title": "التوقيع الإلكتروني",
+    "subtitle": "منصة توقيع المستندات الرقمية",
+    "documents": {
+      "title": "المستندات",
+      "upload": "رفع مستند",
+      "name": "اسم المستند",
+      "status": "الحالة",
+      "created": "تاريخ الإنشاء",
+      "actions": "الإجراءات",
+      "view": "عرض",
+      "sign": "توقيع",
+      "download": "تحميل",
+      "delete": "حذف",
+      "send": "إرسال للتوقيع",
+      "cancel": "إلغاء",
+      "statuses": {
+        "draft": "مسودة",
+        "sent": "مُرسل",
+        "signed": "موقع",
+        "completed": "مكتمل",
+        "expired": "منتهي الصلاحية",
+        "cancelled": "ملغي"
+      }
+    },
+    "upload": {
+      "title": "رفع مستند جديد",
+      "dragDrop": "اسحب وأفلت الملفات هنا أو انقر للتصفح",
+      "supportedFormats": "الصيغ المدعومة: PDF، DOC، DOCX",
+      "maxSize": "الحد الأقصى لحجم الملف: 10 ميجابايت",
+      "fileName": "اسم الملف",
+      "description": "الوصف",
+      "expiryDate": "تاريخ انتهاء الصلاحية",
+      "uploadButton": "رفع المستند",
+      "cancel": "إلغاء"
+    },
+    "signing": {
+      "title": "توقيع المستند",
+      "instructions": "يرجى مراجعة المستند وتقديم توقيعك",
+      "signHere": "وقع هنا",
+      "typeSignature": "اكتب توقيعك",
+      "drawSignature": "ارسم توقيعك",
+      "uploadSignature": "رفع صورة التوقيع",
+      "clear": "مسح",
+      "confirm": "تأكيد التوقيع",
+      "decline": "رفض التوقيع"
+    },
+    "authentication": {
+      "title": "المصادقة مطلوبة",
+      "subtitle": "يرجى التحقق من هويتك للمتابعة مع التوقيع",
+      "methods": {
+        "otp": "رمز التحقق عبر الرسائل النصية",
+        "nafath": "نفاذ",
+        "certificate": "الشهادة الرقمية",
+        "biometric": "القياسات الحيوية"
+      },
+      "otp": {
+        "title": "التحقق عبر الرسائل النصية",
+        "enterPhone": "أدخل رقم هاتفك",
+        "phoneNumber": "رقم الهاتف",
+        "sendCode": "إرسال الرمز",
+        "enterCode": "أدخل رمز التحقق",
+        "code": "رمز التحقق",
+        "verify": "تحقق",
+        "resend": "إعادة إرسال الرمز",
+        "codeExpiry": "ينتهي الرمز خلال {minutes} دقائق"
+      },
+      "nafath": {
+        "title": "مصادقة نفاذ",
+        "enterNationalId": "أدخل رقم هويتك الوطنية",
+        "nationalId": "رقم الهوية الوطنية",
+        "initiate": "بدء نفاذ",
+        "waiting": "في انتظار استجابة نفاذ...",
+        "checkApp": "يرجى التحقق من تطبيق نفاذ",
+        "checkStatus": "التحقق من الحالة",
+        "approved": "تمت الموافقة على المصادقة",
+        "rejected": "تم رفض المصادقة"
+      }
+    },
+    "workflow": {
+      "title": "سير عمل التوقيع",
+      "signers": "الموقعون",
+      "addSigner": "إضافة موقع",
+      "signerName": "اسم الموقع",
+      "signerEmail": "بريد الموقع الإلكتروني",
+      "signerRole": "الدور",
+      "authMethod": "طريقة المصادقة",
+      "order": "ترتيب التوقيع",
+      "required": "مطلوب",
+      "optional": "اختياري",
+      "save": "حفظ سير العمل",
+      "send": "إرسال للتوقيع"
+    },
+    "templates": {
+      "title": "قوالب المستندات",
+      "create": "إنشاء قالب",
+      "name": "اسم القالب",
+      "category": "الفئة",
+      "description": "الوصف",
+      "fields": "حقول القالب",
+      "addField": "إضافة حقل",
+      "fieldType": "نوع الحقل",
+      "fieldName": "اسم الحقل",
+      "required": "مطلوب",
+      "save": "حفظ القالب",
+      "use": "استخدام القالب"
+    },
+    "audit": {
+      "title": "سجل المراجعة",
+      "timestamp": "الطابع الزمني",
+      "action": "الإجراء",
+      "user": "المستخدم",
+      "details": "التفاصيل",
+      "ipAddress": "عنوان IP",
+      "location": "الموقع",
+      "export": "تصدير سجل المراجعة"
+    },
+    "admin": {
+      "title": "إدارة التوقيع الإلكتروني",
+      "statistics": "إحصائيات النظام",
+      "totalDocuments": "إجمالي المستندات",
+      "pendingSignatures": "التوقيعات المعلقة",
+      "completedToday": "المكتملة اليوم",
+      "configuration": "تكوين النظام",
+      "authMethods": "طرق المصادقة",
+      "compliance": "إعدادات الامتثال",
+      "reports": "تقارير الامتثال"
+    },
+    "notifications": {
+      "documentUploaded": "تم رفع المستند بنجاح",
+      "documentSent": "تم إرسال المستند للتوقيع",
+      "signatureCompleted": "تم توقيع المستند بنجاح",
+      "authenticationRequired": "المصادقة مطلوبة للمتابعة",
+      "otpSent": "تم إرسال رمز التحقق إلى هاتفك",
+      "nafathInitiated": "تم بدء مصادقة نفاذ",
+      "documentExpired": "انتهت صلاحية المستند",
+      "signingDeclined": "تم رفض التوقيع"
+    },
+    "errors": {
+      "uploadFailed": "فشل في رفع المستند",
+      "invalidFile": "صيغة الملف غير صالحة",
+      "fileTooLarge": "حجم الملف يتجاوز الحد المسموح",
+      "authenticationFailed": "فشلت المصادقة",
+      "invalidOtp": "رمز التحقق غير صالح",
+      "nafathRejected": "تم رفض مصادقة نفاذ",
+      "documentNotFound": "المستند غير موجود",
+      "signingFailed": "فشل في إكمال التوقيع"
+    },
+    "common": {
+      "yes": "نعم",
+      "no": "لا",
+      "ok": "موافق",
+      "cancel": "إلغاء",
+      "save": "حفظ",
+      "delete": "حذف",
+      "edit": "تعديل",
+      "view": "عرض",
+      "download": "تحميل",
+      "upload": "رفع",
+      "send": "إرسال",
+      "back": "رجوع",
+      "next": "التالي",
+      "previous": "السابق",
+      "loading": "جاري التحميل...",
+      "search": "بحث",
+      "filter": "تصفية",
+      "sort": "ترتيب",
+      "refresh": "تحديث"
+    }
+  }
+}

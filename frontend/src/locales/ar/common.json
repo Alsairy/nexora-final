@@ -1,0 +1,90 @@
+{
+  "common": {
+    "navigation": {
+      "dashboard": "لوحة التحكم",
+      "payments": "المدفوعات",
+      "transactions": "المعاملات",
+      "users": "المستخدمون",
+      "settings": "الإعدادات",
+      "reports": "التقارير",
+      "sms": "بوابة الرسائل النصية",
+      "esignature": "التوقيع الإلكتروني",
+      "logout": "تسجيل الخروج"
+    },
+    "actions": {
+      "create": "إنشاء",
+      "edit": "تعديل",
+      "delete": "حذف",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "submit": "إرسال",
+      "confirm": "تأكيد",
+      "close": "إغلاق",
+      "back": "رجوع",
+      "next": "التالي",
+      "previous": "السابق",
+      "search": "بحث",
+      "filter": "تصفية",
+      "export": "تصدير",
+      "import": "استيراد",
+      "download": "تحميل",
+      "upload": "رفع",
+      "refresh": "تحديث",
+      "view": "عرض",
+      "details": "التفاصيل"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "pending": "معلق",
+      "approved": "موافق عليه",
+      "rejected": "مرفوض",
+      "completed": "مكتمل",
+      "failed": "فاشل",
+      "success": "نجح",
+      "error": "خطأ",
+      "warning": "تحذير",
+      "info": "معلومات"
+    },
+    "forms": {
+      "required": "هذا الحقل مطلوب",
+      "invalid": "إدخال غير صالح",
+      "email": "يرجى إدخال عنوان بريد إلكتروني صالح",
+      "phone": "يرجى إدخال رقم هاتف صالح",
+      "password": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+      "confirmPassword": "كلمات المرور غير متطابقة",
+      "minLength": "الحد الأدنى {count} أحرف مطلوب",
+      "maxLength": "الحد الأقصى {count} أحرف مسموح"
+    },
+    "messages": {
+      "loading": "جاري التحميل...",
+      "noData": "لا توجد بيانات متاحة",
+      "error": "حدث خطأ",
+      "success": "تمت العملية بنجاح",
+      "confirmDelete": "هل أنت متأكد من أنك تريد حذف هذا العنصر؟",
+      "unsavedChanges": "لديك تغييرات غير محفوظة. هل أنت متأكد من أنك تريد المغادرة؟",
+      "sessionExpired": "انتهت صلاحية جلستك. يرجى تسجيل الدخول مرة أخرى."
+    },
+    "dates": {
+      "today": "اليوم",
+      "yesterday": "أمس",
+      "tomorrow": "غداً",
+      "thisWeek": "هذا الأسبوع",
+      "lastWeek": "الأسبوع الماضي",
+      "thisMonth": "هذا الشهر",
+      "lastMonth": "الشهر الماضي",
+      "thisYear": "هذا العام",
+      "lastYear": "العام الماضي"
+    },
+    "language": {
+      "english": "English",
+      "arabic": "العربية",
+      "selectLanguage": "اختر اللغة"
+    },
+    "calendar": {
+      "gregorian": "ميلادي",
+      "hijri": "هجري",
+      "selectCalendar": "اختر التقويم"
+    }
+  }
+}

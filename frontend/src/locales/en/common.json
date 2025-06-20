@@ -1,0 +1,90 @@
+{
+  "common": {
+    "navigation": {
+      "dashboard": "Dashboard",
+      "payments": "Payments",
+      "transactions": "Transactions",
+      "users": "Users",
+      "settings": "Settings",
+      "reports": "Reports",
+      "sms": "SMS Gateway",
+      "esignature": "E-Signature",
+      "logout": "Logout"
+    },
+    "actions": {
+      "create": "Create",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save",
+      "cancel": "Cancel",
+      "submit": "Submit",
+      "confirm": "Confirm",
+      "close": "Close",
+      "back": "Back",
+      "next": "Next",
+      "previous": "Previous",
+      "search": "Search",
+      "filter": "Filter",
+      "export": "Export",
+      "import": "Import",
+      "download": "Download",
+      "upload": "Upload",
+      "refresh": "Refresh",
+      "view": "View",
+      "details": "Details"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "pending": "Pending",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "completed": "Completed",
+      "failed": "Failed",
+      "success": "Success",
+      "error": "Error",
+      "warning": "Warning",
+      "info": "Info"
+    },
+    "forms": {
+      "required": "This field is required",
+      "invalid": "Invalid input",
+      "email": "Please enter a valid email address",
+      "phone": "Please enter a valid phone number",
+      "password": "Password must be at least 8 characters",
+      "confirmPassword": "Passwords do not match",
+      "minLength": "Minimum {count} characters required",
+      "maxLength": "Maximum {count} characters allowed"
+    },
+    "messages": {
+      "loading": "Loading...",
+      "noData": "No data available",
+      "error": "An error occurred",
+      "success": "Operation completed successfully",
+      "confirmDelete": "Are you sure you want to delete this item?",
+      "unsavedChanges": "You have unsaved changes. Are you sure you want to leave?",
+      "sessionExpired": "Your session has expired. Please log in again."
+    },
+    "dates": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "tomorrow": "Tomorrow",
+      "thisWeek": "This Week",
+      "lastWeek": "Last Week",
+      "thisMonth": "This Month",
+      "lastMonth": "Last Month",
+      "thisYear": "This Year",
+      "lastYear": "Last Year"
+    },
+    "language": {
+      "english": "English",
+      "arabic": "العربية",
+      "selectLanguage": "Select Language"
+    },
+    "calendar": {
+      "gregorian": "Gregorian",
+      "hijri": "Hijri",
+      "selectCalendar": "Select Calendar"
+    }
+  }
+}
