@@ -6,6 +6,7 @@ using Nexora.Core.DTOs;
 using Nexora.Core.Entities;
 using Nexora.Core.Interfaces;
 using System;
+using BCrypt.Net;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

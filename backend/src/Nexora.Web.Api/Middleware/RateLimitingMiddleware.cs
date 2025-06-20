@@ -94,9 +94,9 @@ namespace Nexora.Web.Api.Middleware
             {
                 return $"rate_limit:user:{userId}:endpoint:{endpoint}";
             }
-            else if (tenantId > 0)
+            else if (!string.IsNullOrEmpty(tenantId) && int.TryParse(tenantId, out var parsedTenantId) && parsedTenantId > 0)
             {
-                return $"rate_limit:tenant:{tenantId}:endpoint:{endpoint}";
+                return $"rate_limit:tenant:{parsedTenantId}:endpoint:{endpoint}";
             }
             else
             {

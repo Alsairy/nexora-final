@@ -87,7 +87,7 @@ namespace Nexora.Web.Api.Controllers
             return Ok(new PaymentDetailsResponse
             {
                 Id = payment.Id,
-                TransactionId = payment.TransactionId,
+                TransactionId = payment.TransactionId ?? 0,
                 PaymentMethod = payment.PaymentMethod,
                 Amount = payment.Amount,
                 Currency = payment.Currency,

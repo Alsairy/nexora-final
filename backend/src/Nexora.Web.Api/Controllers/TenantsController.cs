@@ -56,8 +56,8 @@ namespace Nexora.Web.Api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var existingTenant = await _tenantRepository.GetAsync(t => t.Subdomain == request.Subdomain);
-            if (existingTenant.Any())
+            var existingTenant = await _tenantRepository.FirstOrDefaultAsync(t => t.Subdomain == request.Subdomain);
+            if (existingTenant != null)
                 return Conflict(new { message = "Tenant with this subdomain already exists" });
 
             var tenant = new Tenant

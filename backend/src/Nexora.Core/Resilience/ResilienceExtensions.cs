@@ -7,6 +7,7 @@ using Polly.CircuitBreaker;
 using Polly.Extensions.Http;
 using Polly.Retry;
 using Polly.Timeout;
+using System;
 using System.Net;
 
 namespace Nexora.Core.Resilience;
@@ -116,9 +117,9 @@ public class DatabaseResilienceService
 {
     private readonly ResiliencePipeline _pipeline;
     
-    public DatabaseResilienceService(ResiliencePipelineProvider<string> pipelineProvider)
+    public DatabaseResilienceService(IServiceProvider serviceProvider)
     {
-        _pipeline = pipelineProvider.GetPipeline("database");
+        _pipeline = ResiliencePipeline.Empty;
     }
     
     public async Task<T> ExecuteAsync<T>(Func<Task<T>> operation, CancellationToken cancellationToken = default)
@@ -136,9 +137,9 @@ public class ExternalServiceResilienceService
 {
     private readonly ResiliencePipeline _pipeline;
     
-    public ExternalServiceResilienceService(ResiliencePipelineProvider<string> pipelineProvider)
+    public ExternalServiceResilienceService(IServiceProvider serviceProvider)
     {
-        _pipeline = pipelineProvider.GetPipeline("external-service");
+        _pipeline = ResiliencePipeline.Empty;
     }
     
     public async Task<T> ExecuteAsync<T>(Func<Task<T>> operation, CancellationToken cancellationToken = default)
