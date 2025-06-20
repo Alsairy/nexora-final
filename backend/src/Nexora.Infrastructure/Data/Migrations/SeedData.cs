@@ -85,22 +85,50 @@ namespace Nexora.Infrastructure.Data.Migrations
                 logger.LogInformation("Seeding users");
                 
                 var passwordHasher = new PasswordHasher<User>();
-                var hashedPassword = passwordHasher.HashPassword(null, settings.AdminUser.Password);
                 
+                var adminHashedPassword = passwordHasher.HashPassword(null, settings.AdminUser.Password);
                 var adminUser = new User
                 {
                     Email = settings.AdminUser.Email,
                     FirstName = settings.AdminUser.FirstName,
                     LastName = settings.AdminUser.LastName,
-                    PasswordHash = hashedPassword,
+                    PasswordHash = adminHashedPassword,
                     Role = "Admin",
                     IsActive = true,
                     TenantId = 1, // Default tenant
                     CreatedAt = DateTime.UtcNow
                 };
                 
-                await context.Users.AddAsync(adminUser);
+                var demoHashedPassword = passwordHasher.HashPassword(null, "demo123");
+                var demoUser = new User
+                {
+                    Email = "demo@nexora.com",
+                    FirstName = "Demo",
+                    LastName = "User",
+                    PasswordHash = demoHashedPassword,
+                    Role = "User",
+                    IsActive = true,
+                    TenantId = 1, // Default tenant
+                    CreatedAt = DateTime.UtcNow
+                };
+                
+                var testHashedPassword = passwordHasher.HashPassword(null, "TestPassword123!");
+                var testUser = new User
+                {
+                    Email = "test@nexora.com",
+                    FirstName = "Test",
+                    LastName = "User",
+                    PasswordHash = testHashedPassword,
+                    Role = "User",
+                    IsActive = true,
+                    TenantId = 1, // Default tenant
+                    CreatedAt = DateTime.UtcNow
+                };
+                
+                await context.Users.AddRangeAsync(adminUser, demoUser, testUser);
                 await context.SaveChangesAsync();
+                
+                logger.LogInformation("Seeded {UserCount} users successfully", 3);
             }
         }
     }
