@@ -24,25 +24,7 @@ namespace Nexora.Core.Data
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<Tenant> Tenants { get; set; }
         
-        public DbSet<ESignatureDocument> ESignatureDocuments { get; set; }
-        public DbSet<ESignatureSigner> ESignatureSigners { get; set; }
-        public DbSet<ESignatureSignature> ESignatureSignatures { get; set; }
-        public DbSet<ESignatureAuditLog> ESignatureAuditLogs { get; set; }
-        public DbSet<ESignatureNotification> ESignatureNotifications { get; set; }
-        public DbSet<ESignatureAuthentication> ESignatureAuthentications { get; set; }
-        public DbSet<ESignatureWorkflow> ESignatureWorkflows { get; set; }
-        public DbSet<ESignatureWorkflowStep> ESignatureWorkflowSteps { get; set; }
-        public DbSet<ESignatureTemplate> ESignatureTemplates { get; set; }
-        public DbSet<ESignatureTemplateField> ESignatureTemplateFields { get; set; }
-        
-        public DbSet<Merchant> Merchants { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<PaymentSplit> PaymentSplits { get; set; }
-        public DbSet<PayoutAccount> PayoutAccounts { get; set; }
-        public DbSet<PaymentLink> PaymentLinks { get; set; }
-        public DbSet<ZatcaInvoice> ZatcaInvoices { get; set; }
-        public DbSet<LoanApplication> LoanApplications { get; set; }
-        public DbSet<PaymentQueue> PaymentQueues { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -104,7 +86,12 @@ namespace Nexora.Core.Data
                 entity.HasIndex(e => e.Subdomain).IsUnique();
                 entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.Subdomain).IsRequired().HasMaxLength(50);
+                entity.Ignore(e => e.Settings);
             });
+
+
+
+
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import ROUTES from '../routes';
-import { getApiUrl } from '../config/api';
+import { getApiUrl, getAuthHeaders } from '../config/api';
 
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -57,9 +57,7 @@ const Register: React.FC = () => {
     try {
       const response = await fetch(getApiUrl('/api/auth/register'), {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           firstName: formData.firstName,
           lastName: formData.lastName,

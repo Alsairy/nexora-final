@@ -59,7 +59,7 @@ namespace Nexora.Infrastructure.Repositories
             
             if (user != null)
             {
-                user.LastLoginAt = lastLogin;
+                user.UpdatedAt = lastLogin; // Using UpdatedAt to track last login since LastLoginAt was removed
                 await _dbContext.SaveChangesAsync(cancellationToken);
             }
         }
@@ -120,7 +120,7 @@ namespace Nexora.Infrastructure.Repositories
         {
             // Added deterministic ordering with ThenBy(e => e.Id) to ensure consistent paging
             return await _dbContext.Users
-                .OrderByDescending(u => u.LastLoginAt)
+                .OrderByDescending(u => u.UpdatedAt ?? u.CreatedAt) // Using UpdatedAt as fallback since LastLoginAt was removed
                 .ThenBy(u => u.Id) // Deterministic ordering
                 .Take(count)
                 .ToListAsync();

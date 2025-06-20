@@ -68,8 +68,7 @@ namespace Nexora.Core.Entities
         [ForeignKey("TenantId")]
         public virtual Tenant Tenant { get; set; }
 
-        [ForeignKey("CreatedBy")]
-        public virtual User CreatedByUser { get; set; }
+
 
         public virtual ICollection<ESignatureDocument> Documents { get; set; } = new List<ESignatureDocument>();
         public virtual ICollection<ESignatureWorkflowStep> Steps { get; set; } = new List<ESignatureWorkflowStep>();

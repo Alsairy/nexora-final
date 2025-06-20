@@ -17,28 +17,27 @@ namespace Nexora.Core.Entities
         [Required]
         [MaxLength(255)]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(100)]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(100)]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
 
         [MaxLength(20)]
         public string? PhoneNumber { get; set; }
 
         [Required]
-        public string PasswordHash { get; set; }
+        public string PasswordHash { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(50)]
-        public string Role { get; set; }
+        public string Role { get; set; } = string.Empty;
 
         public bool IsActive { get; set; }
-        public DateTime? LastLoginAt { get; set; }
 
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

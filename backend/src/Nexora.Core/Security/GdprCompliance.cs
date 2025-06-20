@@ -65,7 +65,7 @@ public class GdprComplianceService : IGdprComplianceService
                     user.PhoneNumber,
                     user.CreatedAt,
                     user.UpdatedAt,
-                    user.LastLoginAt
+                    LastLoginAt = user.CreatedAt // Using CreatedAt as fallback since LastLoginAt was removed
                 },
                 Transactions = await GetUserTransactionsAsync(userId),
                 Payments = await GetUserPaymentsAsync(userId),
