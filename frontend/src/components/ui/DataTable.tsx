@@ -12,7 +12,7 @@ import {
   TableRow,
   TableSortLabel,
   Typography,
-  visuallyHidden,
+
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -204,7 +204,7 @@ function DataTable<T extends object>({
                     >
                       {column.label}
                       {orderBy === column.id ? (
-                        <Box component="span" sx={visuallyHidden}>
+                        <Box component="span" sx={{ position: 'absolute', left: '-10000px', width: '1px', height: '1px', overflow: 'hidden' }}>
                           {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                         </Box>
                       ) : null}
@@ -234,7 +234,7 @@ function DataTable<T extends object>({
                     const value = row[column.id];
                     return (
                       <TableCell key={`${rowId}-${String(column.id)}`} align={column.align}>
-                        {column.format ? column.format(value) : value}
+                        {column.format ? column.format(value) : String(value)}
                       </TableCell>
                     );
                   })}

@@ -107,7 +107,7 @@ class ErrorBoundary extends Component<Props, State> {
               We're sorry, but an error occurred while rendering this component.
             </Typography>
             
-            {process.env.NODE_ENV !== 'production' && error && (
+            {true && error && (
               <ErrorDetails>
                 <strong>{error.toString()}</strong>
                 {errorInfo && errorInfo.componentStack}

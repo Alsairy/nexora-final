@@ -73,7 +73,7 @@ namespace Nexora.Web.Api.Controllers
                 Status = "Pending",
                 Type = request.Type,
                 Description = request.Description,
-                TenantId = _tenantService.GetCurrentTenantId(),
+                TenantId = int.Parse(_tenantService.GetCurrentTenantId().ToString()),
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -138,18 +138,7 @@ namespace Nexora.Web.Api.Controllers
         }
     }
 
-    public class TransactionResponse
-    {
-        public int Id { get; set; }
-        public string ReferenceId { get; set; }
-        public decimal Amount { get; set; }
-        public string Currency { get; set; }
-        public string Status { get; set; }
-        public string Type { get; set; }
-        public string Description { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdatedAt { get; set; }
-    }
+
 
     public class CreateTransactionRequest
     {

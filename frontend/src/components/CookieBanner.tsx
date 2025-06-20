@@ -59,6 +59,8 @@ const CookieBanner: React.FC<CookieBannerProps> = ({ onAccept, onDecline }) => {
       
       return () => clearTimeout(timer);
     }
+    
+    return undefined;
   }, []);
 
   const handleAccept = (): void => {

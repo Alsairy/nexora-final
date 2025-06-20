@@ -32,7 +32,7 @@ namespace Nexora.Web.Api.Controllers
         [ProducesResponseType(typeof(ErrorResponse), 403)]
         public async Task<IActionResult> GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string search = "")
         {
-            var users = await _userRepository.GetUsersAsync(page, pageSize, search);
+            var users = await _userRepository.GetUsersAsync(page, pageSize, CancellationToken.None);
             return Ok(users);
         }
 
@@ -79,7 +79,7 @@ namespace Nexora.Web.Api.Controllers
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 Role = request.Role,
                 IsActive = true,
-                TenantId = _tenantService.GetCurrentTenantId(),
+                TenantId = int.Parse(_tenantService.GetCurrentTenantId().ToString()),
                 CreatedAt = DateTime.UtcNow
             };
 

@@ -47,7 +47,7 @@ const PrivacyPolicy: React.FC = () => {
         
         <StyledPaper elevation={2}>
           <Section>
-            <SectionTitle variant="h5" component="h2">
+            <SectionTitle variant="h5">
               Introduction
             </SectionTitle>
             <Typography paragraph>
@@ -59,7 +59,7 @@ const PrivacyPolicy: React.FC = () => {
           </Section>
           
           <Section>
-            <SectionTitle variant="h5" component="h2">
+            <SectionTitle variant="h5">
               Information We Collect
             </SectionTitle>
             <Typography paragraph>
@@ -90,7 +90,7 @@ const PrivacyPolicy: React.FC = () => {
           </Section>
           
           <Section>
-            <SectionTitle variant="h5" component="h2">
+            <SectionTitle variant="h5">
               How We Use Your Information
             </SectionTitle>
             <Typography paragraph>
@@ -119,7 +119,7 @@ const PrivacyPolicy: React.FC = () => {
           </Section>
           
           <Section>
-            <SectionTitle variant="h5" component="h2">
+            <SectionTitle variant="h5">
               Cookies and Similar Technologies
             </SectionTitle>
             <Typography paragraph>
@@ -131,7 +131,7 @@ const PrivacyPolicy: React.FC = () => {
           </Section>
           
           <Section>
-            <SectionTitle variant="h5" component="h2">
+            <SectionTitle variant="h5">
               Data Security
             </SectionTitle>
             <Typography paragraph>
@@ -143,7 +143,7 @@ const PrivacyPolicy: React.FC = () => {
           </Section>
           
           <Section>
-            <SectionTitle variant="h5" component="h2">
+            <SectionTitle variant="h5">
               Changes to Our Privacy Policy
             </SectionTitle>
             <Typography paragraph>
@@ -155,7 +155,7 @@ const PrivacyPolicy: React.FC = () => {
           </Section>
           
           <Section>
-            <SectionTitle variant="h5" component="h2">
+            <SectionTitle variant="h5">
               Contact Us
             </SectionTitle>
             <Typography paragraph>

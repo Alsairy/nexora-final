@@ -35,7 +35,7 @@ namespace Nexora.Web.Api.Middleware
             var userTenantId = GetUserTenantId(context.User);
             var currentTenantId = tenantService.GetCurrentTenantId();
 
-            if (userTenantId != currentTenantId)
+            if (userTenantId != int.Parse(currentTenantId.ToString()))
             {
                 _logger.LogWarning("User {UserId} attempted to access tenant {TenantId} but belongs to tenant {UserTenantId}",
                     GetUserId(context.User), currentTenantId, userTenantId);

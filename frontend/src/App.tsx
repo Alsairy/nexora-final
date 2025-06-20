@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { CircularProgress, CssBaseline, ThemeProvider } from '@mui/material';
 
@@ -49,43 +49,41 @@ const App: React.FC = () => {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <AuthProvider>
-              <Router>
-                <Layout>
-                  <ErrorBoundary>
-                    <Suspense fallback={<LoadingFallback />}>
-                      <Routes>
-                        {/* Public routes */}
-                        <Route path={ROUTES.LOGIN} element={<Login />} />
-                        <Route path={ROUTES.REGISTER} element={<Register />} />
-                        <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
-                        <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />
-                        
-                        {/* Protected routes */}
-                        <Route element={<ProtectedRoute />}>
-                          <Route path="/" element={<Dashboard />} />
-                          <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-                          <Route path={ROUTES.PAYMENT_GATEWAY} element={<PaymentGateway />} />
-                          <Route path={ROUTES.SMS_GATEWAY} element={<SmsGateway />} />
-                          <Route path={ROUTES.E_WALLET} element={<EWallet />} />
-                          <Route path={ROUTES.API_GATEWAY} element={<ApiGateway />} />
-                          <Route path={ROUTES.E_SIGNATURE} element={<ESignature />} />
-                          <Route path={ROUTES.WHATSAPP_CHATBOT} element={<WhatsAppChatbot />} />
-                          <Route path={ROUTES.LOAN_MARKETPLACE} element={<LoanMarketplace />} />
-                          <Route path={ROUTES.USER_MANAGEMENT} element={<UserManagement />} />
-                          <Route path={ROUTES.ADMIN_CONSOLE} element={<AdminConsole />} />
-                          <Route path={ROUTES.SETTINGS} element={<Settings />} />
-                        </Route>
-                        
-                        {/* 404 route */}
-                        <Route path="*" element={<NotFound />} />
-                      </Routes>
-                    </Suspense>
-                  </ErrorBoundary>
-                  
-                  {/* Cookie consent banner */}
-                  <CookieBanner />
-                </Layout>
-              </Router>
+              <Layout>
+                <ErrorBoundary>
+                  <Suspense fallback={<LoadingFallback />}>
+                    <Routes>
+                      {/* Public routes */}
+                      <Route path={ROUTES.LOGIN} element={<Login />} />
+                      <Route path={ROUTES.REGISTER} element={<Register />} />
+                      <Route path={ROUTES.FORGOT_PASSWORD} element={<ForgotPassword />} />
+                      <Route path={ROUTES.PRIVACY_POLICY} element={<PrivacyPolicy />} />
+                      
+                      {/* Protected routes */}
+                      <Route element={<ProtectedRoute />}>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
+                        <Route path={ROUTES.PAYMENT_GATEWAY} element={<PaymentGateway />} />
+                        <Route path={ROUTES.SMS_GATEWAY} element={<SmsGateway />} />
+                        <Route path={ROUTES.E_WALLET} element={<EWallet />} />
+                        <Route path={ROUTES.API_GATEWAY} element={<ApiGateway />} />
+                        <Route path={ROUTES.E_SIGNATURE} element={<ESignature />} />
+                        <Route path={ROUTES.WHATSAPP_CHATBOT} element={<WhatsAppChatbot />} />
+                        <Route path={ROUTES.LOAN_MARKETPLACE} element={<LoanMarketplace />} />
+                        <Route path={ROUTES.USER_MANAGEMENT} element={<UserManagement />} />
+                        <Route path={ROUTES.ADMIN_CONSOLE} element={<AdminConsole />} />
+                        <Route path={ROUTES.SETTINGS} element={<Settings />} />
+                      </Route>
+                      
+                      {/* 404 route */}
+                      <Route path="*" element={<NotFound />} />
+                    </Routes>
+                  </Suspense>
+                </ErrorBoundary>
+                
+                {/* Cookie consent banner */}
+                <CookieBanner />
+              </Layout>
             </AuthProvider>
           </ThemeProvider>
         )}
