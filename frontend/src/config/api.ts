@@ -1,4 +1,4 @@
-const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'https://code-review-app-tunnel-mjvxteqa.devinapps.com';
+const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || 'https://user:d6ac29f52eda7da9ac932c93506ddcde@code-review-app-tunnel-mjvxteqa.devinapps.com';
 const API_VERSION = 'v1';
 
 export const getApiUrl = (endpoint: string): string => {
@@ -13,9 +13,14 @@ export const getApiUrl = (endpoint: string): string => {
 };
 
 export const getAuthHeaders = (): Record<string, string> => {
-  return {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json'
   };
+  
+  const basicAuth = btoa('user:d6ac29f52eda7da9ac932c93506ddcde');
+  headers['Authorization'] = `Basic ${basicAuth}`;
+  
+  return headers;
 };
 
 export default {
